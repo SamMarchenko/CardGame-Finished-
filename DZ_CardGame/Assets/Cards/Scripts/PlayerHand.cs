@@ -41,7 +41,7 @@ public class PlayerHand : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-        card.transform.parent = parent;
+        card.transform.position = parent.position;
         card.StateType = ECardStateType.InHand;
     }
 
