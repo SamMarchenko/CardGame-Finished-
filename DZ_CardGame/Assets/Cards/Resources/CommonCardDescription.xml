@@ -23,6 +23,12 @@
     <Unit Id="110" Name="Timber Wolf">
     Your other Beasts have +1 Attack
     </Unit>
+    <Unit Id="111" Name="Northshire Cleric">
+      Whenever a minion is healed, draw a card
+    </Unit>
+    <Unit Id="112" Name="Psychic Conjurer">
+      #Battlecry/#: Copy a card in your opponent’s deck and add it to your hand
+    </Unit>
   </Pack>
 
   <Pack Cost="2" Type="Common">
@@ -77,6 +83,9 @@
     <Unit Id="309" Name="Wolfrider">
       #Charge/#
     </Unit>
+    <Unit Id="310" Name="Warsong Commander">
+      After you summon another minion, give it #Rush/#
+    </Unit>
   </Pack>
 
   <Pack Cost="4" Type="Common">
@@ -99,6 +108,12 @@
     </Unit>
     <Unit Id="408" Name="Houndmaster">
       #Battlecry/#: Give a friendly Beast +2/+2 and Taunt
+    </Unit>
+    <Unit Id="409" Name="Water Elemental">
+      Freeze any character damaged by this minion
+    </Unit>
+    <Unit Id="410" Name="Kor'kron Elite">
+      #Charge/#
     </Unit>
   </Pack>
 

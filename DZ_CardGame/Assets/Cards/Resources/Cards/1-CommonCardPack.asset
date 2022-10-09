@@ -75,3 +75,15 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 2
+  - Id: 111
+    Name: Northshire Cleric
+    Texture: {fileID: 2800000, guid: 4dffe4c66073b403a814d0e9b602eea0, type: 3}
+    Attack: 1
+    Health: 3
+    Type: 0
+  - Id: 112
+    Name: Psychic Conjurer
+    Texture: {fileID: 2800000, guid: b266af41986c64759969cf20066b80cc, type: 3}
+    Attack: 1
+    Health: 1
+    Type: 0

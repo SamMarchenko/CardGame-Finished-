@@ -63,3 +63,15 @@ MonoBehaviour:
     Attack: 4
     Health: 3
     Type: 0
+  - Id: 409
+    Name: Water Elemental
+    Texture: {fileID: 2800000, guid: ef45d71242d1c4d1bb00a54bb1d1b7e5, type: 3}
+    Attack: 3
+    Health: 6
+    Type: 3
+  - Id: 410
+    Name: Kor'kron Elite
+    Texture: {fileID: 2800000, guid: aaffa3fcd2ddb48828c801d8cef83b34, type: 3}
+    Attack: 4
+    Health: 3
+    Type: 0

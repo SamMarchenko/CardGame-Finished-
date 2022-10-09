@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4cf6de20b2646f4193e999d2dee71e4, type: 3}
   m_Name: 3-CommonCardPack
   m_EditorClassIdentifier: 
-  _sideType: 0
+  eSideType: 0
   _cost: 3
   _cards:
   - Id: 301
@@ -68,4 +68,10 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 29d8c991eaec3c54dbc78976c88510eb, type: 3}
     Attack: 3
     Health: 1
+    Type: 0
+  - Id: 310
+    Name: Warsong Commander
+    Texture: {fileID: 2800000, guid: c0f59ff42d4c542a394cfda3284189b4, type: 3}
+    Attack: 2
+    Health: 3
     Type: 0
