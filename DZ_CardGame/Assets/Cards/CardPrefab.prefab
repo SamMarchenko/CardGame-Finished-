@@ -1385,9 +1385,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _frontCard: {fileID: 1307249474052391439}
   _icon: {fileID: 1307249472203900899}
-  _cost: {fileID: 1307249473836208755}
-  _name: {fileID: 1307249472768872969}
-  _description: {fileID: 1307249472827250133}
-  _type: {fileID: 1307249472091281202}
-  _attack: {fileID: 1307249473160749871}
-  _health: {fileID: 1307249473871312366}
+  _cosText: {fileID: 1307249473836208755}
+  _nameText: {fileID: 1307249472768872969}
+  _descriptionText: {fileID: 1307249472827250133}
+  _typeText: {fileID: 1307249472091281202}
+  _attackText: {fileID: 1307249473160749871}
+  _healthText: {fileID: 1307249473871312366}

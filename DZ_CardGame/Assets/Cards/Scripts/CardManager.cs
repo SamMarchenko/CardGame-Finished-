@@ -9,13 +9,13 @@ public class CardManager : MonoBehaviour
 {
     private Material _baseMat;
     private List<CardPropertiesData> _allCards;
-    private Card[] _deck1;
-    private Card[] _deck2;
+    private Card[] _playerDeck1;
+    private Card[] _playerDeck2;
     [SerializeField] private CardPackConfiguration[] _packs;
     [SerializeField] private Card _cardPrefab;
 
     [Space, SerializeField, Range(1f, 100f)]
-    private int _countCardInDeck = 30;
+    private int _maxNumberCardInDeck = 30;
 
     [SerializeField, Space] private Transform _deck1Parent;
     [SerializeField] private Transform _deck2Parent;
@@ -36,19 +36,19 @@ public class CardManager : MonoBehaviour
 
     private void Start()
     {
-        _deck1 = CreateDeck(_deck1Parent);
-        _deck2 = CreateDeck(_deck2Parent);
+        _playerDeck1 = CreateDeck(_deck1Parent);
+        _playerDeck2 = CreateDeck(_deck2Parent);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            for (int i = _deck1.Length-1; i >=0; i--)
+            for (int i = _playerDeck1.Length-1; i >=0; i--)
             {
-                if (_deck1[i] == null) continue;
-                _playerHand1.SetNewCard(_deck1[i]);
-                _deck1[i] = null;
+                if (_playerDeck1[i] == null) continue;
+                _playerHand1.SetNewCard(_playerDeck1[i]);
+                _playerDeck1[i] = null;
                 break;
             }
         }
@@ -56,16 +56,18 @@ public class CardManager : MonoBehaviour
 
     private Card[] CreateDeck(Transform parent)
     {
-        var deck = new Card[_countCardInDeck];
+        var deck = new Card[_maxNumberCardInDeck];
         var offset = 0.8f;
 
-        for (int i = 0; i < _countCardInDeck; i++)
+        for (int i = 0; i < _maxNumberCardInDeck; i++)
         {
             deck[i] = Instantiate(_cardPrefab, parent);
             deck[i].transform.localPosition = new Vector3(0f,offset,0f);
             deck[i].transform.eulerAngles = new Vector3(0,0,180f);
             deck[i].SwitchVisual();
             offset += 0.8f;
+            
+            //todo: тут заполняется рандомом, надо будет переделать по конкретную колоду
             var random = _allCards[Random.Range(0, _allCards.Count)];
             
             var newMat = new Material(_baseMat);

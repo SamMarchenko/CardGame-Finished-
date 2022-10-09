@@ -20,6 +20,9 @@
     <Unit Id="107" Name="Boar" Uncollectible="true"/>
     <Unit Id="108" Name="Mechanical Dragonling" Uncollectible="true"/>
     <Unit Id="109" Name="Murloc scout" Uncollectible="true"/>
+    <Unit Id="110" Name="Timber Wolf">
+    Your other Beasts have +1 Attack
+    </Unit>
   </Pack>
 
   <Pack Cost="2" Type="Common">
@@ -43,6 +46,9 @@
       #Battlecry/#: Draw a card
     </Unit>
     <Unit Id="208" Name="River Crocolisk"/>
+    <Unit Id="209" Name="Starving Buzzard">
+      Whenever you summon a Beast, draw a card.
+    </Unit>
   </Pack>
 
   <Pack Cost="3" Type="Common">
@@ -91,6 +97,9 @@
     <Unit Id="407" Name="Stormwind Knight">
       #Charge/#
     </Unit>
+    <Unit Id="408" Name="Houndmaster">
+      #Battlecry/#: Give a friendly Beast +2/+2 and Taunt
+    </Unit>
   </Pack>
 
   <Pack Cost="5" Type="Common">
@@ -111,6 +120,9 @@
     </Unit>
     <Unit Id="506" Name="Stormpike Commando">
       #Battlecry/#: Deal 2 damage
+    </Unit>
+    <Unit Id="507" Name="Tundra Rhino">
+      #Charge/#
     </Unit>
   </Pack>
 

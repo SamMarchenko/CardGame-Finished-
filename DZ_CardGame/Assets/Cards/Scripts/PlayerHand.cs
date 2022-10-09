@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cards;
 using UnityEngine;
 
 public class PlayerHand : MonoBehaviour
@@ -40,8 +41,8 @@ public class PlayerHand : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-
         card.transform.parent = parent;
+        card.StateType = ECardStateType.InHand;
     }
 
     private int GetLastPosition()

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4cf6de20b2646f4193e999d2dee71e4, type: 3}
   m_Name: 2-CommonCardPack
   m_EditorClassIdentifier: 
-  _sideType: 0
+  eSideType: 0
   _cost: 2
   _cards:
   - Id: 201
@@ -62,4 +62,10 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 9e85f3b5f30c9b24baac58126ab8fce2, type: 3}
     Attack: 2
     Health: 3
+    Type: 2
+  - Id: 209
+    Name: Starving Buzzard
+    Texture: {fileID: 2800000, guid: 9d633f3c651ed410c81fb0129cfb6f55, type: 3}
+    Attack: 2
+    Health: 1
     Type: 2
