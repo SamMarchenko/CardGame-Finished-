@@ -14,9 +14,21 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     [SerializeField] private TextMeshPro _typeText;
     [SerializeField] private TextMeshPro _attackText;
     [SerializeField] private TextMeshPro _healthText;
-    
-    private Vector3 _stepPosition = new Vector3(0,0.5f,0);
-    private const float _scale = 1.7f;
+
+    private bool _onDragging;
+    private bool _isScaled;
+    private Vector3 _currentPosition;
+
+    public Vector3 CurrentPosition
+    {
+        get => _currentPosition;
+        set => _currentPosition = value;
+    }
+
+    private Vector3 _stepPosition = new Vector3(0,3f,0);
+    private const float _scale = 2f;
+
+    private Camera _camera;
 
     public bool IsEnable
     {
@@ -26,6 +38,11 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             _icon.enabled = value;
             _frontCard.SetActive(value);
         }
+    }
+
+    private void Start()
+    {
+        _camera = Camera.main;
     }
 
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
@@ -51,8 +68,8 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         switch (StateType)
         {
             case ECardStateType.InHand:
-                transform.localPosition += _stepPosition;
-                transform.localScale *= _scale;
+                if (_onDragging) return;
+                ScaleCard(true);
                 break;
             case ECardStateType.OnTable:
                 break;
@@ -64,8 +81,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         switch (StateType)
         {
             case ECardStateType.InHand:
-                transform.localPosition -= _stepPosition;
-                transform.localScale /= _scale;
+                ScaleCard(false);
                 break;
             case ECardStateType.OnTable:
                 break;
@@ -74,16 +90,55 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        
+        ScaleCard(true);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-
+        StateType = ECardStateType.OnTable;
+        transform.position += new Vector3(0,1,0);
+        _onDragging = false;
+        ScaleCard(false);
+        Debug.Log(transform.position);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        switch (StateType)
+        {
+            case ECardStateType.InHand:
+                _onDragging = true;
+                DragCard();
+                break;
+        }
+    }
+
+    private void DragCard()
+    {
+        Ray R = _camera.ScreenPointToRay(Input.mousePosition);
+        Vector3 PO = transform.position;
+        Vector3 PN = -_camera.transform.forward;
+        float t = Vector3.Dot(PO - R.origin, PN) / Vector3.Dot(R.direction, PN);
+        Vector3 P = R.origin + R.direction * t;
         
+        transform.position = P;
+    }
+
+    private void ScaleCard(bool upScale)
+    {
+        if (upScale == _isScaled) return;
+       
+        if (upScale)
+        {
+            transform.localPosition += _stepPosition;
+            transform.localScale *= _scale;
+            _isScaled = true;
+        }
+        else
+        {
+            transform.localPosition -= _stepPosition;
+            transform.localScale /= _scale;
+            _isScaled = false;
+        }
     }
 }

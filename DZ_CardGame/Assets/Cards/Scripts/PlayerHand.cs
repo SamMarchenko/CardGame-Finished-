@@ -42,6 +42,7 @@ public class PlayerHand : MonoBehaviour
             yield return null;
         }
         card.transform.position = parent.position;
+        card.CurrentPosition = card.transform.position;
         card.StateType = ECardStateType.InHand;
     }
 
