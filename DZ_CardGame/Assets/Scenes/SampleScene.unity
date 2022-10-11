@@ -347,6 +347,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 140511088}
+  - component: {fileID: 140511089}
   m_Layer: 0
   m_Name: PlayerTable1
   m_TagString: Untagged
@@ -375,6 +376,26 @@ Transform:
   m_Father: {fileID: 2119169889}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &140511089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140511087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1842ee93c5e47fb9917ea0c03a2ec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _positions:
+  - {fileID: 842640736}
+  - {fileID: 2042328859}
+  - {fileID: 1498631067}
+  - {fileID: 246610944}
+  - {fileID: 1462564976}
+  - {fileID: 1829722574}
+  - {fileID: 1023098639}
 --- !u!1 &157966062
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,6 +897,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 265171467}
+  - component: {fileID: 265171468}
   m_Layer: 0
   m_Name: PlayerTable2
   m_TagString: Untagged
@@ -904,6 +926,26 @@ Transform:
   m_Father: {fileID: 2119169889}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &265171468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265171466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1842ee93c5e47fb9917ea0c03a2ec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _positions:
+  - {fileID: 2017348949}
+  - {fileID: 226316400}
+  - {fileID: 61873929}
+  - {fileID: 191444908}
+  - {fileID: 1986568291}
+  - {fileID: 225223941}
+  - {fileID: 614538554}
 --- !u!1 &529022179
 GameObject:
   m_ObjectHideFlags: 0
@@ -2516,3 +2558,5 @@ MonoBehaviour:
   _deck2Parent: {fileID: 1387378658}
   _playerHand1: {fileID: 1009807276}
   _playerHand2: {fileID: 648315307}
+  _playerTable1: {fileID: 140511089}
+  _playerTable2: {fileID: 265171468}

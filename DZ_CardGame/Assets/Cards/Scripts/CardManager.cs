@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cards.ScriptableObjects;
@@ -21,6 +22,9 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Transform _deck2Parent;
     [SerializeField] private PlayerHand _playerHand1;
     [SerializeField] private PlayerHand _playerHand2;
+    [SerializeField] private PlayerTable _playerTable1;
+    [SerializeField] private PlayerTable _playerTable2;
+    
 
     private void Awake()
     {
@@ -38,6 +42,40 @@ public class CardManager : MonoBehaviour
     {
         _playerDeck1 = CreateDeck(_deck1Parent);
         _playerDeck2 = CreateDeck(_deck2Parent);
+        foreach (var card in _playerDeck1)
+        {
+            card.WantChangePosition += WantChangePosition;
+        }
+    }
+
+    private void WantChangePosition(Card card)
+    {
+        if (_playerTable1.HasNearestFreePosition(card.transform, out Transform position))
+        {
+            StartCoroutine(MoveCard(card, position.position));
+            _playerTable1.RemovePosition(position);
+            card.StateType = ECardStateType.OnTable;
+        }
+        else
+        {
+            StartCoroutine(MoveCard(card, card.PreviousPosition));
+            card.StateType = ECardStateType.InHand;
+        }
+        
+    }
+    private IEnumerator MoveCard(Card card, Vector3 parent)
+    {
+        var time = 0f;
+        var startPos = card.transform.position;
+        var endPos = parent;
+        while (time < 0.1f)
+        {
+            card.transform.position = Vector3.Lerp(startPos, endPos, time);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        card.transform.position = parent;
+        card.CurrentPosition = card.transform.position;
     }
 
     private void Update()

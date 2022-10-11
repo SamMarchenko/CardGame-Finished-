@@ -14,10 +14,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     [SerializeField] private TextMeshPro _typeText;
     [SerializeField] private TextMeshPro _attackText;
     [SerializeField] private TextMeshPro _healthText;
+    public Action<Card> WantChangePosition;
 
     private bool _onDragging;
     private bool _isScaled;
     private Vector3 _currentPosition;
+    private Vector3 _previousPosition;
+    public Vector3 PreviousPosition => _previousPosition;
 
     public Vector3 CurrentPosition
     {
@@ -90,12 +93,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        _previousPosition = transform.position;
         ScaleCard(true);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        StateType = ECardStateType.OnTable;
+        WantChangePosition?.Invoke(this);
         transform.position += new Vector3(0,1,0);
         _onDragging = false;
         ScaleCard(false);
