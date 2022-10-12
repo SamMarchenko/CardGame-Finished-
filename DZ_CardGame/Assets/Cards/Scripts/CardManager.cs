@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cards.ScriptableObjects;
+using JetBrains.Annotations;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -24,6 +25,8 @@ public class CardManager : MonoBehaviour
     [SerializeField] private PlayerHand _playerHand2;
     [SerializeField] private PlayerTable _playerTable1;
     [SerializeField] private PlayerTable _playerTable2;
+    [SerializeField] private Player _player1Hero;
+    [SerializeField] private Player _player2Hero;
     
 
     private void Awake()
@@ -50,18 +53,34 @@ public class CardManager : MonoBehaviour
 
     private void WantChangePosition(Card card)
     {
+        if (!IsEnoughMana(card))
+        {
+            Debug.Log("Недостаточно маны!");
+            ReturnCardInHand(card);
+            return;
+        }
         if (_playerTable1.HasNearestFreePosition(card.transform, out Transform position))
         {
+            _player1Hero.SpendManaPool(card.Cost);
             StartCoroutine(MoveCard(card, position.position));
             _playerTable1.RemovePosition(position);
             card.StateType = ECardStateType.OnTable;
         }
         else
         {
-            StartCoroutine(MoveCard(card, card.PreviousPosition));
-            card.StateType = ECardStateType.InHand;
+            ReturnCardInHand(card);
         }
-        
+    }
+
+    private void ReturnCardInHand(Card card)
+    {
+        StartCoroutine(MoveCard(card, card.PreviousPosition));
+        card.StateType = ECardStateType.InHand;
+    }
+
+    private bool IsEnoughMana(Card card)
+    {
+        return _player1Hero.CurrentManaPool - card.Cost >= 0;
     }
     private IEnumerator MoveCard(Card card, Vector3 parent)
     {

@@ -6,6 +6,9 @@ using UnityEngine.EventSystems;
 
 public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    public Action<Card> WantChangePosition;
+    public bool CanAttack;
+    
     [SerializeField] private GameObject _frontCard;
     [Space, SerializeField] private MeshRenderer _icon;
     [SerializeField] private TextMeshPro _cosText;
@@ -14,8 +17,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     [SerializeField] private TextMeshPro _typeText;
     [SerializeField] private TextMeshPro _attackText;
     [SerializeField] private TextMeshPro _healthText;
-    public Action<Card> WantChangePosition;
-
+    private int _cost;
+    public int Cost => _cost;
+    
+    private int _attack;
+    private int _health;
+    
+    
     private bool _onDragging;
     private bool _isScaled;
     private Vector3 _currentPosition;
@@ -58,6 +66,12 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         _typeText.text = data.Type == ECardUnitType.None ? string.Empty : data.Type.ToString();
         _attackText.text = data.Attack.ToString();
         _healthText.text = data.Health.ToString();
+        ParseConfiguration();
+    }
+
+    private void ParseConfiguration()
+    {
+        _cost = int.Parse(_cosText.text);
     }
 
     [ContextMenu("Switch Visual")]
@@ -70,11 +84,10 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     {
         switch (StateType)
         {
+            case ECardStateType.OnTable:
             case ECardStateType.InHand:
                 if (_onDragging) return;
                 ScaleCard(true);
-                break;
-            case ECardStateType.OnTable:
                 break;
         }
     }
@@ -83,11 +96,11 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     {
         switch (StateType)
         {
+            case ECardStateType.OnTable:
             case ECardStateType.InHand:
                 ScaleCard(false);
                 break;
-            case ECardStateType.OnTable:
-                break;
+            
         }
     }
 
@@ -99,11 +112,23 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        WantChangePosition?.Invoke(this);
-        transform.position += new Vector3(0,1,0);
-        _onDragging = false;
-        ScaleCard(false);
-        Debug.Log(transform.position);
+        switch (StateType)
+        {
+            case ECardStateType.InHand:
+                WantChangePosition?.Invoke(this);
+                transform.position += new Vector3(0,1,0);
+                _onDragging = false;
+                ScaleCard(false);
+                break;
+            case ECardStateType.OnTable:
+                _onDragging = false;
+                ScaleCard(false);
+                break;
+            case ECardStateType.Discard:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
