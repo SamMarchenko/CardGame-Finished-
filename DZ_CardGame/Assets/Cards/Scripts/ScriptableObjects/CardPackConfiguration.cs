@@ -10,24 +10,33 @@ namespace Cards.ScriptableObjects
     public class CardPackConfiguration : ScriptableObject
     {
         [SerializeField] private ESideType eSideType;
-        [SerializeField] private ushort _cost;
+
+        public ESideType ESideType => eSideType;
+        //[SerializeField] private ushort _cost;
 
         [SerializeField, OneLine(Header = LineHeader.Short)]
         private CardPropertiesData[] _cards;
 
+        public CardPropertiesData[] Cards => _cards;
+
+        public int GetNumberCardsInPack()
+        {
+            return _cards.Length;
+        }
+
         public IEnumerable<CardPropertiesData> UnionProperties(IEnumerable<CardPropertiesData> array)
         {
-            TryToContruct();
+            //TryToContruct();
 
             return array.Union(_cards);
         }
 
-        private void TryToContruct()
-        {
-            for (int i = 0; i < _cards.Length; i++)
-            {
-                _cards[i].Cost = _cost;
-            }
-        }
+        // private void TryToContruct()
+        // {
+        //     for (int i = 0; i < _cards.Length; i++)
+        //     {
+        //         _cards[i].Cost = _cost;
+        //     }
+        // }
     }
 }

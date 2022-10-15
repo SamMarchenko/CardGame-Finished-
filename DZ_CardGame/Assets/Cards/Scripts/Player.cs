@@ -4,11 +4,12 @@ namespace Cards
 {
     public class Player : MonoBehaviour
     {
+        [SerializeField] private ESideType _type;
         [SerializeField] private int _health = 30;
         [SerializeField] private int _maxManaPool = 3;
         [SerializeField] private int _currentManaPool = 3;
         public int CurrentManaPool => _currentManaPool;
-
+        public ESideType Type => _type;
         public void IncreaseMaxManaPool()
         {
             if (_maxManaPool == 10) return;

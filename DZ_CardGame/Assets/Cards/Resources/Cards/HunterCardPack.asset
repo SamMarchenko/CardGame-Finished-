@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4cf6de20b2646f4193e999d2dee71e4, type: 3}
+  m_Name: HunterCardPack
+  m_EditorClassIdentifier: 
+  eSideType: 5
+  _cards:
+  - Id: 801
+    Cost: 1
+    Name: Timber Wolf
+    Texture: {fileID: 2800000, guid: 86e75d19669964356a6cf4f8246d8275, type: 3}
+    Attack: 1
+    Health: 1
+    Type: 2
+  - Id: 802
+    Cost: 2
+    Name: Starving Buzzard
+    Texture: {fileID: 2800000, guid: 9d633f3c651ed410c81fb0129cfb6f55, type: 3}
+    Attack: 2
+    Health: 1
+    Type: 2
+  - Id: 803
+    Cost: 4
+    Name: Houndmaster
+    Texture: {fileID: 2800000, guid: 7c1933f75bf93437781a56a0a3374d02, type: 3}
+    Attack: 4
+    Health: 3
+    Type: 0
+  - Id: 804
+    Cost: 5
+    Name: Tundra Rhino
+    Texture: {fileID: 2800000, guid: 7f0c8f95bd2e54ff09e898a01c747930, type: 3}
+    Attack: 2
+    Health: 5
+    Type: 2
