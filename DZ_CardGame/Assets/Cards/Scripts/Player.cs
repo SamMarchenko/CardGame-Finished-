@@ -8,6 +8,7 @@ namespace Cards
         [SerializeField] private int _health = 30;
         [SerializeField] private int _maxManaPool = 3;
         [SerializeField] private int _currentManaPool = 3;
+        public ETurn Turn;
         public int CurrentManaPool => _currentManaPool;
         public ESideType Type => _type;
         public void IncreaseMaxManaPool()

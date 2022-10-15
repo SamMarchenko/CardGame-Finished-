@@ -591,9 +591,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7221b2dd8947b2890607823c317abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 2
   _health: 30
   _maxManaPool: 3
   _currentManaPool: 3
+  Turn: 0
 --- !u!1 &225223940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1962,9 +1964,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7221b2dd8947b2890607823c317abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 3
   _health: 30
   _maxManaPool: 3
   _currentManaPool: 3
+  Turn: 1
 --- !u!1 &1498631066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2576,7 +2580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa0a126e80bd40f2a21e526b0a6096d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _packs:
+  _commonPacks:
   - {fileID: 11400000, guid: 55dbf4c3fc0b44d43bc5d90dce9070bc, type: 2}
   - {fileID: 11400000, guid: 42ffdb3326ce897459155355d37808fd, type: 2}
   - {fileID: 11400000, guid: a8e853945eaef0444b396742ee18c374, type: 2}
@@ -2584,7 +2588,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3229ff84acff46246a9bd0591a1ab7f6, type: 2}
   - {fileID: 11400000, guid: cb7286cd1080bf04cbbf4a2265e52f38, type: 2}
   - {fileID: 11400000, guid: 93d377064370f4443970eeb9769fd723, type: 2}
+  _classPacks:
   - {fileID: 11400000, guid: 6e1bde14b777e4362b83b99f1e7faafb, type: 2}
+  - {fileID: 11400000, guid: 07c82788bc28241f4af7de267a65eaf8, type: 2}
+  - {fileID: 11400000, guid: 2083abad150cc44ca9a72dc9a736c614, type: 2}
+  - {fileID: 11400000, guid: 4b6b8cf86339b4451a997203fb5cc70d, type: 2}
   _cardPrefab: {fileID: 2126859815115996309, guid: 1efffdaff08b40c44aa84086651f4a25, type: 3}
   _maxNumberCardInDeck: 30
   _deck1Parent: {fileID: 1930818283}

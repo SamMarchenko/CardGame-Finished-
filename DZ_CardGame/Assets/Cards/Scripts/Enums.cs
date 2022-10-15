@@ -19,8 +19,7 @@ namespace Cards
 		Mage = 1,
 		Warrior = 2,
 		Priest = 3,
-		Warlock = 4,
-		Hunter = 5,
+		Hunter = 4,
 	}
 
 	public enum ECardStateType
@@ -29,5 +28,11 @@ namespace Cards
 		InHand,
 		OnTable,
 		Discard
+	}
+
+	public enum ETurn
+	{
+		First,
+		Second
 	}
 }
