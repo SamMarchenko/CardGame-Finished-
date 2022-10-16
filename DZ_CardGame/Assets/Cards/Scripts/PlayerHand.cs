@@ -6,18 +6,17 @@ using UnityEngine;
 
 public class PlayerHand : MonoBehaviour
 {
-    private Card[] _cards;
     [SerializeField] private Transform[] _positions;
-
+    private Card[] _cards;
+    public Card[] Cards => _cards;
     private void Start()
-    private List<Card> _cards = new List<Card>();
-    public List<Card> Cards => _cards;
+    {
+        _cards = new Card[_positions.Length];
     }
-    
     public bool SetNewCard(Card card)
     {
-        //var result = GetLastPosition();
-        if (_cards.Count == 10)
+        var result = GetLastPosition();
+        if (result == -1)
         {
             Destroy(card.gameObject);
             return false;
@@ -46,20 +45,13 @@ public class PlayerHand : MonoBehaviour
         card.StateType = ECardStateType.InHand;
     }
 
-    // private int GetLastPosition()
-    // {
-    //     for (int i = 0; i < _cards.Length; i++)
-    //     {
-    //         if (_cards[i] == null) return i;
-    //     }
-    //     return -1;
-    // }
+    private int GetLastPosition()
     {
         for (int i = 0; i < _cards.Length; i++)
         {
             if (_cards[i] == null) return i;
-            
         }
         return -1;
     }
+    
 }

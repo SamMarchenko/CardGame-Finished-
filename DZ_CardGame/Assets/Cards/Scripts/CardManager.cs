@@ -110,7 +110,7 @@ public class CardManager : MonoBehaviour
         _whoseMove = _whoseMove == ETurn.First ? ETurn.Second : ETurn.First;
     }
 
-    private void FlipCards(List<Card> cards)
+    private void FlipCards(Card[] cards)
     {
         if (cards is null)
         {
@@ -177,7 +177,7 @@ public class CardManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-        if (playerTable.HasNearestFreePosition(card.transform, out DrawCardSlots position))
+        if (playerTable.HasNearestFreePosition(card.transform, out Transform position))
         {
             player.SpendManaPool(card.Cost);
             StartCoroutine(MoveCard(card, position.transform.position));
