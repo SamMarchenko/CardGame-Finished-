@@ -35,4 +35,10 @@ namespace Cards
 		First,
 		Second
 	}
+
+	public enum ESlotStatus
+	{
+		Free,
+		Busy
+	}
 }

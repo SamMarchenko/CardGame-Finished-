@@ -10,14 +10,14 @@ public class PlayerHand : MonoBehaviour
     [SerializeField] private Transform[] _positions;
 
     private void Start()
-    {
-        _cards = new Card[_positions.Length];
+    private List<Card> _cards = new List<Card>();
+    public List<Card> Cards => _cards;
     }
-
+    
     public bool SetNewCard(Card card)
     {
-        var result = GetLastPosition();
-        if (result == -1)
+        //var result = GetLastPosition();
+        if (_cards.Count == 10)
         {
             Destroy(card.gameObject);
             return false;
@@ -46,7 +46,14 @@ public class PlayerHand : MonoBehaviour
         card.StateType = ECardStateType.InHand;
     }
 
-    private int GetLastPosition()
+    // private int GetLastPosition()
+    // {
+    //     for (int i = 0; i < _cards.Length; i++)
+    //     {
+    //         if (_cards[i] == null) return i;
+    //     }
+    //     return -1;
+    // }
     {
         for (int i = 0; i < _cards.Length; i++)
         {

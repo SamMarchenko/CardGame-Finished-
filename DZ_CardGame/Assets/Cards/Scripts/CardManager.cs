@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using Cards.ScriptableObjects;
-using JetBrains.Annotations;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,6 +17,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private CardPackConfiguration[] _commonPacks;
     [SerializeField] private CardPackConfiguration[] _classPacks;
     [SerializeField] private Card _cardPrefab;
+    [SerializeField] private ETurn _whoseMove = ETurn.First;
 
     [Space, SerializeField, Range(1f, 100f)]
     private int _maxNumberCardInDeck = 30;
@@ -55,38 +55,133 @@ public class CardManager : MonoBehaviour
         _playerDeck2 = CreateDeck(_player2Hero.Turn,_deck2Parent);
         foreach (var card in _playerDeck1)
         {
+            card.WantStartDrag += WantStartDrag;
+            card.WantChangePosition += WantChangePosition;
+        }
+        foreach (var card in _playerDeck2)
+        {
+            card.WantStartDrag += WantStartDrag;
             card.WantChangePosition += WantChangePosition;
         }
     }
+    
+    
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            for (int i = _playerDeck1.Length - 1; i >= 0; i--)
+            switch (_whoseMove)
             {
-                if (_playerDeck1[i] == null) continue;
-                _playerHand1.SetNewCard(_playerDeck1[i]);
-                _playerDeck1[i] = null;
-                break;
+                case ETurn.First:
+                    TakeCardsInHandFromDeck(_playerDeck1);
+                    break;
+                case ETurn.Second:
+                    TakeCardsInHandFromDeck(_playerDeck2);
+                    break;
             }
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ChangeMove();
         }
     }
 
+    private void ChangeMove()
+    {
+        switch (_whoseMove)
+        {
+            case ETurn.First:
+                FlipCards(_playerHand1.Cards);
+                FlipCards(_playerHand2.Cards);
+                _player1Hero.IncreaseMaxManaPool();
+                _player1Hero.RecoverManaPool();
+                break;
+            case ETurn.Second:
+                FlipCards(_playerHand2.Cards);
+                FlipCards(_playerHand1.Cards);
+                _player2Hero.IncreaseMaxManaPool();
+                _player2Hero.RecoverManaPool();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        _whoseMove = _whoseMove == ETurn.First ? ETurn.Second : ETurn.First;
+    }
+
+    private void FlipCards(List<Card> cards)
+    {
+        if (cards is null)
+        {
+            return;
+        }
+        foreach (var card in cards)
+        {
+            card?.SwitchVisual();
+        }
+    }
+
+    private void TakeCardsInHandFromDeck(Card[] deck)
+    {
+        for (int i = deck.Length - 1; i >= 0; i--)
+        {
+            if (deck[i] == null) continue;
+            
+            if (_whoseMove == ETurn.First)
+            {
+                _playerHand1.SetNewCard(deck[i]); 
+            }
+            else
+            {
+                _playerHand2.SetNewCard(deck[i]); 
+            }
+            deck[i] = null;
+            break;
+        }
+    }
+
+    private void WantStartDrag(Card card)
+    {
+        if (card.Turn != _whoseMove)
+        {
+            Debug.Log("!!!Не твой ход!!!");
+            card.CanDrag = false;
+            return;
+        }
+
+        card.CanDrag = true;
+    }
     private void WantChangePosition(Card card)
     {
+        
         if (!IsEnoughMana(card))
         {
             Debug.Log("Недостаточно маны!");
             ReturnCardInHand(card);
             return;
         }
-
-        if (_playerTable1.HasNearestFreePosition(card.transform, out Transform position))
+        
+        PlayerTable playerTable = new PlayerTable();
+        Player player = new Player();
+        switch (_whoseMove)
         {
-            _player1Hero.SpendManaPool(card.Cost);
-            StartCoroutine(MoveCard(card, position.position));
-            _playerTable1.RemovePosition(position);
+            case ETurn.First:
+                playerTable = _playerTable1;
+                player = _player1Hero;
+                break;
+            case ETurn.Second:
+                playerTable = _playerTable2;
+                player = _player2Hero;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        if (playerTable.HasNearestFreePosition(card.transform, out DrawCardSlots position))
+        {
+            player.SpendManaPool(card.Cost);
+            StartCoroutine(MoveCard(card, position.transform.position));
+            playerTable.RemovePosition(position);
             card.StateType = ECardStateType.OnTable;
         }
         else
@@ -103,7 +198,17 @@ public class CardManager : MonoBehaviour
 
     private bool IsEnoughMana(Card card)
     {
-        return _player1Hero.CurrentManaPool - card.Cost >= 0;
+        bool result = false;
+        switch (card.Turn)
+        {
+            case ETurn.First:
+                result = _player1Hero.CurrentManaPool - card.Cost >= 0;
+                break;
+            case ETurn.Second:
+                result = _player2Hero.CurrentManaPool - card.Cost >= 0;
+                break;
+        }
+        return result;
     }
 
     private IEnumerator MoveCard(Card card, Vector3 parent)
@@ -154,7 +259,11 @@ public class CardManager : MonoBehaviour
         MixCardsInDeck(deck);
         //Выстраивание стопки карт
         LineUpCardsStack(deck);
-
+        
+        foreach (var card in deck)
+        {
+            card.Turn = turn;
+        }
         return deck;
     }
 

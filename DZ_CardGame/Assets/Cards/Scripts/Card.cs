@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public Action<Card> WantChangePosition;
+    public Action<Card> WantStartDrag;
     public bool CanAttack;
     
     [SerializeField] private GameObject _frontCard;
@@ -17,6 +18,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     [SerializeField] private TextMeshPro _typeText;
     [SerializeField] private TextMeshPro _attackText;
     [SerializeField] private TextMeshPro _healthText;
+    private ETurn _turn;
+    public ETurn Turn 
+    {
+        get => _turn;
+
+        set => _turn = value;
+    }
     private int _cost;
     public int Cost => _cost;
     
@@ -25,6 +33,8 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     
     
     private bool _onDragging;
+    private bool _canDrag;
+    public bool CanDrag { get => _canDrag; set => _canDrag = value; }
     private bool _isScaled;
     private Vector3 _currentPosition;
     private Vector3 _previousPosition;
@@ -106,12 +116,17 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        WantStartDrag?.Invoke(this);
         _previousPosition = transform.position;
         ScaleCard(true);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!_canDrag)
+        {
+            return;
+        }
         switch (StateType)
         {
             case ECardStateType.InHand:
@@ -133,6 +148,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!_canDrag) return;
         switch (StateType)
         {
             case ECardStateType.InHand:
@@ -140,6 +156,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
                 DragCard();
                 break;
         }
+
     }
 
     private void DragCard()
