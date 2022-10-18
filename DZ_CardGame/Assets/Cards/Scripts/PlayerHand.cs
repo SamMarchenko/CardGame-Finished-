@@ -7,31 +7,33 @@ using UnityEngine;
 public class PlayerHand : MonoBehaviour
 {
     [SerializeField] private Transform[] _positions;
-    private Card[] _cards;
-    public Card[] Cards => _cards;
-    private void Start()
+    private HandSlotsHandler _handSlotsHandler;
+    private List<Card> _cards = new List<Card>();
+    public List<Card> Cards => _cards;
+
+    public void Init(HandSlotsHandler handSlotsHandler)
     {
-        _cards = new Card[_positions.Length];
+        _handSlotsHandler = handSlotsHandler;
     }
-    public bool SetNewCard(Card card)
+    public void SetNewCard(ETurn turn ,Card card)
     {
-        var result = GetLastPosition();
-        if (result == -1)
+        if (_handSlotsHandler.isFreeSlot(turn))
+        {
+            var position = _handSlotsHandler.SetCardInSlot(card);
+            _cards.Add(card);
+            StartCoroutine(MoveInHand(card, position));
+        }
+        else
         {
             Destroy(card.gameObject);
-            return false;
         }
-
-        _cards[result] = card;
-        StartCoroutine(MoveInHand(card,_positions[result]));
-        return true;
     }
 
-    private IEnumerator MoveInHand(Card card, Transform parent)
+    private IEnumerator MoveInHand(Card card, Transform slot)
     {
         var time = 0f;
         var startPos = card.transform.position;
-        var endPos = parent.position;
+        var endPos = slot.position;
         card.SwitchVisual();
         card.transform.eulerAngles = new Vector3(0,0,180);
         while (time < 1f)
@@ -40,18 +42,9 @@ public class PlayerHand : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-        card.transform.position = parent.position;
+        card.transform.position = slot.position;
         card.CurrentPosition = card.transform.position;
         card.StateType = ECardStateType.InHand;
-    }
-
-    private int GetLastPosition()
-    {
-        for (int i = 0; i < _cards.Length; i++)
-        {
-            if (_cards[i] == null) return i;
-        }
-        return -1;
     }
     
 }

@@ -18,6 +18,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private CardPackConfiguration[] _classPacks;
     [SerializeField] private Card _cardPrefab;
     [SerializeField] private ETurn _whoseMove = ETurn.First;
+    [SerializeField] private HandSlotsHandler _handSlotsHandler;
 
     [Space, SerializeField, Range(1f, 100f)]
     private int _maxNumberCardInDeck = 30;
@@ -46,9 +47,9 @@ public class CardManager : MonoBehaviour
         _baseMat = new Material(Shader.Find("TextMeshPro/Sprite"));
         _baseMat.renderQueue = 2997;
     }
-
     private void Start()
     {
+        PlayerHandInit();
         _classCardsPlayer1 = new List<CardPropertiesData>(SetClassCardsData(_player1Hero.Type));
         _classCardsPlayer2 = new List<CardPropertiesData>(SetClassCardsData(_player2Hero.Type));
         _playerDeck1 = CreateDeck(_player1Hero.Turn,_deck1Parent);
@@ -64,9 +65,8 @@ public class CardManager : MonoBehaviour
             card.WantChangePosition += WantChangePosition;
         }
     }
-    
-    
 
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -110,7 +110,7 @@ public class CardManager : MonoBehaviour
         _whoseMove = _whoseMove == ETurn.First ? ETurn.Second : ETurn.First;
     }
 
-    private void FlipCards(Card[] cards)
+    private void FlipCards(List<Card> cards)
     {
         if (cards is null)
         {
@@ -130,11 +130,11 @@ public class CardManager : MonoBehaviour
             
             if (_whoseMove == ETurn.First)
             {
-                _playerHand1.SetNewCard(deck[i]); 
+                _playerHand1.SetNewCard(ETurn.First,deck[i]); 
             }
             else
             {
-                _playerHand2.SetNewCard(deck[i]); 
+                _playerHand2.SetNewCard(ETurn.Second,deck[i]); 
             }
             deck[i] = null;
             break;
@@ -180,6 +180,8 @@ public class CardManager : MonoBehaviour
         if (playerTable.HasNearestFreePosition(card.transform, out Transform position))
         {
             player.SpendManaPool(card.Cost);
+            var slot = _handSlotsHandler.FindSlotByCard(player.Turn, card);
+            _handSlotsHandler.RefreshSlot(slot);
             StartCoroutine(MoveCard(card, position.transform.position));
             playerTable.RemovePosition(position);
             card.StateType = ECardStateType.OnTable;
@@ -300,5 +302,11 @@ public class CardManager : MonoBehaviour
             break;
         }
         return cardsData;
+    }
+    
+    private void PlayerHandInit()
+    {
+        _playerHand1.Init(_handSlotsHandler);
+        _playerHand2.Init(_handSlotsHandler);
     }
 }
