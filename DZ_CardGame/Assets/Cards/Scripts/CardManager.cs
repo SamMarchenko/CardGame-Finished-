@@ -12,8 +12,11 @@ public class CardManager : MonoBehaviour
     private List<CardPropertiesData> _allCommonCards;
     private List<CardPropertiesData> _classCardsPlayer1;
     private List<CardPropertiesData> _classCardsPlayer2;
-    private Card[] _playerDeck1;
-    private Card[] _playerDeck2;
+    [SerializeField] private PlayerDeck _playerDeck1;
+    [SerializeField] private PlayerDeck _playerDeck2;
+    // private Card[] _playerDeck1;
+    // private Card[] _playerDeck2;
+    private StartHandController _startHandController;
     [SerializeField] private CardPackConfiguration[] _commonPacks;
     [SerializeField] private CardPackConfiguration[] _classPacks;
     [SerializeField] private Card _cardPrefab;
@@ -49,17 +52,19 @@ public class CardManager : MonoBehaviour
     }
     private void Start()
     {
-        PlayerHandInit();
         _classCardsPlayer1 = new List<CardPropertiesData>(SetClassCardsData(_player1Hero.Type));
         _classCardsPlayer2 = new List<CardPropertiesData>(SetClassCardsData(_player2Hero.Type));
-        _playerDeck1 = CreateDeck(_player1Hero.Turn,_deck1Parent);
-        _playerDeck2 = CreateDeck(_player2Hero.Turn,_deck2Parent);
-        foreach (var card in _playerDeck1)
+        _playerDeck1.SetCards(CreateDeck(_player1Hero.Turn,_deck1Parent));
+        _playerDeck2.SetCards(CreateDeck(_player2Hero.Turn,_deck2Parent));
+        _startHandController = new StartHandController(_playerDeck1.GetCards(), _playerDeck2.GetCards());
+        PlayersInit();
+        
+        foreach (var card in _playerDeck1.GetCards())
         {
             card.WantStartDrag += WantStartDrag;
             card.WantChangePosition += WantChangePosition;
         }
-        foreach (var card in _playerDeck2)
+        foreach (var card in _playerDeck2.GetCards())
         {
             card.WantStartDrag += WantStartDrag;
             card.WantChangePosition += WantChangePosition;
@@ -74,10 +79,10 @@ public class CardManager : MonoBehaviour
             switch (_whoseMove)
             {
                 case ETurn.First:
-                    TakeCardsInHandFromDeck(_playerDeck1);
+                    TakeCardsInHandFromDeck(_playerDeck1.GetCards());
                     break;
                 case ETurn.Second:
-                    TakeCardsInHandFromDeck(_playerDeck2);
+                    TakeCardsInHandFromDeck(_playerDeck2.GetCards());
                     break;
             }
         }
@@ -162,28 +167,27 @@ public class CardManager : MonoBehaviour
             return;
         }
         
-        PlayerTable playerTable = new PlayerTable();
+        //PlayerTable playerTable = new PlayerTable();
         Player player = new Player();
         switch (_whoseMove)
         {
             case ETurn.First:
-                playerTable = _playerTable1;
                 player = _player1Hero;
                 break;
             case ETurn.Second:
-                playerTable = _playerTable2;
                 player = _player2Hero;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
-        if (playerTable.HasNearestFreePosition(card.transform, out Transform position))
+        if (player.Table.HasNearestFreePosition(card.transform, out Transform position))
         {
             player.SpendManaPool(card.Cost);
             var slot = _handSlotsHandler.FindSlotByCard(player.Turn, card);
             _handSlotsHandler.RefreshSlot(slot);
             StartCoroutine(MoveCard(card, position.transform.position));
-            playerTable.RemovePosition(position);
+            player.Table.RemovePosition(position);
+            player.Hand.RemoveCardFromHand(card);
             card.StateType = ECardStateType.OnTable;
         }
         else
@@ -304,9 +308,11 @@ public class CardManager : MonoBehaviour
         return cardsData;
     }
     
-    private void PlayerHandInit()
+    private void PlayersInit()
     {
         _playerHand1.Init(_handSlotsHandler);
         _playerHand2.Init(_handSlotsHandler);
+        _player1Hero.Init(_playerHand1, _playerTable1, _playerDeck1);
+        _player2Hero.Init(_playerHand2, _playerTable2, _playerDeck2);
     }
 }

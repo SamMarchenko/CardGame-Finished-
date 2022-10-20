@@ -29,6 +29,11 @@ public class PlayerHand : MonoBehaviour
         }
     }
 
+    public void RemoveCardFromHand(Card card)
+    {
+        _cards.Remove(card);
+    }
+
     private IEnumerator MoveInHand(Card card, Transform slot)
     {
         var time = 0f;

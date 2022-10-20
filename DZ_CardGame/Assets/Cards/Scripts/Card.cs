@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class Card : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public Action<Card> WantChangePosition;
     public Action<Card> WantStartDrag;
@@ -186,5 +186,10 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             transform.localScale /= _scale;
             _isScaled = false;
         }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        
     }
 }
