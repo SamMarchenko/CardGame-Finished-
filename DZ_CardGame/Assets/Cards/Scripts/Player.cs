@@ -14,6 +14,7 @@ namespace Cards
         private PlayerTable _table;
         public PlayerTable Table => _table;
         private PlayerDeck _deck;
+        public PlayerDeck Deck => _deck;
         public ETurn Turn;
         public int CurrentManaPool => _currentManaPool;
         public ESideType Type => _type;

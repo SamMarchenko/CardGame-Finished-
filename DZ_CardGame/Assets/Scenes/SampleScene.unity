@@ -602,6 +602,7 @@ MonoBehaviour:
   _health: 30
   _maxManaPool: 3
   _currentManaPool: 3
+  IsStartHandCreated: 0
   Turn: 0
 --- !u!1 &225223940
 GameObject:
@@ -1736,6 +1737,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1387378658}
   - component: {fileID: 1387378659}
+  - component: {fileID: 1387378660}
   m_Layer: 0
   m_Name: Deck2
   m_TagString: Untagged
@@ -1770,6 +1772,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotStatus: 0
+--- !u!114 &1387378660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387378657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a92561819c9406a94c0f5b91697d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1411347138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1971,6 +1985,7 @@ MonoBehaviour:
   _health: 30
   _maxManaPool: 3
   _currentManaPool: 3
+  IsStartHandCreated: 0
   Turn: 1
 --- !u!1 &1498631066
 GameObject:
@@ -2246,6 +2261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1930818283}
   - component: {fileID: 1930818284}
+  - component: {fileID: 1930818285}
   m_Layer: 0
   m_Name: Deck1
   m_TagString: Untagged
@@ -2280,6 +2296,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotStatus: 0
+--- !u!114 &1930818285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930818282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a92561819c9406a94c0f5b91697d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1961130119
 GameObject:
   m_ObjectHideFlags: 0
@@ -2597,6 +2625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa0a126e80bd40f2a21e526b0a6096d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerDeck1: {fileID: 1930818285}
+  _playerDeck2: {fileID: 1387378660}
   _commonPacks:
   - {fileID: 11400000, guid: 55dbf4c3fc0b44d43bc5d90dce9070bc, type: 2}
   - {fileID: 11400000, guid: 42ffdb3326ce897459155355d37808fd, type: 2}

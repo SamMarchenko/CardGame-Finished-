@@ -13,9 +13,9 @@ public class CardManager : MonoBehaviour
     private List<CardPropertiesData> _classCardsPlayer1;
     private List<CardPropertiesData> _classCardsPlayer2;
     [SerializeField] private PlayerDeck _playerDeck1;
+
     [SerializeField] private PlayerDeck _playerDeck2;
-    // private Card[] _playerDeck1;
-    // private Card[] _playerDeck2;
+
     private StartHandController _startHandController;
     [SerializeField] private CardPackConfiguration[] _commonPacks;
     [SerializeField] private CardPackConfiguration[] _classPacks;
@@ -50,20 +50,23 @@ public class CardManager : MonoBehaviour
         _baseMat = new Material(Shader.Find("TextMeshPro/Sprite"));
         _baseMat.renderQueue = 2997;
     }
+
     private void Start()
     {
         _classCardsPlayer1 = new List<CardPropertiesData>(SetClassCardsData(_player1Hero.Type));
         _classCardsPlayer2 = new List<CardPropertiesData>(SetClassCardsData(_player2Hero.Type));
-        _playerDeck1.SetCards(CreateDeck(_player1Hero.Turn,_deck1Parent));
-        _playerDeck2.SetCards(CreateDeck(_player2Hero.Turn,_deck2Parent));
-        _startHandController = new StartHandController(_playerDeck1.GetCards(), _playerDeck2.GetCards());
         PlayersInit();
-        
+        CreateDeck(_player1Hero, _deck1Parent);
+        CreateDeck(_player2Hero, _deck2Parent);
+        _startHandController = new StartHandController(_player1Hero, _player2Hero);
+
+
         foreach (var card in _playerDeck1.GetCards())
         {
             card.WantStartDrag += WantStartDrag;
             card.WantChangePosition += WantChangePosition;
         }
+
         foreach (var card in _playerDeck2.GetCards())
         {
             card.WantStartDrag += WantStartDrag;
@@ -71,7 +74,7 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -86,6 +89,7 @@ public class CardManager : MonoBehaviour
                     break;
             }
         }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             ChangeMove();
@@ -121,6 +125,7 @@ public class CardManager : MonoBehaviour
         {
             return;
         }
+
         foreach (var card in cards)
         {
             card?.SwitchVisual();
@@ -132,15 +137,16 @@ public class CardManager : MonoBehaviour
         for (int i = deck.Length - 1; i >= 0; i--)
         {
             if (deck[i] == null) continue;
-            
+
             if (_whoseMove == ETurn.First)
             {
-                _playerHand1.SetNewCard(ETurn.First,deck[i]); 
+                _playerHand1.SetNewCard(ETurn.First, deck[i]);
             }
             else
             {
-                _playerHand2.SetNewCard(ETurn.Second,deck[i]); 
+                _playerHand2.SetNewCard(ETurn.Second, deck[i]);
             }
+
             deck[i] = null;
             break;
         }
@@ -157,17 +163,16 @@ public class CardManager : MonoBehaviour
 
         card.CanDrag = true;
     }
+
     private void WantChangePosition(Card card)
     {
-        
         if (!IsEnoughMana(card))
         {
             Debug.Log("Недостаточно маны!");
             ReturnCardInHand(card);
             return;
         }
-        
-        //PlayerTable playerTable = new PlayerTable();
+
         Player player = new Player();
         switch (_whoseMove)
         {
@@ -180,6 +185,7 @@ public class CardManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
         if (player.Table.HasNearestFreePosition(card.transform, out Transform position))
         {
             player.SpendManaPool(card.Cost);
@@ -214,6 +220,7 @@ public class CardManager : MonoBehaviour
                 result = _player2Hero.CurrentManaPool - card.Cost >= 0;
                 break;
         }
+
         return result;
     }
 
@@ -232,13 +239,13 @@ public class CardManager : MonoBehaviour
         card.transform.position = parent;
         card.CurrentPosition = card.transform.position;
     }
-    
-    private Card[] CreateDeck(ETurn turn,Transform parent)
+
+    private Card[] CreateDeck(Player player, Transform parent)
     {
         var deck = new Card[_maxNumberCardInDeck];
         var data = new List<CardPropertiesData>();
-        data.AddRange(turn == ETurn.First ? _classCardsPlayer1 : _classCardsPlayer2);
-        
+        data.AddRange(player.Turn == ETurn.First ? _classCardsPlayer1 : _classCardsPlayer2);
+
         // Заполнение классовыми картами
         for (var i = 0; i < data.Count; i++)
         {
@@ -248,7 +255,7 @@ public class CardManager : MonoBehaviour
             newMat.mainTexture = data[i].Texture;
             deck[i].Configuration(data[i], CardUtility.GetDescriptionById(data[i].Id), newMat);
         }
-        
+
         //Заполнение общими картами
         for (int i = data.Count; i < _maxNumberCardInDeck; i++)
         {
@@ -261,38 +268,15 @@ public class CardManager : MonoBehaviour
             newMat.mainTexture = random.Texture;
             deck[i].Configuration(random, CardUtility.GetDescriptionById(random.Id), newMat);
         }
-        
-        MixCardsInDeck(deck);
-        //Выстраивание стопки карт
-        LineUpCardsStack(deck);
-        
+
+        player.Deck.SetCards(deck);
+        player.Deck.MixDeck();
         foreach (var card in deck)
         {
-            card.Turn = turn;
+            card.Turn = player.Turn;
         }
+
         return deck;
-    }
-
-    private void LineUpCardsStack(Card[] deck)
-    {
-        var offset = 0.8f;
-        foreach (var card in deck)
-        {
-            card.transform.localPosition = new Vector3(0f, offset, 0f);
-            card.transform.eulerAngles = new Vector3(0, 0, 180f);
-            offset += 0.8f;
-        }
-    }
-
-    private void MixCardsInDeck(Card[] cards)
-    {
-        for (int i = cards.Length - 1; i >= 1; i--)
-        {
-            var j = Random.Range(0, i + 1);
-            var temp = cards[j];
-            cards[j] = cards[i];
-            cards[i] = temp;
-        }
     }
 
     private List<CardPropertiesData> SetClassCardsData(ESideType classType)
@@ -300,14 +284,15 @@ public class CardManager : MonoBehaviour
         var cardsData = new List<CardPropertiesData>();
         foreach (var pack in _classPacks)
         {
-            if (pack.ESideType != classType) 
+            if (pack.ESideType != classType)
                 continue;
             cardsData.AddRange(pack.Cards);
             break;
         }
+
         return cardsData;
     }
-    
+
     private void PlayersInit()
     {
         _playerHand1.Init(_handSlotsHandler);

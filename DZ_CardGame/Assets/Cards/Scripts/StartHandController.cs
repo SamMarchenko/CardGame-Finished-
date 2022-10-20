@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cards;
 using UnityEngine;
 
 public class StartHandController
 {
-    private Card[] _player1Deck;
-    private Card[] _player2Deck;
+    private Player _player1;
+    private Player _player2;
 
-    public StartHandController(Card[] player1Deck, Card[] player2Deck)
+    public StartHandController(Player player1, Player player2)
     {
-        _player1Deck = player1Deck;
-        _player2Deck = player2Deck;
+        _player2 = player1;
+        _player2 = player2;
     }
 }
