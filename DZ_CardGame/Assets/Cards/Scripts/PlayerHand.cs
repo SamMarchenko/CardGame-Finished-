@@ -17,11 +17,11 @@ public class PlayerHand : MonoBehaviour
     }
     public void SetNewCard(ETurn turn ,Card card)
     {
-        if (_handSlotsHandler.isFreeSlot(turn))
+        bool result = _handSlotsHandler.TrySetCardInHand(turn, card, out Transform slot);
+        if (result)
         {
-            var position = _handSlotsHandler.SetCardInSlot(card);
             _cards.Add(card);
-            StartCoroutine(MoveInHand(card, position));
+            StartCoroutine(MoveInHand(card, slot));
         }
         else
         {

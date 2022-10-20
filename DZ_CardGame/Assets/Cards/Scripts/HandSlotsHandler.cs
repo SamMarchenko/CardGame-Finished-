@@ -11,7 +11,17 @@ public class HandSlotsHandler : MonoBehaviour
     private DrawCardSlots _freeSlot;
 
 
-    public bool isFreeSlot(ETurn turn)
+    public bool TrySetCardInHand(ETurn turn, Card card, out Transform slot)
+    {
+        if (isFreeSlot(turn))
+        {
+           slot = SetCardInSlot(card);
+           return true;
+        }
+        slot = null;
+        return false;
+    }
+    private bool isFreeSlot(ETurn turn)
     {
         switch (turn)
         {
@@ -24,7 +34,7 @@ public class HandSlotsHandler : MonoBehaviour
         }
     }
 
-    public Transform SetCardInSlot(Card card)
+    private Transform SetCardInSlot(Card card)
     {
         _freeSlot.SlotStatus = ESlotStatus.Busy;
         _freeSlot.SetCard(card);
