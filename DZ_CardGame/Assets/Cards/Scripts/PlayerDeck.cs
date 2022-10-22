@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerDeck : MonoBehaviour
 {
+    [SerializeField] private Transform _deckPosition;
+    public Transform DeckPosition => _deckPosition;
     private Card[] _cards;
 
     public void SetCards(Card[] cards)
@@ -15,7 +17,6 @@ public class PlayerDeck : MonoBehaviour
     {
         return _cards;
     }
-
     public void MixDeck()
     {
         MixCardsInDeck();

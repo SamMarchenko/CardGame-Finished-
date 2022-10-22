@@ -6,14 +6,16 @@ using UnityEngine;
 
 public class HandSlotsHandler : MonoBehaviour
 {
+    [SerializeField] private Player _firstPlayer;
+    [SerializeField] private Player _secondPlayer;
     [SerializeField] private DrawCardSlots[] _player1HandSlots;
     [SerializeField, Space] private DrawCardSlots[] _player2HandSlots;
     private DrawCardSlots _freeSlot;
 
 
-    public bool TrySetCardInHand(ETurn turn, Card card, out Transform slot)
+    public bool TrySetCardInHand(Player whoseMove, Card card, out Transform slot)
     {
-        if (isFreeSlot(turn))
+        if (isFreeSlot(whoseMove))
         {
            slot = SetCardInSlot(card);
            return true;
@@ -21,17 +23,13 @@ public class HandSlotsHandler : MonoBehaviour
         slot = null;
         return false;
     }
-    private bool isFreeSlot(ETurn turn)
+    private bool isFreeSlot(Player whoseMove)
     {
-        switch (turn)
+        if (whoseMove == _firstPlayer)
         {
-            case ETurn.First:
-                return CheckSlots(_player1HandSlots);
-            case ETurn.Second:
-                return CheckSlots(_player2HandSlots);
-            default:
-                throw new ArgumentOutOfRangeException(nameof(turn), turn, null);
+            return CheckSlots(_player1HandSlots);
         }
+        return CheckSlots(_player2HandSlots);
     }
 
     private Transform SetCardInSlot(Card card)

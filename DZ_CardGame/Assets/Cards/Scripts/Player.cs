@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Cards
@@ -8,13 +9,15 @@ namespace Cards
         [SerializeField] private int _health = 30;
         [SerializeField] private int _maxManaPool = 3;
         [SerializeField] private int _currentManaPool = 3;
-        [SerializeField] private EGameStage _stage;
+        private HandSlotsHandler _handSlotsHandler;
         public EGameStage Stage { get; set; }
-        private PlayerHand _hand;
+        [SerializeField] private PlayerHand _hand;
         public PlayerHand Hand => _hand;
-        private PlayerTable _table;
+        
+        [SerializeField] private PlayerTable _table;
         public PlayerTable Table => _table;
-        private PlayerDeck _deck;
+        
+        [SerializeField] private PlayerDeck _deck;
         public PlayerDeck Deck => _deck;
         public ETurn Turn;
         public int CurrentManaPool => _currentManaPool;
@@ -25,12 +28,14 @@ namespace Cards
             _maxManaPool++;
         }
 
-        public void Init(PlayerHand hand, PlayerTable table, PlayerDeck deck, EGameStage stage)
+        public void Init(HandSlotsHandler handSlotsHandler)
         {
-            _hand = hand;
-            _table = table;
-            _deck = deck;
-            _stage = stage;
+            _handSlotsHandler = handSlotsHandler;
+        }
+
+        private void Start()
+        {
+            _hand.Init(_handSlotsHandler);
         }
 
         public void RecoverManaPool()

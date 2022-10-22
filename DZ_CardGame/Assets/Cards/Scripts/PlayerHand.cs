@@ -15,9 +15,9 @@ public class PlayerHand : MonoBehaviour
     {
         _handSlotsHandler = handSlotsHandler;
     }
-    public void SetNewCard(ETurn turn ,Card card)
+    public void SetNewCard(Player whoseMove ,Card card)
     {
-        bool result = _handSlotsHandler.TrySetCardInHand(turn, card, out Transform slot);
+        bool result = _handSlotsHandler.TrySetCardInHand(whoseMove, card, out Transform slot);
         if (result)
         {
             _cards.Add(card);

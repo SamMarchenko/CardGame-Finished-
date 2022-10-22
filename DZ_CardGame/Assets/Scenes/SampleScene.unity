@@ -602,7 +602,9 @@ MonoBehaviour:
   _health: 30
   _maxManaPool: 3
   _currentManaPool: 3
-  IsStartHandCreated: 0
+  _hand: {fileID: 1009807276}
+  _table: {fileID: 140511089}
+  _deck: {fileID: 1930818285}
   Turn: 0
 --- !u!1 &225223940
 GameObject:
@@ -1784,6 +1786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59a92561819c9406a94c0f5b91697d22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deckPosition: {fileID: 0}
 --- !u!1 &1411347138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1985,7 +1988,9 @@ MonoBehaviour:
   _health: 30
   _maxManaPool: 3
   _currentManaPool: 3
-  IsStartHandCreated: 0
+  _hand: {fileID: 648315307}
+  _table: {fileID: 265171468}
+  _deck: {fileID: 1387378660}
   Turn: 1
 --- !u!1 &1498631066
 GameObject:
@@ -2308,6 +2313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59a92561819c9406a94c0f5b91697d22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deckPosition: {fileID: 0}
 --- !u!1 &1961130119
 GameObject:
   m_ObjectHideFlags: 0
@@ -2583,6 +2589,8 @@ GameObject:
   - component: {fileID: 2119169889}
   - component: {fileID: 2119169890}
   - component: {fileID: 2119169891}
+  - component: {fileID: 2119169893}
+  - component: {fileID: 2119169892}
   m_Layer: 0
   m_Name: CenterPoint
   m_TagString: Untagged
@@ -2625,8 +2633,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa0a126e80bd40f2a21e526b0a6096d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerDeck1: {fileID: 1930818285}
-  _playerDeck2: {fileID: 1387378660}
+  _firstPlayer: {fileID: 210429111}
+  _secondPlayer: {fileID: 1491916105}
   _commonPacks:
   - {fileID: 11400000, guid: 55dbf4c3fc0b44d43bc5d90dce9070bc, type: 2}
   - {fileID: 11400000, guid: 42ffdb3326ce897459155355d37808fd, type: 2}
@@ -2641,17 +2649,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2083abad150cc44ca9a72dc9a736c614, type: 2}
   - {fileID: 11400000, guid: 4b6b8cf86339b4451a997203fb5cc70d, type: 2}
   _cardPrefab: {fileID: 2126859815115996309, guid: 1efffdaff08b40c44aa84086651f4a25, type: 3}
-  _whoseMove: 0
   _handSlotsHandler: {fileID: 2119169891}
+  _stageController: {fileID: 2119169893}
   _maxNumberCardInDeck: 30
-  _deck1Parent: {fileID: 1930818283}
-  _deck2Parent: {fileID: 1387378658}
-  _playerHand1: {fileID: 1009807276}
-  _playerHand2: {fileID: 648315307}
-  _playerTable1: {fileID: 140511089}
-  _playerTable2: {fileID: 265171468}
-  _player1Hero: {fileID: 210429111}
-  _player2Hero: {fileID: 1491916105}
 --- !u!114 &2119169891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2664,6 +2664,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1349d5746ed440b3add88c51c600c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _firstPlayer: {fileID: 210429111}
+  _secondPlayer: {fileID: 1491916105}
   _player1HandSlots:
   - {fileID: 1816828245}
   - {fileID: 617454}
@@ -2686,3 +2688,29 @@ MonoBehaviour:
   - {fileID: 46622094}
   - {fileID: 2113247303}
   - {fileID: 1411347140}
+--- !u!114 &2119169892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119169888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af82cb113ddc1433c914ad6edd4eaf66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2119169893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119169888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e394620050e104edeb1814e53a6d52cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _whoseMove: {fileID: 0}
+  _inputManager: {fileID: 2119169892}
