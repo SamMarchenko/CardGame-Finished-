@@ -24,6 +24,7 @@ namespace Cards
 
 	public enum ECardStateType
 	{
+		StartChoose,
 		InDeck,
 		InHand,
 		OnTable,
@@ -40,5 +41,12 @@ namespace Cards
 	{
 		Free,
 		Busy
+	}
+
+	public enum EGameStage
+	{
+		ChooseStartHand,
+		Move,
+		Wait
 	}
 }

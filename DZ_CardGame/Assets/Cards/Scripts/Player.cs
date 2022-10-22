@@ -8,7 +8,8 @@ namespace Cards
         [SerializeField] private int _health = 30;
         [SerializeField] private int _maxManaPool = 3;
         [SerializeField] private int _currentManaPool = 3;
-        public bool IsStartHandCreated;
+        [SerializeField] private EGameStage _stage;
+        public EGameStage Stage { get; set; }
         private PlayerHand _hand;
         public PlayerHand Hand => _hand;
         private PlayerTable _table;
@@ -24,11 +25,12 @@ namespace Cards
             _maxManaPool++;
         }
 
-        public void Init(PlayerHand hand, PlayerTable table, PlayerDeck deck)
+        public void Init(PlayerHand hand, PlayerTable table, PlayerDeck deck, EGameStage stage)
         {
             _hand = hand;
             _table = table;
             _deck = deck;
+            _stage = stage;
         }
 
         public void RecoverManaPool()

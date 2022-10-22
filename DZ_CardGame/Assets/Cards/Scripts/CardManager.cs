@@ -20,8 +20,9 @@ public class CardManager : MonoBehaviour
     [SerializeField] private CardPackConfiguration[] _commonPacks;
     [SerializeField] private CardPackConfiguration[] _classPacks;
     [SerializeField] private Card _cardPrefab;
-    [SerializeField] private ETurn _whoseMove = ETurn.First;
+    //[SerializeField] private ETurn _whoseMove = ETurn.First;
     [SerializeField] private HandSlotsHandler _handSlotsHandler;
+    [SerializeField] private StageController _stageController;
 
     [Space, SerializeField, Range(1f, 100f)]
     private int _maxNumberCardInDeck = 30;
@@ -59,8 +60,12 @@ public class CardManager : MonoBehaviour
         CreateDeck(_player1Hero, _deck1Parent);
         CreateDeck(_player2Hero, _deck2Parent);
         _startHandController = new StartHandController(_player1Hero, _player2Hero);
+        AllActionsSubscribe();
+    }
 
-
+    private void AllActionsSubscribe()
+    {
+        _stageController.ChooseStartHand += ChooseStartHand;
         foreach (var card in _playerDeck1.GetCards())
         {
             card.WantStartDrag += WantStartDrag;
@@ -74,31 +79,47 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    private void ChooseStartHand(Player player)
+    {
+        var deck = player.Deck.GetCards();
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = deck.Length -1 ; i >=0; i--)
+            {
+                if (deck[i] == null) continue;
+                _playerHand1.SetNewCard(ETurn.First, deck[j]);
+            }
+        }
+    }
+
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            switch (_whoseMove)
+            switch (_stageController.WhoseMove)
             {
                 case ETurn.First:
-                    TakeCardsInHandFromDeck(_playerDeck1.GetCards());
+                    _stageController.PlayerWantTakeCardFromDeck(_player1Hero);
+                    //TakeCardsInHandFromDeck(_playerDeck1.GetCards());
                     break;
                 case ETurn.Second:
-                    TakeCardsInHandFromDeck(_playerDeck2.GetCards());
+                    _stageController.PlayerWantTakeCardFromDeck(_player2Hero);
+                    //TakeCardsInHandFromDeck(_playerDeck2.GetCards());
                     break;
             }
         }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
+            _stageController.UpdateStageStatus();
             ChangeMove();
         }
     }
 
     private void ChangeMove()
     {
-        switch (_whoseMove)
+        switch (_stageController.WhoseMove)
         {
             case ETurn.First:
                 FlipCards(_playerHand1.Cards);
@@ -116,7 +137,7 @@ public class CardManager : MonoBehaviour
                 throw new ArgumentOutOfRangeException();
         }
 
-        _whoseMove = _whoseMove == ETurn.First ? ETurn.Second : ETurn.First;
+        _stageController.WhoseMove = _stageController.WhoseMove == ETurn.First ? ETurn.Second : ETurn.First;
     }
 
     private void FlipCards(List<Card> cards)
@@ -131,14 +152,13 @@ public class CardManager : MonoBehaviour
             card?.SwitchVisual();
         }
     }
-
     private void TakeCardsInHandFromDeck(Card[] deck)
     {
         for (int i = deck.Length - 1; i >= 0; i--)
         {
             if (deck[i] == null) continue;
 
-            if (_whoseMove == ETurn.First)
+            if (_stageController.WhoseMove == ETurn.First)
             {
                 _playerHand1.SetNewCard(ETurn.First, deck[i]);
             }
@@ -154,7 +174,7 @@ public class CardManager : MonoBehaviour
 
     private void WantStartDrag(Card card)
     {
-        if (card.Turn != _whoseMove)
+        if (card.Turn != _stageController.WhoseMove)
         {
             Debug.Log("!!!Не твой ход!!!");
             card.CanDrag = false;
@@ -174,7 +194,7 @@ public class CardManager : MonoBehaviour
         }
 
         Player player = new Player();
-        switch (_whoseMove)
+        switch (_stageController.WhoseMove)
         {
             case ETurn.First:
                 player = _player1Hero;
@@ -297,7 +317,8 @@ public class CardManager : MonoBehaviour
     {
         _playerHand1.Init(_handSlotsHandler);
         _playerHand2.Init(_handSlotsHandler);
-        _player1Hero.Init(_playerHand1, _playerTable1, _playerDeck1);
-        _player2Hero.Init(_playerHand2, _playerTable2, _playerDeck2);
+        _player1Hero.Init(_playerHand1, _playerTable1, _playerDeck1, EGameStage.ChooseStartHand);
+        _player2Hero.Init(_playerHand2, _playerTable2, _playerDeck2, EGameStage.ChooseStartHand);
+        _stageController.Init(_player1Hero, _player2Hero);
     }
 }

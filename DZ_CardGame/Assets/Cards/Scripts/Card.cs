@@ -8,7 +8,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
 {
     public Action<Card> WantChangePosition;
     public Action<Card> WantStartDrag;
-    public bool CanAttack;
+    public ECardStateType StateType { get; set; } = ECardStateType.StartChoose;
     
     [SerializeField] private GameObject _frontCard;
     [Space, SerializeField] private MeshRenderer _icon;
@@ -66,7 +66,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
         _camera = Camera.main;
     }
 
-    public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
+    
     public void Configuration(CardPropertiesData data, string description, Material icon)
     {
         _icon.sharedMaterial = icon;
