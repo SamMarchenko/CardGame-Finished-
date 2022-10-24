@@ -8,6 +8,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
 {
     public Action<Card> WantChangePosition;
     public Action<Card> WantStartDrag;
+    public Action<Card> OnCardClick;
     public ECardStateType StateType { get; set; } = ECardStateType.StartChoose;
     
     [SerializeField] private GameObject _frontCard;
@@ -19,6 +20,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
     [SerializeField] private TextMeshPro _attackText;
     [SerializeField] private TextMeshPro _healthText;
     private ETurn _turn;
+    private Player _owner;
+
+    public Player Owner
+    {
+        get => _owner;
+        set => _owner = value;
+    }
     public ETurn Turn 
     {
         get => _turn;
@@ -34,6 +42,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
     
     private bool _onDragging;
     private bool _canDrag;
+    
     public bool CanDrag { get => _canDrag; set => _canDrag = value; }
     private bool _isScaled;
     private Vector3 _currentPosition;
@@ -60,9 +69,10 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
             _frontCard.SetActive(value);
         }
     }
+    public bool CanSwap;
 
     private void Start()
-    {
+    { 
         _camera = Camera.main;
     }
 
@@ -190,6 +200,10 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, I
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        
+        if (CanSwap)
+        {
+            OnCardClick?.Invoke(this);
+            Debug.Log($"Want Swap card \"{_nameText.text}\"");
+        }
     }
 }

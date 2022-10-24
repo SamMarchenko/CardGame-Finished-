@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Cards
@@ -53,6 +54,14 @@ namespace Cards
             {
                 _currentManaPool -= cost;
             }
+        }
+        public void SwapCardInStartHand(Player whoseMove, Card card)
+        {
+           _hand.ReturnCardInDeckFromHand(whoseMove, card);
+           _deck.SetCard(card);
+           _deck.MixDeck();
+           var deck = _deck.GetCards();
+           _hand.SetNewCard(whoseMove,deck.LastOrDefault());
         }
     }
 }
