@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1392,6 +1392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d07957954422a24682ebcae0ba1e8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentView: {fileID: 1897343510}
 --- !u!114 &914311923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1407,6 +1408,7 @@ MonoBehaviour:
   _scriptableObjectInstallers:
   - {fileID: 11400000, guid: b0913979fee92f547b35f4fd05f65d06, type: 2}
   - {fileID: 11400000, guid: 5d2c61192ef297146acbcf9b0b58ccce, type: 2}
+  - {fileID: 11400000, guid: cf91020662a980b4fb1a8079914f6018, type: 2}
   _monoInstallers:
   - {fileID: 914311922}
   _installerPrefabs: []
@@ -2161,6 +2163,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecf39cb837672415384d94766a21e40f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1897343509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1897343511}
+  - component: {fileID: 1897343510}
+  m_Layer: 0
+  m_Name: ParentView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1897343510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897343509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de00b132ac81f2c4c97b0d7e1d782e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Deck1Parent: {fileID: 1930818283}
+  Deck2Parent: {fileID: 1387378658}
+--- !u!4 &1897343511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897343509}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1930818282
 GameObject:
   m_ObjectHideFlags: 0
@@ -2509,7 +2556,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2119169888}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3aa0a126e80bd40f2a21e526b0a6096d, type: 3}
   m_Name: 
@@ -2522,7 +2569,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3229ff84acff46246a9bd0591a1ab7f6, type: 2}
   - {fileID: 11400000, guid: cb7286cd1080bf04cbbf4a2265e52f38, type: 2}
   - {fileID: 11400000, guid: 93d377064370f4443970eeb9769fd723, type: 2}
-  _cardPrefab: {fileID: 2126859815115996309, guid: 1efffdaff08b40c44aa84086651f4a25, type: 3}
+  cardViewPrefab: {fileID: 0}
   _maxNumberCardInDeck: 30
   _deck1Parent: {fileID: 1930818283}
   _deck2Parent: {fileID: 1387378658}

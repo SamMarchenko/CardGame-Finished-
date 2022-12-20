@@ -15,6 +15,8 @@ namespace Cards.ScriptableObjects
         [SerializeField, OneLine(Header = LineHeader.Short)]
         private CardPropertiesData[] _cards;
 
+        public CardPropertiesData[] Cards => _cards;
+
         public IEnumerable<CardPropertiesData> UnionProperties(IEnumerable<CardPropertiesData> array)
         {
             TryToContruct();

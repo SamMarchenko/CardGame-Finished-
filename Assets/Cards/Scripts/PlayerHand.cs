@@ -6,43 +6,43 @@ using UnityEngine;
 
 public class PlayerHand : MonoBehaviour
 {
-    private Card[] _cards;
+    private CardView[] _cards;
     [SerializeField] private Transform[] _positions;
 
     private void Start()
     {
-        _cards = new Card[_positions.Length];
+        _cards = new CardView[_positions.Length];
     }
 
-    public bool SetNewCard(Card card)
+    public bool SetNewCard(CardView cardView)
     {
         var result = GetLastPosition();
         if (result == -1)
         {
-            Destroy(card.gameObject);
+            Destroy(cardView.gameObject);
             return false;
         }
 
-        _cards[result] = card;
-        StartCoroutine(MoveInHand(card,_positions[result]));
+        _cards[result] = cardView;
+        StartCoroutine(MoveInHand(cardView,_positions[result]));
         return true;
     }
 
-    private IEnumerator MoveInHand(Card card, Transform parent)
+    private IEnumerator MoveInHand(CardView cardView, Transform parent)
     {
         var time = 0f;
-        var startPos = card.transform.position;
+        var startPos = cardView.transform.position;
         var endPos = parent.position;
-        card.SwitchVisual();
-        card.transform.eulerAngles = new Vector3(0,0,180);
+        cardView.SwitchVisual();
+        cardView.transform.eulerAngles = new Vector3(0,0,180);
         while (time < 1f)
         {
-            card.transform.position = Vector3.Lerp(startPos, endPos, time);
+            cardView.transform.position = Vector3.Lerp(startPos, endPos, time);
             time += Time.deltaTime;
             yield return null;
         }
-        card.transform.parent = parent;
-        card.StateType = ECardStateType.InHand;
+        cardView.transform.parent = parent;
+        cardView.StateType = ECardStateType.InHand;
     }
 
     private int GetLastPosition()

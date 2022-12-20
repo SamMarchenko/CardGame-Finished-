@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78dd3f3b2cb595741864c7b8ede78d91, type: 3}
-  m_Name: DatabasePrefabsInstaller
+  m_Script: {fileID: 11500000, guid: 613663ef271541bebaa82789fb2e8e38, type: 3}
+  m_Name: PrefabsInstaller
   m_EditorClassIdentifier: 
-  _someDatabase: {fileID: 0}
-  _packsContainer: {fileID: 11400000, guid: d9dded7121cd1634894881f387bfd147, type: 2}
+  _cardView: {fileID: 2126859815115996309, guid: 1efffdaff08b40c44aa84086651f4a25, type: 3}

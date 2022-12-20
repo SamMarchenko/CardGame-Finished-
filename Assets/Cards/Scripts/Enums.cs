@@ -30,4 +30,10 @@ namespace Cards
 		OnTable,
 		Discard
 	}
+
+	public enum EPlayers
+	{
+		First,
+		Second
+	}
 }

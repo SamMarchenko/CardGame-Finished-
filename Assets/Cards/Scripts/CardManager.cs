@@ -9,10 +9,10 @@ public class CardManager : MonoBehaviour
 {
     private Material _baseMat;
     private List<CardPropertiesData> _allCards;
-    private Card[] _playerDeck1;
-    private Card[] _playerDeck2;
+    private CardView[] _playerDeck1;
+    private CardView[] _playerDeck2;
     [SerializeField] private CardPackConfiguration[] _packs;
-    [SerializeField] private Card _cardPrefab;
+    [SerializeField] private CardView cardViewPrefab;
 
     [Space, SerializeField, Range(1f, 100f)]
     private int _maxNumberCardInDeck = 30;
@@ -54,14 +54,14 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private Card[] CreateDeck(Transform parent)
+    private CardView[] CreateDeck(Transform parent)
     {
-        var deck = new Card[_maxNumberCardInDeck];
+        var deck = new CardView[_maxNumberCardInDeck];
         var offset = 0.8f;
 
         for (int i = 0; i < _maxNumberCardInDeck; i++)
         {
-            deck[i] = Instantiate(_cardPrefab, parent);
+            deck[i] = Instantiate(cardViewPrefab, parent);
             deck[i].transform.localPosition = new Vector3(0f,offset,0f);
             deck[i].transform.eulerAngles = new Vector3(0,0,180f);
             deck[i].SwitchVisual();
