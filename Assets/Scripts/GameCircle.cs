@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cards;
@@ -10,53 +11,64 @@ using Zenject;
 public class GameCircle : IInitializable, ITickable
 {
     private readonly DeckFactory _deckFactory;
-    private Material _baseMat;
-    private List<CardPropertiesData> _allCards;
+    private readonly PlayerHandController _playerHandController;
     private CardView[] _playerDeck1;
     private CardView[] _playerDeck2;
-    [SerializeField] private CardView _cardViewPrefab;
-    
-    
-    
-    [SerializeField, Space] private Transform _deck1Parent;
-    [SerializeField] private Transform _deck2Parent;
-    [SerializeField] private PlayerHand _playerHand1;
-    [SerializeField] private PlayerHand _playerHand2;
+    // private PlayerHandView _playerHand1;
+    // private PlayerHandView _playerHand2;
 
-    public GameCircle(DeckFactory deckFactory)
+    private CardView[] _currentDeck;
+    private EPlayers _currentPlayer = EPlayers.First;
+    
+
+    public GameCircle(DeckFactory deckFactory, PlayerHandController playerHandController)
     {
         _deckFactory = deckFactory;
+        _playerHandController = playerHandController;
     }
-    
-    // private void Awake()
-    // {
-    //     IEnumerable<CardPropertiesData> cards = new List<CardPropertiesData>();
-    //     foreach (var pack in _packs)
-    //     {
-    //         cards = pack.UnionProperties(cards);
-    //     }
-    //     _allCards = new List<CardPropertiesData>(cards);
-    //     _baseMat = new Material(Shader.Find("TextMeshPro/Sprite"));
-    //     _baseMat.renderQueue = 2997;
-    // }
-    
+
     public void Initialize()
     {
         _playerDeck1 = _deckFactory.CreateDeck(EPlayers.First);
         _playerDeck2 = _deckFactory.CreateDeck(EPlayers.Second);
+        _currentDeck = _playerDeck1;
+
+       
     }
 
     public void Tick()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            for (int i = _playerDeck1.Length-1; i >=0; i--)
-            {
-                if (_playerDeck1[i] == null) continue;
-                _playerHand1.SetNewCard(_playerDeck1[i]);
-                _playerDeck1[i] = null;
+            GetCardFromDeck(_currentPlayer);
+        }
+    }
+
+    private void GetCardFromDeck(EPlayers player)
+    {
+        for (int i = _currentDeck.Length-1; i >=0; i--)
+        {
+            if (_currentDeck[i] == null) continue;
+            _playerHandController.SetNewCard(_currentPlayer, _currentDeck[i]);
+            _currentDeck[i] = null;
+            break;
+        }
+        ChangeSide();
+    }
+    
+    private void ChangeSide()
+    {
+        _currentPlayer = _currentPlayer == EPlayers.First ? EPlayers.Second : EPlayers.First;
+        switch (_currentPlayer)
+        {
+            case EPlayers.First:
+                _currentDeck = _playerDeck1;
                 break;
-            }
+            case EPlayers.Second:
+                _currentDeck = _playerDeck2;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 }

@@ -21,8 +21,6 @@ namespace DefaultNamespace
             _cardPropertiesDataProvider = cardPropertiesDataProvider;
             _cardViewPrefab = cardViewPrefab;
             _parentView = parentView;
-            
-            
         }
 
         public CardView[] CreateDeck(EPlayers player)
