@@ -13,7 +13,7 @@ namespace Cards
 		Mech = 4
 	}
 
-	public enum ESideType : byte
+	public enum EHeroType : byte
 	{
 		Common = 0,
 		Mage = 1,

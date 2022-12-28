@@ -9,7 +9,7 @@ namespace Cards.ScriptableObjects
     [CreateAssetMenu(fileName = "NewCardPackConfiguration", menuName = "CardConfigs/Card Pack Configuration")]
     public class CardPackConfiguration : ScriptableObject
     {
-        [SerializeField] private ESideType eSideType;
+        [SerializeField] private EHeroType eSideType;
         [SerializeField] private ushort _cost;
 
         [SerializeField, OneLine(Header = LineHeader.Short)]

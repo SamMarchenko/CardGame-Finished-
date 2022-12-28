@@ -9,11 +9,11 @@ namespace Engine.Installers
     public class CommonInstaller : MonoInstaller
     {
         [SerializeField] private ParentView _parentView;
-        [SerializeField] private PlayerHandView _playerHandView;
+        
         public override void InstallBindings()
         {
             Container.BindInstance(_parentView);
-            Container.BindInstance(_playerHandView);
+            
             Container.BindInterfacesAndSelfTo<CardPropertiesDataProvider>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<PlayerHandController>().AsSingle().NonLazy();
             

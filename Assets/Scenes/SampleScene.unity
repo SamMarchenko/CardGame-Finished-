@@ -1393,7 +1393,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentView: {fileID: 1897343510}
-  _playerHandView: {fileID: 1897343512}
 --- !u!114 &914311923
 MonoBehaviour:
   m_ObjectHideFlags: 0

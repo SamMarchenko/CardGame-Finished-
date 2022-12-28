@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DefaultNamespace;
+using UnityEngine;
 using Zenject;
 
 namespace Engine.Installers
@@ -7,10 +8,12 @@ namespace Engine.Installers
     public class PrefabsInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private CardView _cardView;
+        [SerializeField] private PlayerHandView _playerHandView;
         
         public override void InstallBindings()
         {
             Container.BindInstance(_cardView);
+            Container.BindInstance(_playerHandView);
         }
     }
 }

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: PrefabsInstaller
   m_EditorClassIdentifier: 
   _cardView: {fileID: 2126859815115996309, guid: 1efffdaff08b40c44aa84086651f4a25, type: 3}
+  _playerHandView: {fileID: 4850696698146192898, guid: 1cbdcaaaa0671df43a24dd7e171d1ed5, type: 3}
