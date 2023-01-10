@@ -28,9 +28,9 @@ namespace Cards
 	[Serializable]
 	public struct CardPropertiesData
 	{
-		[Width(30)]
+		[Width(40)]
 		public uint Id;
-		[NonSerialized]
+		[Width(30)]
 		public ushort Cost;
 		public string Name;
 		[Width(50)]

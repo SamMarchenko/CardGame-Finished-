@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4cf6de20b2646f4193e999d2dee71e4, type: 3}
+  m_Name: WarriorCardPack
+  m_EditorClassIdentifier: 
+  heroType: 2
+  _cards:
+  - Id: 1001
+    Cost: 3
+    Name: Warsong Commander
+    Texture: {fileID: 2800000, guid: c0f59ff42d4c542a394cfda3284189b4, type: 3}
+    Attack: 2
+    Health: 3
+    Type: 0
+  - Id: 1002
+    Cost: 4
+    Name: Kor'kron Elite
+    Texture: {fileID: 2800000, guid: aaffa3fcd2ddb48828c801d8cef83b34, type: 3}
+    Attack: 4
+    Health: 3
+    Type: 0
