@@ -20,6 +20,10 @@ namespace Engine.Installers
             BindFactories();
             
             Container.BindInterfacesAndSelfTo<GameCircle>().AsSingle().NonLazy();
+
+            Container.BindInterfacesAndSelfTo<CardMoveController>().AsSingle().NonLazy();
+            
+            Container.BindInterfacesAndSelfTo<CardClickSignalHandler>().AsSingle().NonLazy();
             
             
             Ui();

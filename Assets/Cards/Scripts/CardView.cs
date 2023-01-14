@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [SerializeField] private GameObject _frontCard;
     [Space, SerializeField] private MeshRenderer _icon;
@@ -14,6 +14,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private TextMeshPro _typeText;
     [SerializeField] private TextMeshPro _attackText;
     [SerializeField] private TextMeshPro _healthText;
+
+    private CardClickSignalHandler _signalHandler;
     
     private Vector3 _stepPosition = new Vector3(0,0.5f,0);
     private const float _scale = 1.7f;
@@ -29,7 +31,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
-    public void Configuration(CardPropertiesData data, string description, Material icon)
+    public void Configuration(CardPropertiesData data, string description, Material icon, CardClickSignalHandler signalHandler)
     {
         _icon.sharedMaterial = icon;
         _cosText.text = data.Cost.ToString();
@@ -38,6 +40,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _typeText.text = data.Type == ECardUnitType.None ? string.Empty : data.Type.ToString();
         _attackText.text = data.Attack.ToString();
         _healthText.text = data.Health.ToString();
+
+        _signalHandler = signalHandler;
     }
 
     [ContextMenu("Switch Visual")]
@@ -85,5 +89,10 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnDrag(PointerEventData eventData)
     {
         
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        _signalHandler.Fire(new CardClickSignal(this));
     }
 }

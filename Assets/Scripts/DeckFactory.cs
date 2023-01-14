@@ -11,16 +11,18 @@ namespace DefaultNamespace
         private readonly CardPropertiesDataProvider _cardPropertiesDataProvider;
         private readonly CardView _cardViewPrefab;
         private readonly ParentView _parentView;
+        private readonly CardClickSignalHandler _signalHandler;
 
         private Material _baseMat;
         private List<CardPropertiesData> _allCards;
         private int _maxNumberCardInDeck = 30;
 
-        public DeckFactory(CardPropertiesDataProvider cardPropertiesDataProvider, CardView cardViewPrefab, ParentView parentView)
+        public DeckFactory(CardPropertiesDataProvider cardPropertiesDataProvider, CardView cardViewPrefab, ParentView parentView, CardClickSignalHandler signalHandler)
         {
             _cardPropertiesDataProvider = cardPropertiesDataProvider;
             _cardViewPrefab = cardViewPrefab;
             _parentView = parentView;
+            _signalHandler = signalHandler;
         }
 
         public CardView[] CreateDeck(EPlayers player)
@@ -42,7 +44,7 @@ namespace DefaultNamespace
             
                 var newMat = new Material(_baseMat);
                 newMat.mainTexture = random.Texture;
-                deck[i].Configuration(random, CardUtility.GetDescriptionById(random.Id), newMat);
+                deck[i].Configuration(random, CardUtility.GetDescriptionById(random.Id), newMat, _signalHandler);
             }
         
             return deck;
