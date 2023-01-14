@@ -26,7 +26,7 @@ namespace Cards
 	}
 
 	[Serializable]
-	public struct CardPropertiesData
+	public class CardPropertiesData
 	{
 		[Width(40)]
 		public uint Id;

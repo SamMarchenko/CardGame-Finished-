@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CardPresets Data Base
   m_EditorClassIdentifier: 
   CardPacksContainer: {fileID: 11400000, guid: d9dded7121cd1634894881f387bfd147, type: 2}
-  Hero: 1
-  CardsId: 85030000
+  Hero: 5
+  CardsId: 21030000220300002303000024030000bf020000

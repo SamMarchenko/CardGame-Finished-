@@ -26,10 +26,26 @@ public class CardPresetsDataBase : ScriptableObject
                 foreach (var cardPropertiesData in pack.Cards)
                 {
                     CardsId.Add(cardPropertiesData.Id);
-                    _cards.Add(cardPropertiesData);
                 }
 
                 return;
+            }
+        }
+    }
+
+    private void SetCardsForDeck()
+    {
+        foreach (var id in CardsId)
+        {
+            foreach (var cardPack in CardPacksContainer.CardPackConfigurations)
+            {
+                foreach (var cardPropertiesData in cardPack.Cards)
+                {
+                    if (id == cardPropertiesData.Id)
+                    {
+                        
+                    }
+                }
             }
         }
     }
@@ -37,57 +53,56 @@ public class CardPresetsDataBase : ScriptableObject
     [ContextMenu("Проверить валидность собранной коллоды")]
     public void ValidateDeck()
     {
-        ValidateId();
-        CheckValidateCardsCount();
-        CheckHeroCards();
+        //todo: сделать валидацию!!!
+        bool isValid;
+        isValid = ValidateId();
+        isValid = isValid == true ? CheckHeroCards() : false;
+        isValid = isValid == true ? CheckValidateCardsCount() : false;
+        
+
+        if (isValid)
+        {
+            SetCardsForDeck();
+        }
     }
-    
-    private void ValidateId()
+
+    private bool ValidateId()
     {
         foreach (var id in CardsId)
         {
-            bool isValid = false;
-            foreach (var cardPack in CardPacksContainer.CardPackConfigurations)
+            if (!CardPacksContainer.HasCardId(id))
             {
-                foreach (var cardPropertiesData in cardPack.Cards)
-                {
-                    if (id == cardPropertiesData.Id)
-                    {
-                        isValid = true;
-                    }
-                }
-            }
-
-            if (!isValid)
-            {
-                Debug.Log($"Id {id} не найден!!!");
-                return;
+                return false;
             }
         }
+
         Debug.Log("Все Id валидные!");
+        return true;
     }
 
-    
-    private void CheckValidateCardsCount()
+
+    private bool CheckValidateCardsCount()
     {
         List<uint> resultList = removeDuplicates(CardsId);
         CardsId = resultList;
         if (CardsId.Count == 30)
         {
             Debug.Log($"Кол-во карт в колоде = {CardsId.Count}. Колода собрана");
+            return true;
         }
-        else if (CardsId.Count < 30)
+
+        if (CardsId.Count < 30)
         {
             Debug.Log($"Кол-во карт в колоде = {CardsId.Count} < 30. Доберите колоду!!!");
+            return false;
         }
-        else
-        {
-            Debug.Log($"Кол-во карт в колоде = {CardsId.Count} > 30. Удалите лишние карты из колоды!!!");
-        }
-    }
-    
 
-    private void CheckHeroCards()
+        Debug.Log($"Кол-во карт в колоде = {CardsId.Count} > 30. Удалите лишние карты из колоды!!!");
+        return false;
+    }
+
+
+    private bool CheckHeroCards()
     {
         foreach (var id in CardsId)
         {
@@ -111,15 +126,17 @@ public class CardPresetsDataBase : ScriptableObject
             if (!isValid)
             {
                 Debug.Log($"Карта с Id {id} пренадлежит классу {heroType}, а герой класса {Hero}!!!");
-                return;
+                return false;
             }
         }
+
         Debug.Log("Карт чужых классов не обнаружено!");
+        return true;
     }
-    
-    
-    
-    public static List<T> removeDuplicates<T>(List<T> list) {
+
+
+    public static List<T> removeDuplicates<T>(List<T> list)
+    {
         return new HashSet<T>(list).ToList();
     }
 
