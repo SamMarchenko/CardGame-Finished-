@@ -10,65 +10,67 @@ using Zenject;
 
 public class GameCircle : IInitializable, ITickable
 {
-    private readonly DeckFactory _deckFactory;
+    private ECurrentStageType _currentStage;
+    private EPlayers _currentActivePlayer = EPlayers.FirstPlayer;
+    
+    
+    //private readonly DeckFactory _deckFactory;
     private readonly PlayerHandController _playerHandController;
-    private CardView[] _playerDeck1;
-    private CardView[] _playerDeck2;
-    // private PlayerHandView _playerHand1;
-    // private PlayerHandView _playerHand2;
 
-    private CardView[] _currentDeck;
-    private EPlayers _currentPlayer = EPlayers.First;
+    private readonly DeckManager _deckManager;
+    // private CardView[] _playerDeck1;
+    // private CardView[] _playerDeck2;
+ 
+
+    private List<CardView> _currentDeck;
+    
     
 
-    public GameCircle(DeckFactory deckFactory, PlayerHandController playerHandController)
+    public GameCircle(PlayerHandController playerHandController, DeckManager deckManager)
     {
-        _deckFactory = deckFactory;
         _playerHandController = playerHandController;
+        _deckManager = deckManager;
     }
 
     public void Initialize()
     {
-        _playerDeck1 = _deckFactory.CreateDeck(EPlayers.First);
-        _playerDeck2 = _deckFactory.CreateDeck(EPlayers.Second);
-        _currentDeck = _playerDeck1;
-
-       
+  //      _currentDeck = _playerDeck1;
     }
 
     public void Tick()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetCardFromDeck(_currentPlayer);
+          //  GetCardFromDeck(_currentActivePlayer);
         }
     }
 
-    private void GetCardFromDeck(EPlayers player)
-    {
-        for (int i = _currentDeck.Length-1; i >=0; i--)
-        {
-            if (_currentDeck[i] == null) continue;
-            _playerHandController.SetNewCard(_currentPlayer, _currentDeck[i]);
-            _currentDeck[i] = null;
-            break;
-        }
-        ChangeSide();
-    }
+    // private void GetCardFromDeck(EPlayers player)
+    // {
+    //     for (int i = _currentDeck.Length-1; i >=0; i--)
+    //     {
+    //         if (_currentDeck[i] == null) continue;
+    //         _playerHandController.SetNewCard(_currentActivePlayer, _currentDeck[i]);
+    //         _currentDeck[i] = null;
+    //         break;
+    //     }
+    //     ChangeSide();
+    // }
     
-    private void ChangeSide()
-    {
-        _currentPlayer = _currentPlayer == EPlayers.First ? EPlayers.Second : EPlayers.First;
-        switch (_currentPlayer)
-        {
-            case EPlayers.First:
-                _currentDeck = _playerDeck1;
-                break;
-            case EPlayers.Second:
-                _currentDeck = _playerDeck2;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
+    // private void ChangeSide()
+    // {
+    //     _currentActivePlayer = _currentActivePlayer == EPlayers.FirstPlayer ?
+    //      EPlayers.SecondPlayer : EPlayers.FirstPlayer;
+    //     switch (_currentActivePlayer)
+    //     {
+    //         case EPlayers.FirstPlayer:
+    //             _currentDeck = _deckManager.GetFullDeck(EPlayers.FirstPlayer);
+    //             break;
+    //         case EPlayers.SecondPlayer:
+    //             _currentDeck = _deckManager.GetFullDeck(EPlayers.SecondPlayer);
+    //             break;
+    //         default:
+    //             throw new ArgumentOutOfRangeException();
+    //     }
+    // }
 }

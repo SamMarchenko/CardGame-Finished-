@@ -16,13 +16,13 @@ namespace DefaultNamespace
 
         public void Initialize()
         {
-            _player1HandView = _playerHandFactory.CreatePlayerHand(EPlayers.First);
-            _player2HandView = _playerHandFactory.CreatePlayerHand(EPlayers.Second);
+            _player1HandView = _playerHandFactory.CreatePlayerHand(EPlayers.FirstPlayer);
+            _player2HandView = _playerHandFactory.CreatePlayerHand(EPlayers.SecondPlayer);
         }
 
         public void SetNewCard(EPlayers currentPlayer,CardView cardView)
         {
-            if (currentPlayer == EPlayers.First)
+            if (currentPlayer == EPlayers.FirstPlayer)
             {
                 _player1HandView.SetNewCard(cardView);
             }

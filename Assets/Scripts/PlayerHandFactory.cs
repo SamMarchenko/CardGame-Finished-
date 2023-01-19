@@ -15,7 +15,7 @@ namespace DefaultNamespace
         }
         public PlayerHandView CreatePlayerHand(EPlayers player)
         {
-            var parentPositions = player == EPlayers.First ? _parentView.Hand1Parent : _parentView.Hand2Parent;
+            var parentPositions = player == EPlayers.FirstPlayer ? _parentView.Hand1Parent : _parentView.Hand2Parent;
             var playerHand = MonoBehaviour.Instantiate(_playerHandView);
             playerHand.Init(parentPositions);
             return playerHand;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Cards;
 using TMPro;
 using UnityEngine;
@@ -25,8 +26,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Vector3 StepPosition => _stepPosition;
     private const float _scale = 1.7f;
     public float Scale => _scale;
-    public Transform StartPosition;
-    public Transform EndPosition;
+    private Transform _startPosition;
+    private Transform _endPosition;
 
     public bool IsEnable
     {
@@ -65,6 +66,53 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         IsEnable = !IsEnable;
     }
 
+    public Transform GetStartCardPosition()
+    {
+        return _startPosition;
+    }
+    
+    public Transform GetEndCardPosition()
+    {
+        return _endPosition;
+    }
+
+    public void SetStartCardPosition(Transform startPosition)
+    {
+        _startPosition = startPosition;
+    }
+    
+    public void SetEndCardPosition(Transform endPosition)
+    {
+        _endPosition = endPosition;
+    }
+
+    public void MoveAnimation(Transform endPosition)
+    {
+        StartCoroutine(MoveInHand(this, endPosition));
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
+
+    private IEnumerator MoveInHand(CardView cardView, Transform parent)
+    {
+        var time = 0f;
+        var startPos = cardView.transform.position;
+        var endPos = parent.position;
+        cardView.SwitchVisual();
+        cardView.transform.eulerAngles = new Vector3(0, 0, 180);
+        while (time < 1f)
+        {
+            cardView.transform.position = Vector3.Lerp(startPos, endPos, time);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        cardView.transform.parent = parent;
+        cardView.StateType = ECardStateType.InHand;
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         _cardPointerSignalHandler.FirePointerOn(new CardPointerSignal(this));

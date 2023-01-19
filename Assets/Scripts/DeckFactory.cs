@@ -31,15 +31,15 @@ namespace DefaultNamespace
             _cardDragSignalHandler = cardDragSignalHandler;
         }
 
-        public CardView[] CreateDeck(EPlayers player)
+        public List<CardView> CreateDeck(EPlayers player)
         {
-            var parent = player == EPlayers.First ? _parentView.Deck1Parent : _parentView.Deck2Parent;
-            var deck = new CardView[_maxNumberCardInDeck];
+            var parent = player == EPlayers.FirstPlayer ? _parentView.Deck1Parent : _parentView.Deck2Parent;
+            var deck = new List<CardView>(_maxNumberCardInDeck);
             var offset = 0.8f;
 
             for (int i = 0; i < _maxNumberCardInDeck; i++)
             {
-                deck[i] = MonoBehaviour.Instantiate(_cardViewPrefab, parent);
+                deck.Add(MonoBehaviour.Instantiate(_cardViewPrefab, parent));
                 deck[i].transform.localPosition = new Vector3(0f,offset,0f);
                 deck[i].transform.eulerAngles = new Vector3(0,0,180f);
                 deck[i].SwitchVisual();

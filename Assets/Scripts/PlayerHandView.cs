@@ -22,32 +22,14 @@ namespace DefaultNamespace
             var result = GetLastPosition();
             if (result == -1)
             {
-                Destroy(cardView.gameObject);
+                cardView.DestroySelf();
                 return;
             }
 
             _cards[result] = cardView;
-            StartCoroutine(MoveInHand(cardView,_handPositions[result]));
+            cardView.MoveAnimation(_handPositions[result]);
         }
-
-        private IEnumerator MoveInHand(CardView cardView, Transform parent)
-        {
-            var time = 0f;
-            var startPos = cardView.transform.position;
-            var endPos = parent.position;
-            cardView.SwitchVisual();
-            cardView.transform.eulerAngles = new Vector3(0, 0, 180);
-            while (time < 1f)
-            {
-                cardView.transform.position = Vector3.Lerp(startPos, endPos, time);
-                time += Time.deltaTime;
-                yield return null;
-            }
-
-            cardView.transform.parent = parent;
-            cardView.StateType = ECardStateType.InHand;
-        }
-
+        
         private int GetLastPosition()
         {
             for (int i = 0; i < _cards.Length; i++)
