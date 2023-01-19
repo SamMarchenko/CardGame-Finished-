@@ -45,7 +45,7 @@ namespace Engine.Installers
 
         private void BindFactories()
         {
-            Container.BindInterfacesAndSelfTo<DeckFactory>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<CardFactory>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<PlayerHandFactory>().AsSingle().NonLazy();
         }
     }

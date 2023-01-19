@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using Cards;
 using UnityEngine;
-using Zenject;
 
 namespace DefaultNamespace
 {
     public class CardMoveController : ICardClickListener, ICardPointerListener, ICardDragListener
     {
         private readonly ParentView _parentView;
+        private readonly PlayerHandController _playerHandController;
         private Camera _camera;
 
-        public CardMoveController(ParentView parentView)
+        public CardMoveController(ParentView parentView, PlayerHandController playerHandController)
         {
             _parentView = parentView;
+            _playerHandController = playerHandController;
             _camera = Camera.main;
         }
         
+
         public void OnCardClick(CardClickSignal signal)
         {
             Debug.Log($"Нажатие на карту {signal.CardView.name}");
@@ -50,8 +53,6 @@ namespace DefaultNamespace
             }
         }
 
-        
-
 
         public void OnDragCardStart(CardDragSignal signal)
         {
@@ -68,9 +69,8 @@ namespace DefaultNamespace
         {
             ScaleCard(EScaleType.Decrease, signal.CardView);
         }
-        
-        
-        
+
+
         private void ScaleCard(EScaleType scaleType, CardView cardView)
         {
             switch (scaleType)
@@ -85,7 +85,7 @@ namespace DefaultNamespace
                     break;
             }
         }
-        
+
         private void DragCard(CardView cardView)
         {
             Ray R = _camera.ScreenPointToRay(Input.mousePosition);
@@ -93,8 +93,31 @@ namespace DefaultNamespace
             Vector3 PN = -_camera.transform.forward;
             float t = Vector3.Dot(PO - R.origin, PN) / Vector3.Dot(R.direction, PN);
             Vector3 P = R.origin + R.direction * t;
-        
+
             cardView.transform.position = P;
+        }
+
+        
+        //todo: захардкожен активный игрок. Переписать
+        public void MoveCard(CardView cardView)
+        {
+            
+            switch (cardView.StateType)
+            {
+                case ECardStateType.InDeck:
+                    _playerHandController.SetNewCard(EPlayers.FirstPlayer, cardView);
+                    cardView.StateType = ECardStateType.InHand;
+                    break;
+                case ECardStateType.InHand:
+                    break;
+                case ECardStateType.OnTable:
+                    break;
+                case ECardStateType.Discard:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
         }
     }
 }
