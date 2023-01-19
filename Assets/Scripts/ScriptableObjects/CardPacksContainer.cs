@@ -21,12 +21,11 @@ public class CardPacksContainer : ScriptableObject
 
     public bool HasCardId(uint id)
     {
-        
-       var card = FindCardForID(id);
+        var card = FindCardForID(id, out var heroType);
 
         if (card == null)
         {
-            Debug.Log($"Id {id} не найден!!!");
+            Debug.LogError($"Id {id} не найден!!!");
             return false;
         }
 
@@ -35,25 +34,29 @@ public class CardPacksContainer : ScriptableObject
 
     public bool ValidHeroCard(uint id, EHeroType hero)
     {
-        {
-            
-        }
-        return true;
+        FindCardForID(id, out var heroType);
+
+        return heroType == hero || heroType == EHeroType.Common;
     }
 
-    private CardPropertiesData FindCardForID(uint id)
+    private CardPropertiesData FindCardForID(uint id, out EHeroType heroType)
     {
         CardPropertiesData card = null;
+        
         foreach (var cardPack in CardPackConfigurations)
         {
+            heroType = cardPack.HeroType;
             foreach (var cardPropertiesData in cardPack.Cards)
             {
                 if (id == cardPropertiesData.Id)
                 {
                     card = cardPropertiesData;
+                    return card;
                 }
             }
         }
+        heroType = EHeroType.Common;
         return card;
     }
+    
 }

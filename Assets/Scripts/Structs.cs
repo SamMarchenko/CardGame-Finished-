@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using OneLine;
 
 namespace Cards
 {
@@ -23,29 +21,6 @@ namespace Cards
 		private int _health;
 		[SerializeField]
 		private ECardUnitType _type;
-	}
-
-	[Serializable]
-	public class CardPropertiesData
-	{
-		[Width(40)]
-		public uint Id;
-		[Width(30)]
-		public ushort Cost;
-		public string Name;
-		[Width(50)]
-		public Texture Texture;
-		[Width(40)]
-		public ushort Attack;
-		[Width(40)]
-		public ushort Health;
-		[Width(65)]
-		public ECardUnitType Type;
-
-		public CardParamsData GetParams()
-		{
-			return new CardParamsData(Cost, Attack, Health);
-		}
 	}
 
 	public struct CardParamsData
