@@ -13,6 +13,13 @@ namespace Cards
 		Mech = 4
 	}
 
+	public enum ECurrentStageType
+	{
+		ChooseStartHandStage,
+		MoveStage
+	}
+	
+
 	public enum EHeroType : byte
 	{
 		Common = 0,
@@ -33,8 +40,8 @@ namespace Cards
 
 	public enum EPlayers
 	{
-		First,
-		Second
+		FirstPlayer,
+		SecondPlayer
 	}
 
 	public enum EScaleType
