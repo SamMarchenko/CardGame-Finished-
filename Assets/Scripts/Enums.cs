@@ -36,4 +36,10 @@ namespace Cards
 		First,
 		Second
 	}
+
+	public enum EScaleType
+	{
+		Increase,
+		Decrease
+	}
 }

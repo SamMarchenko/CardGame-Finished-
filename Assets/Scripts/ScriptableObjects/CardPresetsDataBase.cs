@@ -53,7 +53,6 @@ public class CardPresetsDataBase : ScriptableObject
     [ContextMenu("Проверить валидность собранной коллоды")]
     public void ValidateDeck()
     {
-        //todo: сделать валидацию!!!
         bool isValid;
         isValid = ValidateId();
         isValid = isValid == true ? CheckHeroCards() : false;
@@ -93,11 +92,11 @@ public class CardPresetsDataBase : ScriptableObject
 
         if (CardsId.Count < 30)
         {
-            Debug.Log($"Кол-во карт в колоде = {CardsId.Count} < 30. Доберите колоду!!!");
+            Debug.LogError($"Кол-во карт в колоде = {CardsId.Count} < 30. Добавьте {30 - CardsId.Count} карт(ы)!!!");
             return false;
         }
 
-        Debug.Log($"Кол-во карт в колоде = {CardsId.Count} > 30. Удалите лишние карты из колоды!!!");
+        Debug.LogError($"Кол-во карт в колоде = {CardsId.Count} > 30. Удалите {CardsId.Count - 30} карт(ы) из колоды!!!");
         return false;
     }
 
@@ -106,28 +105,9 @@ public class CardPresetsDataBase : ScriptableObject
     {
         foreach (var id in CardsId)
         {
-            bool isValid = true;
-            EHeroType heroType = EHeroType.Common;
-            foreach (var cardPack in CardPacksContainer.CardPackConfigurations)
-            {
-                foreach (var cardPropertiesData in cardPack.Cards)
-                {
-                    if (id == cardPropertiesData.Id)
-                    {
-                        if (cardPack.HeroType != EHeroType.Common && Hero != cardPack.HeroType)
-                        {
-                            isValid = false;
-                            heroType = cardPack.HeroType;
-                        }
-                    }
-                }
-            }
-
-            if (!isValid)
-            {
-                Debug.Log($"Карта с Id {id} пренадлежит классу {heroType}, а герой класса {Hero}!!!");
-                return false;
-            }
+            if (CardPacksContainer.ValidHeroCard(id, Hero)) continue;
+            Debug.LogError($"Карта с Id {id} не общая и не пренадлежит классу {Hero}!!!");
+            return false;
         }
 
         Debug.Log("Карт чужых классов не обнаружено!");
