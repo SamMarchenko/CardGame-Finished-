@@ -8,16 +8,16 @@ public class GameCircle : IInitializable, ITickable
 {
     private ECurrentStageType _currentStage;
     private EPlayers _currentActivePlayer = EPlayers.FirstPlayer;
-    private readonly DeckManager _deckManager;
-    private readonly CardMoveController _cardMoveController;
+    private readonly CardsController _cardsController;
+    private readonly CardMoverView _cardMoverView;
     private List<CardView> _currentDeck;
     
     
 
-    public GameCircle(DeckManager deckManager, CardMoveController cardMoveController)
+    public GameCircle(CardsController cardsController, CardMoverView cardMoverView)
     {
-        _deckManager = deckManager;
-        _cardMoveController = cardMoveController;
+        _cardsController = cardsController;
+        _cardMoverView = cardMoverView;
     }
 
     public void Initialize()
@@ -41,8 +41,8 @@ public class GameCircle : IInitializable, ITickable
         //todo: тут захардкожено. Убрать вообще отсюда
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            var card = _deckManager.GetTopCardFromDeck(_currentActivePlayer);
-            _cardMoveController.MoveCard(card);
+            var card = _cardsController.GetTopCardFromDeck(_currentActivePlayer);
+            _cardMoverView.MoveCard(card);
             ChangeSide();
         }
     }
@@ -53,10 +53,10 @@ public class GameCircle : IInitializable, ITickable
         switch (_currentActivePlayer)
         {
             case EPlayers.FirstPlayer:
-                _currentDeck = _deckManager.GetFullDeck(EPlayers.FirstPlayer);
+                _currentDeck = _cardsController.GetFullDeck(EPlayers.FirstPlayer);
                 break;
             case EPlayers.SecondPlayer:
-                _currentDeck = _deckManager.GetFullDeck(EPlayers.SecondPlayer);
+                _currentDeck = _cardsController.GetFullDeck(EPlayers.SecondPlayer);
                 break;
         }
     }

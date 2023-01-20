@@ -5,7 +5,7 @@ using Zenject;
 
 namespace DefaultNamespace
 {
-    public class DeckManager : IInitializable
+    public class CardsController : IInitializable
     {
         private readonly CardFactory _cardFactory;
         private readonly ParentView _parentView;
@@ -14,7 +14,7 @@ namespace DefaultNamespace
         private int _maxNumberCardInDeck = 30;
 
 
-        public DeckManager(CardFactory cardFactory, ParentView parentView)
+        public CardsController(CardFactory cardFactory, ParentView parentView)
         {
             _cardFactory = cardFactory;
             _parentView = parentView;

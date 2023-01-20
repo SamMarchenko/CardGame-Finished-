@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class CardMoveController : ICardClickListener, ICardPointerListener, ICardDragListener
+    public class CardMoverView : ICardClickListener, ICardPointerListener, ICardDragListener
     {
         private readonly ParentView _parentView;
         private readonly PlayerHandController _playerHandController;
         private Camera _camera;
 
-        public CardMoveController(ParentView parentView, PlayerHandController playerHandController)
+        public CardMoverView(ParentView parentView, PlayerHandController playerHandController)
         {
             _parentView = parentView;
             _playerHandController = playerHandController;

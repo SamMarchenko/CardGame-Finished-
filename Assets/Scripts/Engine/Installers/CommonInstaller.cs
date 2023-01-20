@@ -20,16 +20,16 @@ namespace Engine.Installers
             BindFactories();
 
             Container.BindInterfacesAndSelfTo<GameCircle>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<DeckManager>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<CardsController>().AsSingle().NonLazy();
 
-            Container.BindInterfacesAndSelfTo<CardMoveController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<CardMoverView>().AsSingle().NonLazy();
 
-            Signals();
+            BindSignals();
 
             Ui();
         }
 
-        private void Signals()
+        private void BindSignals()
         {
             Container.BindInterfacesAndSelfTo<CardClickSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<CardPointerSignalHandler>().AsSingle().NonLazy();
@@ -45,6 +45,7 @@ namespace Engine.Installers
 
         private void BindFactories()
         {
+            Container.BindInterfacesAndSelfTo<PlayerFactory>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<CardFactory>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<PlayerHandFactory>().AsSingle().NonLazy();
         }

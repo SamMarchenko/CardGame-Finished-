@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Cards;
 using UnityEngine;
 using Zenject;
@@ -8,6 +9,7 @@ namespace DefaultNamespace
     public class PlayerHandView : MonoBehaviour
     {
         private Transform[] _handPositions;
+        //todo: переделать на лист
         private CardView[] _cards;
         
         public void Init(Transform[] handPositions)
@@ -38,6 +40,18 @@ namespace DefaultNamespace
             }
 
             return -1;
+        }
+    }
+
+    public class PlayerDeckView
+    {
+        private Transform[] _deckPositions;
+        private List<CardView> _cards;
+        
+        public void Init(Transform[] deckPositions)
+        {
+            _deckPositions = deckPositions;
+            _cards = new List<CardView>(deckPositions.Length);
         }
     }
 }
