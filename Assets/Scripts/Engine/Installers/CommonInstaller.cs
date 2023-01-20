@@ -15,14 +15,17 @@ namespace Engine.Installers
             Container.BindInstance(_parentView);
 
             Container.BindInterfacesAndSelfTo<CardPropertiesDataProvider>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<PlayerHandController>().AsSingle().NonLazy();
+            //Container.BindInterfacesAndSelfTo<PlayerHandController>().AsSingle().NonLazy();
 
             BindFactories();
 
+            Container.BindInterfacesAndSelfTo<PlayersProvider>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<DeckBuilder>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<GameCircle>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<CardsController>().AsSingle().NonLazy();
+            
 
             Container.BindInterfacesAndSelfTo<CardMoverView>().AsSingle().NonLazy();
+            
 
             BindSignals();
 
@@ -47,7 +50,7 @@ namespace Engine.Installers
         {
             Container.BindInterfacesAndSelfTo<PlayerFactory>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<CardFactory>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<PlayerHandFactory>().AsSingle().NonLazy();
+           // Container.BindInterfacesAndSelfTo<PlayerHandFactory>().AsSingle().NonLazy();
         }
     }
 }

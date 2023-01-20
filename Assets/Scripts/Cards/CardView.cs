@@ -39,6 +39,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
+    public bool CanSwaped = true;
+
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
 
     public void Configuration(CardPropertiesData data, string description, Material icon)
@@ -88,7 +90,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void MoveAnimation(Transform endPosition)
     {
-        StartCoroutine(MoveInHand(this, endPosition));
+        StartCoroutine(MoveInHandFromDeck(this, endPosition));
     }
 
     public void DestroySelf()
@@ -96,7 +98,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         Destroy(gameObject);
     }
 
-    private IEnumerator MoveInHand(CardView cardView, Transform parent)
+    private IEnumerator MoveInHandFromDeck(CardView cardView, Transform parent)
     {
         var time = 0f;
         var startPos = cardView.transform.position;

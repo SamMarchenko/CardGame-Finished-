@@ -2,19 +2,21 @@
 using Cards;
 using UnityEngine;
 using Zenject;
+using Random = System.Random;
 
 namespace DefaultNamespace
 {
-    public class CardsController : IInitializable
+    public class DeckBuilder : IInitializable
     {
         private readonly CardFactory _cardFactory;
         private readonly ParentView _parentView;
         private List<CardView> _playerDeck1;
         private List<CardView> _playerDeck2;
         private int _maxNumberCardInDeck = 30;
+        private Random _random;
 
 
-        public CardsController(CardFactory cardFactory, ParentView parentView)
+        public DeckBuilder(CardFactory cardFactory, ParentView parentView)
         {
             _cardFactory = cardFactory;
             _parentView = parentView;
@@ -24,7 +26,7 @@ namespace DefaultNamespace
         {
             _playerDeck1 = BuildDeck(EPlayers.FirstPlayer);
             _playerDeck2 = BuildDeck(EPlayers.SecondPlayer);
-            
+            _random = new Random();
         }
 
         private List<CardView> BuildDeck(EPlayers player)
@@ -43,6 +45,25 @@ namespace DefaultNamespace
             }
 
             return deck;
+        }
+
+        public void ShuffleDeck(List<CardView> deck)
+        {
+            for (var i = deck.Count - 1; i >= 1; i--)
+            {
+                var j = _random.Next(i + 1);
+                (deck[j], deck[i]) = (deck[i], deck[j]);
+            }
+            
+            
+            var offset = 0.8f;
+            foreach (var card in deck)
+            {
+                card.transform.localPosition = new Vector3(0f, offset, 0f);
+                card.transform.eulerAngles = new Vector3(0, 0, 180f);
+                offset += 0.8f;
+            }
+            Debug.Log("Shuffled");
         }
 
         public List<CardView> GetFullDeck(EPlayers player)
