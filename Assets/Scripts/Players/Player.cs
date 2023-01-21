@@ -20,6 +20,8 @@ namespace DefaultNamespace
         private List<CardView> _myCardsInTable;
         private Dictionary<CardView, Transform> _tableCardSlotDictionary = new Dictionary<CardView, Transform>();
 
+        public bool ChooseStartHand = false;
+
         public void Init(ParentView parentView, EPlayers player)
         {
             if (player == EPlayers.FirstPlayer)
@@ -46,7 +48,15 @@ namespace DefaultNamespace
             _myCardsInTable = new List<CardView>(_myTableSlots.Length);
         }
 
-
+        public void SetDeck(List<CardView> deck)
+        {
+            _myCardsInDeck = deck;
+            foreach (var card in _myCardsInDeck)
+            {
+                card.Owner = this;
+            }
+        }
+        
         public Transform SetCardFromDeckInHand(CardView card)
         {
             var state = ECardStateType.InHand;

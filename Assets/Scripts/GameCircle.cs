@@ -11,29 +11,41 @@ public class GameCircle : IInitializable, ITickable
     private readonly DeckBuilder _deckBuilder;
     private readonly CardMoverView _cardMoverView;
     private readonly PlayersProvider _playersProvider;
+    private readonly ChangeStageSignalHandler _changeStageSignalHandler;
+    private readonly ChangeCurrentPlayerSignalHandler _changeCurrentPlayerSignalHandler;
     private List<CardView> _currentDeck;
+    private Player _firstPlayer;
+    private Player _secondPlayer;
     private Player _currentPlayer;
     
     
 
-    public GameCircle(DeckBuilder deckBuilder, CardMoverView cardMoverView, PlayersProvider playersProvider)
+    public GameCircle(DeckBuilder deckBuilder, CardMoverView cardMoverView, PlayersProvider playersProvider,
+        ChangeStageSignalHandler changeStageSignalHandler, ChangeCurrentPlayerSignalHandler changeCurrentPlayerSignalHandler)
     {
         _deckBuilder = deckBuilder;
         _cardMoverView = cardMoverView;
         _playersProvider = playersProvider;
+        _changeStageSignalHandler = changeStageSignalHandler;
+        _changeCurrentPlayerSignalHandler = changeCurrentPlayerSignalHandler;
     }
 
     public void Initialize()
     {
         SetGameStage(ECurrentStageType.ChooseStartHandStage);
+        GetPlayers();
         SetCurrentActivePlayer(EPlayers.FirstPlayer);
         BeginStartHandStage();
     }
 
+    private void GetPlayers()
+    {
+        _firstPlayer = _playersProvider.GetPlayer(EPlayers.FirstPlayer);
+        _secondPlayer = _playersProvider.GetPlayer(EPlayers.SecondPlayer);
+    }
+
     private void BeginStartHandStage()
     {
-        _currentPlayer = _playersProvider.GetPlayer(_currentPlayerType);
-
         for (int i = 0; i < 3; i++)
         {
             var card = _deckBuilder.GetTopCardFromDeck(_currentPlayerType);
@@ -49,20 +61,18 @@ public class GameCircle : IInitializable, ITickable
     private void SetCurrentActivePlayer(EPlayers player)
     {
         _currentPlayerType = player;
+        
+        _currentPlayer = _currentPlayerType == EPlayers.FirstPlayer ? _firstPlayer : _secondPlayer;
     }
 
     public void Tick()
     {
         //todo: тут захардкожено. Убрать вообще отсюда
-        // if (Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     _currentDeck = _deckBuilder.GetFullDeck(_currentPlayerType);
-        //     _deckBuilder.ShuffleDeck(_currentDeck);
-        //     
-        //     var card = _deckBuilder.GetTopCardFromDeck(_currentPlayerType);
-        //     _cardMoverView.MoveCard(card);
-        //     ChangeSide();
-        // }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Ход окончен");
+            ChangeSide();
+        }
     }
     private void ChangeSide()
     {
@@ -77,5 +87,6 @@ public class GameCircle : IInitializable, ITickable
                 _currentDeck = _deckBuilder.GetFullDeck(EPlayers.SecondPlayer);
                 break;
         }
+        _changeCurrentPlayerSignalHandler.Fire(new CurrentPlayerChangeSignal(_currentPlayerType));
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Cards;
+using DefaultNamespace;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -42,6 +43,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public bool CanSwaped = true;
 
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
+    public Player Owner;
 
     public void Configuration(CardPropertiesData data, string description, Material icon)
     {

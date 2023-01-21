@@ -5,20 +5,23 @@ using Zenject;
 
 namespace DefaultNamespace
 {
-    public class PlayersProvider : IInitializable
+    public class PlayersProvider : IInitializable, IChangeStageListener, IChangeCurrentPlayerListener
     {
         private Player _firstPlayer;
         private Player _secondPlayer;
         private PlayerFactory _playerFactory;
+        private readonly DeckBuilder _deckBuilder;
 
-        public PlayersProvider(PlayerFactory playerFactory)
+        public PlayersProvider(PlayerFactory playerFactory, DeckBuilder deckBuilder)
         {
             _playerFactory = playerFactory;
+            _deckBuilder = deckBuilder;
         }
 
         public void Initialize()
         {
             CreatePlayers();
+            GiveDeckToPlayers();
         }
 
         public Player GetPlayer(EPlayers player)
@@ -32,5 +35,20 @@ namespace DefaultNamespace
             _secondPlayer = _playerFactory.CreatePlayer(EPlayers.SecondPlayer);
         }
 
+        private void GiveDeckToPlayers()
+        {
+            _firstPlayer.SetDeck(_deckBuilder.GetFullDeck(EPlayers.FirstPlayer));
+            _secondPlayer.SetDeck(_deckBuilder.GetFullDeck(EPlayers.SecondPlayer));
+        }
+
+        public void OnStageChange(StageChangeSignal signal)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

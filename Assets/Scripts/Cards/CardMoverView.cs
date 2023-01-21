@@ -6,19 +6,17 @@ using Zenject;
 
 namespace DefaultNamespace
 {
-    public class CardMoverView : ICardClickListener, ICardPointerListener, ICardDragListener
+    public class CardMoverView : ICardClickListener, ICardPointerListener, ICardDragListener, IChangeStageListener, IChangeCurrentPlayerListener
     {
         private readonly ParentView _parentView;
         private readonly PlayersProvider _playersProvider;
-
-        // private readonly PlayerHandController _playerHandController;
         private Camera _camera;
+        private Player _currentPlayer;
 
         public CardMoverView(ParentView parentView, PlayersProvider playersProvider)
         {
             _parentView = parentView;
             _playersProvider = playersProvider;
-            //_playerHandController = playerHandController;
             _camera = Camera.main;
         }
 
@@ -100,30 +98,15 @@ namespace DefaultNamespace
             cardView.transform.position = P;
         }
 
-        
-        //todo: захардкожен активный игрок. Переписать
-         // public void MoveCard(CardView cardView)
-         // {
-         //     
-         //     switch (cardView.StateType)
-         //     {
-         //         case ECardStateType.InDeck:
-         //             
-         //             _playerHandController.SetNewCard(EPlayers.FirstPlayer, cardView);
-         //             cardView.StateType = ECardStateType.InHand;
-         //             break;
-         //         case ECardStateType.InHand:
-         //             break;
-         //         case ECardStateType.OnTable:
-         //             break;
-         //         case ECardStateType.Discard:
-         //             break;
-         //         default:
-         //             throw new ArgumentOutOfRangeException();
-         //     }
-         //     
-         // }
+        public void OnStageChange(StageChangeSignal signal)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
+        {
+            throw new NotImplementedException();
+        }
         
     }
 }
