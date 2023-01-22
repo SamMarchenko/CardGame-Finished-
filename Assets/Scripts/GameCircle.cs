@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cards;
 using DefaultNamespace;
+using Signals;
 using UnityEngine;
 using Zenject;
 
@@ -11,8 +12,8 @@ public class GameCircle : IInitializable, ITickable
     private readonly DeckBuilder _deckBuilder;
     private readonly CardMoverView _cardMoverView;
     private readonly PlayersProvider _playersProvider;
-    private readonly ChangeStageSignalHandler _changeStageSignalHandler;
-    private readonly ChangeCurrentPlayerSignalHandler _changeCurrentPlayerSignalHandler;
+    private readonly CardSignalBus _bus;
+
     private List<CardView> _currentDeck;
     private Player _firstPlayer;
     private Player _secondPlayer;
@@ -20,14 +21,16 @@ public class GameCircle : IInitializable, ITickable
     
     
 
-    public GameCircle(DeckBuilder deckBuilder, CardMoverView cardMoverView, PlayersProvider playersProvider,
-        ChangeStageSignalHandler changeStageSignalHandler, ChangeCurrentPlayerSignalHandler changeCurrentPlayerSignalHandler)
+    public GameCircle(DeckBuilder deckBuilder, 
+        CardMoverView cardMoverView, 
+        PlayersProvider playersProvider, 
+        CardSignalBus bus)
     {
         _deckBuilder = deckBuilder;
         _cardMoverView = cardMoverView;
         _playersProvider = playersProvider;
-        _changeStageSignalHandler = changeStageSignalHandler;
-        _changeCurrentPlayerSignalHandler = changeCurrentPlayerSignalHandler;
+        _bus = bus;
+
     }
 
     public void Initialize()
@@ -87,6 +90,6 @@ public class GameCircle : IInitializable, ITickable
                 _currentDeck = _deckBuilder.GetFullDeck(EPlayers.SecondPlayer);
                 break;
         }
-        _changeCurrentPlayerSignalHandler.Fire(new CurrentPlayerChangeSignal(_currentPlayerType));
+        _bus.CurrentPlayerChangeFire(new CurrentPlayerChangeSignal(_currentPlayerType));
     }
 }

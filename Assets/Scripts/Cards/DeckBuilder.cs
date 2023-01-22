@@ -68,6 +68,10 @@ namespace DefaultNamespace
 
         public List<CardView> GetFullDeck(EPlayers player)
         {
+            //пришлось продублировать из Initialize для проверки так как падало с Null
+            // и подтвердилась гипотеза, Initialize в этом классе вызывается позже чем требуется и поэтому вызывать BuildDeck лучше не при старте, а потребованию
+            _playerDeck1 = BuildDeck(EPlayers.FirstPlayer);
+            _playerDeck2 = BuildDeck(EPlayers.SecondPlayer);
             return player == EPlayers.FirstPlayer ? _playerDeck1 : _playerDeck2;
         }
 

@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using Cards;
 using DefaultNamespace;
+using Signals;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler,
     IDragHandler, IPointerClickHandler
@@ -18,10 +20,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private TextMeshPro _typeText;
     [SerializeField] private TextMeshPro _attackText;
     [SerializeField] private TextMeshPro _healthText;
-
-    private CardClickSignalHandler _cardClickSignalHandler;
-    private CardPointerSignalHandler _cardPointerSignalHandler;
-    private CardDragSignalHandler _cardDragSignalHandler;
+    
 
     private Vector3 _stepPosition = new Vector3(0, 0.5f, 0);
     public Vector3 StepPosition => _stepPosition;
@@ -40,6 +39,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
+    private CardSignalBus _bus;
     public bool CanSwaped = true;
 
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
@@ -56,12 +56,9 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _healthText.text = data.Health.ToString();
     }
 
-    public void Init(CardClickSignalHandler cardClickSignalHandlerHandler,
-        CardPointerSignalHandler cardPointerSignalHandler, CardDragSignalHandler cardDragSignalHandler)
+    public void Init(CardSignalBus bus)
     {
-        _cardClickSignalHandler = cardClickSignalHandlerHandler;
-        _cardPointerSignalHandler = cardPointerSignalHandler;
-        _cardDragSignalHandler = cardDragSignalHandler;
+        _bus = bus;
     }
 
     [ContextMenu("Switch Visual")]
@@ -119,34 +116,34 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _cardPointerSignalHandler.FirePointerOn(new CardPointerSignal(this));
+        _bus.FirePointerOn(new CardPointerSignal(this));
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        _cardPointerSignalHandler.FirePointerOff(new CardPointerSignal(this));
+        _bus.FirePointerOff(new CardPointerSignal(this));
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _cardDragSignalHandler.FireDragStart(new CardDragSignal(this));
+        _bus.FireDragStart(new CardDragSignal(this));
         Debug.Log("OnBeginDrag");
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _cardDragSignalHandler.FireDragEnd(new CardDragSignal(this));
+        _bus.FireDragEnd(new CardDragSignal(this));
         Debug.Log("OnEndDrag");
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        _cardDragSignalHandler.FireDragging(new CardDragSignal(this));
+        _bus.FireDragging(new CardDragSignal(this));
         Debug.Log("OnDrag");
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _cardClickSignalHandler.Fire(new CardClickSignal(this));
+        _bus.CardClickFire(new CardClickSignal(this));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Cards;
+using Signals;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -10,9 +11,8 @@ namespace DefaultNamespace
     {
         private readonly CardPropertiesDataProvider _cardPropertiesDataProvider;
         private readonly CardView _cardViewPrefab;
-        private readonly CardClickSignalHandler _clickSignalHandler;
-        private readonly CardPointerSignalHandler _cardPointerSignalHandler;
-        private readonly CardDragSignalHandler _cardDragSignalHandler;
+        private readonly CardSignalBus _bus;
+
 
         private Material _baseMat;
         private List<CardPropertiesData> _allCards;
@@ -20,16 +20,12 @@ namespace DefaultNamespace
         public CardFactory(
             CardPropertiesDataProvider cardPropertiesDataProvider,
             CardView cardViewPrefab,
-            CardClickSignalHandler cardClickSignalHandler,
-            CardPointerSignalHandler cardPointerSignalHandler,
-            CardDragSignalHandler cardDragSignalHandler
-            )
+            CardSignalBus bus
+        )
         {
             _cardPropertiesDataProvider = cardPropertiesDataProvider;
             _cardViewPrefab = cardViewPrefab;
-            _clickSignalHandler = cardClickSignalHandler;
-            _cardPointerSignalHandler = cardPointerSignalHandler;
-            _cardDragSignalHandler = cardDragSignalHandler;
+            _bus = bus;
         }
 
         public void Initialize()
@@ -44,7 +40,7 @@ namespace DefaultNamespace
             var random = _allCards[Random.Range(0, _allCards.Count)];
             var newMat = new Material(_baseMat);
             newMat.mainTexture = random.Texture;
-            cardView.Init(_clickSignalHandler, _cardPointerSignalHandler, _cardDragSignalHandler);
+            cardView.Init(_bus);
             cardView.Configuration(random, CardUtility.GetDescriptionById(random.Id), newMat);
 
             return cardView;

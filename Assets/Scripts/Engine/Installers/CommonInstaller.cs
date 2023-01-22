@@ -1,6 +1,7 @@
 ﻿using DefaultNamespace;
 using Engine.UI.Canvas;
 using Engine.UI.UiAttachSystem;
+using Signals;
 using UnityEngine;
 using Zenject;
 
@@ -39,6 +40,8 @@ namespace Engine.Installers
             Container.BindInterfacesAndSelfTo<CardDragSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<ChangeStageSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<ChangeCurrentPlayerSignalHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<SignalBusInjector>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<CardSignalBus>().AsSingle().NonLazy();
         }
 
         private void Ui()
