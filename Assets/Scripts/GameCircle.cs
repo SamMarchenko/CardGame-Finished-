@@ -13,8 +13,7 @@ public class GameCircle : IInitializable, ITickable
     private readonly CardMoverView _cardMoverView;
     private readonly PlayersProvider _playersProvider;
     private readonly CardSignalBus _bus;
-
-    private List<CardView> _currentDeck;
+    
     private Player _firstPlayer;
     private Player _secondPlayer;
     private Player _currentPlayer;
@@ -30,15 +29,13 @@ public class GameCircle : IInitializable, ITickable
         _cardMoverView = cardMoverView;
         _playersProvider = playersProvider;
         _bus = bus;
-
     }
 
     public void Initialize()
     {
         SetGameStage(ECurrentStageType.StartWaiting);
         GetPlayers();
-        SetCurrentActivePlayer(EPlayers.FirstPlayer);
-        //BeginStartHandStage();
+        SetCurrentActivePlayer(EPlayers.FirstPlayer); 
     }
 
     private void GetPlayers()
@@ -56,6 +53,11 @@ public class GameCircle : IInitializable, ITickable
             var card = _deckBuilder.GetTopCardFromDeck(_currentPlayer);
             _currentPlayer.SetCardFromDeckInHand(card);
         }
+    }
+
+    private void BeginMovingStage()
+    {
+        _bus.StageChangeFire(new StageChangeSignal(_currentStage));
     }
 
     private void SetGameStage(ECurrentStageType currentStage)
@@ -78,26 +80,44 @@ public class GameCircle : IInitializable, ITickable
             if (_currentStage == ECurrentStageType.StartWaiting)
             {
                 SetGameStage(ECurrentStageType.ChooseStartHandStage);
+                //для первого игрока
                 BeginStartHandStage();
                 return;
             }
-            Debug.Log("Ход окончен");
-            ChangeSide();
+
+            if (_currentStage == ECurrentStageType.ChooseStartHandStage && _currentPlayer == _firstPlayer)
+            {
+                Debug.Log("Игрок 1 выбрал стартовую руку"); 
+                //SetCurrentActivePlayer(EPlayers.SecondPlayer);
+                ChangeSide();
+                //для второго игрока
+                BeginStartHandStage();
+                return;
+            }
+
+            if (_currentStage == ECurrentStageType.ChooseStartHandStage && _currentPlayer == _secondPlayer)
+            {
+                Debug.Log("Игрок 2 выбрал стартовую руку. Переходим в стадию дуэли!");
+                SetGameStage(ECurrentStageType.MoveStage);
+                _bus.StageChangeFire(new StageChangeSignal(_currentStage));
+                ChangeSide();
+                return;
+            }
+
+            if (_currentStage == ECurrentStageType.MoveStage)
+            {
+                Debug.Log("Ход окончен");
+                ChangeSide();
+            }
         }
     }
     private void ChangeSide()
     {
         _currentPlayerType = _currentPlayerType == EPlayers.FirstPlayer ?
          EPlayers.SecondPlayer : EPlayers.FirstPlayer;
-        switch (_currentPlayerType)
-        {
-            case EPlayers.FirstPlayer:
-                _currentDeck = _deckBuilder.GetFullDeck(EPlayers.FirstPlayer);
-                break;
-            case EPlayers.SecondPlayer:
-                _currentDeck = _deckBuilder.GetFullDeck(EPlayers.SecondPlayer);
-                break;
-        }
+        
+        SetCurrentActivePlayer(_currentPlayerType);
+        
         _bus.CurrentPlayerChangeFire(new CurrentPlayerChangeSignal(_currentPlayerType));
     }
 }

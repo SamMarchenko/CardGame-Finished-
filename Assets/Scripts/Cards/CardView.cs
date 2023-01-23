@@ -40,7 +40,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     private CardSignalBus _bus;
-    public bool CanSwaped = true;
+    //public bool CanSwaped = true;
 
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
     public Player Owner;

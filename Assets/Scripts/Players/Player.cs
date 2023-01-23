@@ -15,6 +15,7 @@ namespace DefaultNamespace
         private Transform[] _enemyHandSlots;
         private List<CardView> _myCardsInHand;
         private Dictionary<CardView, Transform> _handCardSlotDictionary = new Dictionary<CardView, Transform>();
+        private List<Transform> _canSwapedCardSlots = new List<Transform>(3);
 
         private Transform[] _myTableSlots;
         private Transform[] _enemyTableSlots;
@@ -22,6 +23,8 @@ namespace DefaultNamespace
         private Dictionary<CardView, Transform> _tableCardSlotDictionary = new Dictionary<CardView, Transform>();
 
         private DeckBuilder _deckBuilder;
+
+        private int _startHandCards = 3;
 
         public bool ChooseStartHand = false;
         public EPlayers PlayerType;
@@ -51,7 +54,24 @@ namespace DefaultNamespace
             _myCardsInDeck = new List<CardView>();
             _myCardsInHand = new List<CardView>(_myHandSlots.Length);
             _myCardsInTable = new List<CardView>(_myTableSlots.Length);
+            SetFirstThreeHandSlots();
         }
+
+        private void SetFirstThreeHandSlots()
+        {
+            for (var i = 0; i < _startHandCards; i++)
+            {
+                _canSwapedCardSlots.Add(_myHandSlots[i]);
+            }
+        }
+
+        public bool CanSwapCard(CardView card)
+        {
+            var slot = _handCardSlotDictionary[card];
+            
+            return _canSwapedCardSlots.Contains(slot);
+        }
+
 
         public void SetDeckBuilder(DeckBuilder deckBuilder)
         {
@@ -115,9 +135,12 @@ namespace DefaultNamespace
 
             _myCardsInHand.Remove(card);
             _myCardsInDeck.Add(card);
+            
+            var slot= _handCardSlotDictionary[card];
+            DeleteCardFromDictionary(_handCardSlotDictionary, card);
+            _canSwapedCardSlots.Remove(slot);
+            
             card.StateType = state;
-            card.CanSwaped = false;
-
             card.MoveAnimation(_myDeckSlot);
             _deckBuilder.ShuffleDeck(_myCardsInDeck);
         }

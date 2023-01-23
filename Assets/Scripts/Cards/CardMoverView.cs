@@ -15,6 +15,8 @@ namespace DefaultNamespace
         private Player _currentPlayer;
         private ECurrentStageType _currentStageType;
 
+        private int _swapCardsCount = 0;
+
         public CardMoverView(ParentView parentView, PlayersProvider playersProvider, DeckBuilder deckBuilder)
         {
             _parentView = parentView;
@@ -40,15 +42,17 @@ namespace DefaultNamespace
 
         private void OnChooseHandCardClickBehaviour(CardView card)
         {
+            
             if (card.StateType == ECardStateType.InDeck)
             {
                 Debug.Log("Карта в колоде. Никаких действий с ней не предполагается");
                 return;
             }
-            if (card.Owner == _currentPlayer && card.CanSwaped)
+            if (card.Owner == _currentPlayer && _currentPlayer.CanSwapCard(card))
             {
                 _currentPlayer.SetCardFromHandInDeck(card);
                 _currentPlayer.SetCardFromDeckInHand(_deckBuilder.GetTopCardFromDeck(_currentPlayer));
+                _swapCardsCount++;
             }
         }
 
@@ -62,8 +66,8 @@ namespace DefaultNamespace
             var cardView = signal.CardView;
             switch (cardView.StateType)
             {
-                case ECardStateType.InHand:
-                    Debug.Log($"Курсор наведен на карту {signal.CardView.NameText.text}");
+                case ECardStateType.InHand: 
+                    //Debug.Log($"Курсор наведен на карту {signal.CardView.NameText.text}");
                     ScaleCard(EScaleType.Increase, cardView);
                     break;
                 case ECardStateType.OnTable:
@@ -78,7 +82,7 @@ namespace DefaultNamespace
             switch (cardView.StateType)
             {
                 case ECardStateType.InHand:
-                    Debug.Log($"Курсор убран с карты {signal.CardView.NameText.text}");
+                    //Debug.Log($"Курсор убран с карты {signal.CardView.NameText.text}");
                     ScaleCard(EScaleType.Decrease, cardView);
                     break;
                 case ECardStateType.OnTable:
