@@ -2,10 +2,10 @@
 
 public class CurrentPlayerChangeSignal
 {
-    private readonly EPlayers _player;
+    public readonly EPlayers Player;
 
     public CurrentPlayerChangeSignal(EPlayers player)
     {
-        _player = player;
+        Player = player;
     }
 }

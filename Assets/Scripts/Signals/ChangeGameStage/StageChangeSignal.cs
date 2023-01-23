@@ -2,10 +2,10 @@
 
 public class StageChangeSignal
 {
-    private readonly ECurrentStageType _stageType;
+    public readonly ECurrentStageType StageType;
 
     public StageChangeSignal(ECurrentStageType stageType)
     {
-        _stageType = stageType;
+        StageType = stageType;
     }
 }

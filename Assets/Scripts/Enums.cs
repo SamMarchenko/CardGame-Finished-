@@ -15,6 +15,7 @@ namespace Cards
 
 	public enum ECurrentStageType
 	{
+		StartWaiting,
 		ChooseStartHandStage,
 		MoveStage
 	}

@@ -10,19 +10,51 @@ namespace DefaultNamespace
     {
         private readonly ParentView _parentView;
         private readonly PlayersProvider _playersProvider;
+        private readonly DeckBuilder _deckBuilder;
         private Camera _camera;
         private Player _currentPlayer;
+        private ECurrentStageType _currentStageType;
 
-        public CardMoverView(ParentView parentView, PlayersProvider playersProvider)
+        public CardMoverView(ParentView parentView, PlayersProvider playersProvider, DeckBuilder deckBuilder)
         {
             _parentView = parentView;
             _playersProvider = playersProvider;
+            _deckBuilder = deckBuilder;
             _camera = Camera.main;
         }
 
         public void OnCardClick(CardClickSignal signal)
         {
             Debug.Log($"Нажатие на карту {signal.CardView.name}");
+            switch (_currentStageType)
+            {
+                case ECurrentStageType.ChooseStartHandStage:
+                    OnChooseHandCardClickBehaviour(signal.CardView);
+                    break;
+                case ECurrentStageType.MoveStage:
+                    OnMoveStageCardClickBehaviour(signal.CardView);
+                    break;
+            }
+           
+        }
+
+        private void OnChooseHandCardClickBehaviour(CardView card)
+        {
+            if (card.StateType == ECardStateType.InDeck)
+            {
+                Debug.Log("Карта в колоде. Никаких действий с ней не предполагается");
+                return;
+            }
+            if (card.Owner == _currentPlayer && card.CanSwaped)
+            {
+                _currentPlayer.SetCardFromHandInDeck(card);
+                _currentPlayer.SetCardFromDeckInHand(_deckBuilder.GetTopCardFromDeck(_currentPlayer));
+            }
+        }
+
+        private void OnMoveStageCardClickBehaviour(CardView card)
+        {
+            
         }
 
         public void PointerOnCard(CardPointerSignal signal)
@@ -100,12 +132,12 @@ namespace DefaultNamespace
 
         public void OnStageChange(StageChangeSignal signal)
         {
-            throw new NotImplementedException();
+            _currentStageType = signal.StageType;
         }
 
         public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
         {
-            throw new NotImplementedException();
+            _currentPlayer = _playersProvider.GetPlayer(signal.Player);
         }
         
     }

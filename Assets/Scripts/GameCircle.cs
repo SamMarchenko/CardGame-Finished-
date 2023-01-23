@@ -7,7 +7,7 @@ using Zenject;
 
 public class GameCircle : IInitializable, ITickable
 {
-    private ECurrentStageType _currentStage;
+    private ECurrentStageType _currentStage = ECurrentStageType.StartWaiting;
     private EPlayers _currentPlayerType = EPlayers.FirstPlayer;
     private readonly DeckBuilder _deckBuilder;
     private readonly CardMoverView _cardMoverView;
@@ -35,10 +35,10 @@ public class GameCircle : IInitializable, ITickable
 
     public void Initialize()
     {
-        SetGameStage(ECurrentStageType.ChooseStartHandStage);
+        SetGameStage(ECurrentStageType.StartWaiting);
         GetPlayers();
         SetCurrentActivePlayer(EPlayers.FirstPlayer);
-        BeginStartHandStage();
+        //BeginStartHandStage();
     }
 
     private void GetPlayers()
@@ -49,9 +49,11 @@ public class GameCircle : IInitializable, ITickable
 
     private void BeginStartHandStage()
     {
+        _bus.StageChangeFire(new StageChangeSignal(_currentStage));
+        _bus.CurrentPlayerChangeFire(new CurrentPlayerChangeSignal(_currentPlayerType));
         for (int i = 0; i < 3; i++)
         {
-            var card = _deckBuilder.GetTopCardFromDeck(_currentPlayerType);
+            var card = _deckBuilder.GetTopCardFromDeck(_currentPlayer);
             _currentPlayer.SetCardFromDeckInHand(card);
         }
     }
@@ -73,6 +75,12 @@ public class GameCircle : IInitializable, ITickable
         //todo: тут захардкожено. Убрать вообще отсюда
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (_currentStage == ECurrentStageType.StartWaiting)
+            {
+                SetGameStage(ECurrentStageType.ChooseStartHandStage);
+                BeginStartHandStage();
+                return;
+            }
             Debug.Log("Ход окончен");
             ChangeSide();
         }

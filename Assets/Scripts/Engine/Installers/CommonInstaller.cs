@@ -20,6 +20,7 @@ namespace Engine.Installers
             BindFactories();
 
             // Порядок важен
+            BindSignals();
             Container.BindInterfacesAndSelfTo<PlayersProvider>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<DeckBuilder>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<GameCircle>().AsSingle().NonLazy();
@@ -28,7 +29,7 @@ namespace Engine.Installers
             Container.BindInterfacesAndSelfTo<CardMoverView>().AsSingle().NonLazy();
             
 
-            BindSignals();
+            
 
             Ui();
         }

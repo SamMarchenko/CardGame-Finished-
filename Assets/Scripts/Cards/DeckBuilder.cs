@@ -15,7 +15,6 @@ namespace DefaultNamespace
         private int _maxNumberCardInDeck = 30;
         private Random _random;
 
-
         public DeckBuilder(CardFactory cardFactory, ParentView parentView)
         {
             _cardFactory = cardFactory;
@@ -27,6 +26,11 @@ namespace DefaultNamespace
             _playerDeck1 = BuildDeck(EPlayers.FirstPlayer);
             _playerDeck2 = BuildDeck(EPlayers.SecondPlayer);
             _random = new Random();
+        }
+
+        private bool IsDecksBuilded()
+        {
+            return _playerDeck1 != null && _playerDeck2 != null;
         }
 
         private List<CardView> BuildDeck(EPlayers player)
@@ -68,16 +72,17 @@ namespace DefaultNamespace
 
         public List<CardView> GetFullDeck(EPlayers player)
         {
-            //пришлось продублировать из Initialize для проверки так как падало с Null
-            // и подтвердилась гипотеза, Initialize в этом классе вызывается позже чем требуется и поэтому вызывать BuildDeck лучше не при старте, а потребованию
-            _playerDeck1 = BuildDeck(EPlayers.FirstPlayer);
-            _playerDeck2 = BuildDeck(EPlayers.SecondPlayer);
+            if (!IsDecksBuilded())
+            {
+                _playerDeck1 = BuildDeck(EPlayers.FirstPlayer);
+                _playerDeck2 = BuildDeck(EPlayers.SecondPlayer);
+            }
             return player == EPlayers.FirstPlayer ? _playerDeck1 : _playerDeck2;
         }
 
-        public CardView GetTopCardFromDeck(EPlayers player)
+        public CardView GetTopCardFromDeck(Player player)
         {
-            var _currentDeck = GetFullDeck(player);
+            var _currentDeck = player.MyCardsInDeck;
             var _topCard = _currentDeck[_currentDeck.Count - 1];
             _currentDeck.Remove(_topCard);
             return _topCard;

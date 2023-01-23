@@ -11,6 +11,8 @@ namespace DefaultNamespace
         private Player _secondPlayer;
         private PlayerFactory _playerFactory;
         private readonly DeckBuilder _deckBuilder;
+        private ECurrentStageType _stageType;
+        private EPlayers _currentPlayerType;
 
         public PlayersProvider(PlayerFactory playerFactory, DeckBuilder deckBuilder)
         {
@@ -21,7 +23,7 @@ namespace DefaultNamespace
         public void Initialize()
         {
             CreatePlayers();
-            GiveDeckToPlayers();
+            GiveDeckBuilderToPlayers();
         }
 
         public Player GetPlayer(EPlayers player)
@@ -35,20 +37,20 @@ namespace DefaultNamespace
             _secondPlayer = _playerFactory.CreatePlayer(EPlayers.SecondPlayer);
         }
 
-        private void GiveDeckToPlayers()
+        private void GiveDeckBuilderToPlayers()
         {
-            _firstPlayer.SetDeck(_deckBuilder.GetFullDeck(EPlayers.FirstPlayer));
-            _secondPlayer.SetDeck(_deckBuilder.GetFullDeck(EPlayers.SecondPlayer));
+            _firstPlayer.SetDeckBuilder(_deckBuilder);
+            _secondPlayer.SetDeckBuilder(_deckBuilder);
         }
 
         public void OnStageChange(StageChangeSignal signal)
         {
-            throw new NotImplementedException();
+            _stageType = signal.StageType;
         }
 
         public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
         {
-            throw new NotImplementedException();
+            _currentPlayerType = signal.Player;
         }
     }
 }
