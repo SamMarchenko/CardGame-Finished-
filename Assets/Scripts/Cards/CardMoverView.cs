@@ -6,7 +6,8 @@ using Zenject;
 
 namespace DefaultNamespace
 {
-    public class CardMoverView : ICardClickListener, ICardPointerListener, ICardDragListener, IChangeStageListener, IChangeCurrentPlayerListener
+    public class CardMoverView : ICardClickListener, ICardPointerListener, ICardDragListener, IChangeStageListener,
+        IChangeCurrentPlayerListener
     {
         private readonly ParentView _parentView;
         private readonly PlayersProvider _playersProvider;
@@ -14,8 +15,6 @@ namespace DefaultNamespace
         private Camera _camera;
         private Player _currentPlayer;
         private ECurrentStageType _currentStageType;
-
-        private int _swapCardsCount = 0;
 
         public CardMoverView(ParentView parentView, PlayersProvider playersProvider, DeckBuilder deckBuilder)
         {
@@ -37,28 +36,25 @@ namespace DefaultNamespace
                     OnMoveStageCardClickBehaviour(signal.CardView);
                     break;
             }
-           
         }
 
         private void OnChooseHandCardClickBehaviour(CardView card)
         {
-            
             if (card.StateType == ECardStateType.InDeck)
             {
                 Debug.Log("Карта в колоде. Никаких действий с ней не предполагается");
                 return;
             }
+
             if (card.Owner == _currentPlayer && _currentPlayer.CanSwapCard(card))
             {
                 _currentPlayer.SetCardFromHandInDeck(card);
                 _currentPlayer.SetCardFromDeckInHand(_deckBuilder.GetTopCardFromDeck(_currentPlayer));
-                _swapCardsCount++;
             }
         }
 
         private void OnMoveStageCardClickBehaviour(CardView card)
         {
-            
         }
 
         public void PointerOnCard(CardPointerSignal signal)
@@ -66,11 +62,9 @@ namespace DefaultNamespace
             var cardView = signal.CardView;
             switch (cardView.StateType)
             {
-                case ECardStateType.InHand: 
-                    //Debug.Log($"Курсор наведен на карту {signal.CardView.NameText.text}");
-                    ScaleCard(EScaleType.Increase, cardView);
-                    break;
+                case ECardStateType.InHand:
                 case ECardStateType.OnTable:
+                    cardView.UpScaleCard();
                     break;
             }
         }
@@ -82,10 +76,8 @@ namespace DefaultNamespace
             switch (cardView.StateType)
             {
                 case ECardStateType.InHand:
-                    //Debug.Log($"Курсор убран с карты {signal.CardView.NameText.text}");
-                    ScaleCard(EScaleType.Decrease, cardView);
-                    break;
                 case ECardStateType.OnTable:
+                    cardView.DownScaleCard();
                     break;
             }
         }
@@ -93,7 +85,7 @@ namespace DefaultNamespace
 
         public void OnDragCardStart(CardDragSignal signal)
         {
-            ScaleCard(EScaleType.Increase, signal.CardView);
+            // ScaleCard(EScaleType.Increase, signal.CardView);
         }
 
         public void OnDraggingCard(CardDragSignal signal)
@@ -104,24 +96,24 @@ namespace DefaultNamespace
 
         public void OnDragCardEnd(CardDragSignal signal)
         {
-            ScaleCard(EScaleType.Decrease, signal.CardView);
+            // ScaleCard(EScaleType.Decrease, signal.CardView);
         }
 
 
-        private void ScaleCard(EScaleType scaleType, CardView cardView)
-        {
-            switch (scaleType)
-            {
-                case EScaleType.Increase:
-                    cardView.transform.localPosition += cardView.StepPosition;
-                    cardView.transform.localScale *= cardView.Scale;
-                    break;
-                case EScaleType.Decrease:
-                    cardView.transform.localPosition -= cardView.StepPosition;
-                    cardView.transform.localScale /= cardView.Scale;
-                    break;
-            }
-        }
+        // private void ScaleCard(EScaleType scaleType, CardView cardView)
+        // {
+        //     switch (scaleType)
+        //     {
+        //         case EScaleType.Increase:
+        //             cardView.transform.localPosition += cardView.StepPosition;
+        //             cardView.transform.localScale *= cardView.Scale;
+        //             break;
+        //         case EScaleType.Decrease:
+        //             cardView.transform.localPosition -= cardView.StepPosition;
+        //             cardView.transform.localScale /= cardView.Scale;
+        //             break;
+        //     }
+        // }
 
         private void DragCard(CardView cardView)
         {
@@ -143,6 +135,5 @@ namespace DefaultNamespace
         {
             _currentPlayer = _playersProvider.GetPlayer(signal.Player);
         }
-        
     }
 }

@@ -40,7 +40,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     private CardSignalBus _bus;
-    //public bool CanSwaped = true;
+    public bool CanBeDragged = false;
+    public bool IsScaled;
 
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
     public Player Owner;
@@ -67,6 +68,36 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         IsEnable = !IsEnable;
     }
 
+    public void UpScaleCard()
+    {
+        if (IsScaled)
+        {
+            return;
+        }
+        transform.localPosition += _stepPosition;
+        transform.localScale *= _scale;
+        IsScaled = true;
+    }
+
+    public void DownScaleCard()
+    {
+        if (!IsScaled)
+        {
+            return;
+        }
+        transform.localPosition -= _stepPosition;
+        transform.localScale /= _scale;
+        IsScaled = false;
+    }
+
+    private void NormalizedScale()
+    {
+        if (IsScaled)
+        {
+            DownScaleCard();
+        }
+    }
+
     public Transform GetStartCardPosition()
     {
         return _startPosition;
@@ -89,7 +120,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void MoveAnimation(Transform endPosition)
     {
-        StartCoroutine(MoveInHandFromDeck(this, endPosition));
+        StartCoroutine(MoveCardRoutine(endPosition));
     }
 
     public void DestroySelf()
@@ -97,22 +128,25 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         Destroy(gameObject);
     }
 
-    private IEnumerator MoveInHandFromDeck(CardView cardView, Transform parent)
+    private IEnumerator MoveCardRoutine(Transform parent)
     {
         var time = 0f;
-        var startPos = cardView.transform.position;
+        var startPos = transform.position;
         var endPos = parent.position;
-        cardView.SwitchVisual();
-        cardView.transform.eulerAngles = new Vector3(0, 0, 180);
+        NormalizedScale();
+        transform.eulerAngles = new Vector3(0, 0, 180);
+        
         while (time < 1f)
         {
-            cardView.transform.position = Vector3.Lerp(startPos, endPos, time);
+            transform.position = Vector3.Lerp(startPos, endPos, time);
             time += Time.deltaTime;
             yield return null;
         }
-
-        cardView.transform.parent = parent;
-        cardView.StateType = ECardStateType.InHand;
+        
+        //todo: тут передавался parent. Не знаю почему, заменил на position.
+        transform.position = parent.position;
+        
+        
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -138,6 +172,10 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!CanBeDragged)
+        {
+            return;
+        }
         _bus.FireDragging(new CardDragSignal(this));
         Debug.Log("OnDrag");
     }

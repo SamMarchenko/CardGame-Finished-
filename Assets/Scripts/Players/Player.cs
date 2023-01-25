@@ -103,7 +103,9 @@ namespace DefaultNamespace
 
             AddCardInDictionary(_handCardSlotDictionary, card, slot, state);
             _myCardsInHand.Add(card);
+            card.StateType = state;
             card.MoveAnimation(slot);
+            card.SwitchVisual();
 
             return slot;
         }
@@ -142,6 +144,7 @@ namespace DefaultNamespace
             
             card.StateType = state;
             card.MoveAnimation(_myDeckSlot);
+            card.SwitchVisual();
             _deckBuilder.ShuffleDeck(_myCardsInDeck);
         }
 
