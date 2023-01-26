@@ -55,7 +55,7 @@ namespace DefaultNamespace
         {
             _currentPlayerType = signal.Player;
             _currentPlayer = GetPlayer(_currentPlayerType);
-            
+            RollCardsInHand();
             
             switch (_stageType)
             {
@@ -63,6 +63,20 @@ namespace DefaultNamespace
                     _currentPlayer.StartOfMove();
                     break;
              
+            }
+        }
+
+        private void RollCardsInHand()
+        {
+            if (_currentPlayer == _firstPlayer)
+            {
+                _currentPlayer.RollCardsInHand(true);
+                _secondPlayer.RollCardsInHand(false);
+            }
+            else
+            {
+                _currentPlayer.RollCardsInHand(true);
+                _firstPlayer.RollCardsInHand(false);
             }
         }
     }

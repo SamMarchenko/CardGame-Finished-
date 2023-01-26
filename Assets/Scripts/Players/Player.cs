@@ -204,6 +204,14 @@ namespace DefaultNamespace
 
             return null;
         }
+
+        public void RollCardsInHand(bool visible)
+        {
+            foreach (var card in _myCardsInHand)
+            {
+                card.IsEnable = visible;
+            }
+        }
         
         private Transform FindFirstFreeSlot(Transform[] slots, Dictionary<CardView, Transform> dictionary)
         {
@@ -249,6 +257,7 @@ namespace DefaultNamespace
         {
             _currentMana -= card.GetCost();
         }
+        
         
 
 
