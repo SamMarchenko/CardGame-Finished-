@@ -15,6 +15,7 @@ namespace DefaultNamespace
         private Camera _camera;
         private Player _currentPlayer;
         private ECurrentStageType _currentStageType;
+        private float _unwantedDragDistance = 100f;
 
         public CardMoverView(ParentView parentView, PlayersProvider playersProvider, DeckBuilder deckBuilder)
         {
@@ -90,35 +91,50 @@ namespace DefaultNamespace
 
         public void OnDraggingCard(CardDragSignal signal)
         {
-            if (signal.CardView.Owner != _currentPlayer)
+            if (signal.CardView.Owner != _currentPlayer || _currentStageType != ECurrentStageType.MoveStage)
             {
                 return;
             }
+
             var cardView = signal.CardView;
             DragCard(cardView);
         }
 
         public void OnDragCardEnd(CardDragSignal signal)
         {
-            if (_currentStageType != ECurrentStageType.MoveStage || signal.CardView.Owner != _currentPlayer )
+            if (_currentStageType != ECurrentStageType.MoveStage || signal.CardView.Owner != _currentPlayer)
             {
                 return;
             }
-            
+
             var card = signal.CardView;
-            
+
 
             switch (card.StateType)
             {
                 case ECardStateType.InHand:
-                  var slot = _currentPlayer.SetCardFromHandInTable(card);
-                  if (slot == null)
-                  {
-                      card.MoveAnimation(_currentPlayer.GetCurrentSlotByCard(card));
-                  }
-                  card.MoveAnimation(slot);
-                  break;
+                    var startSlot = _currentPlayer.GetCurrentSlotByCard(card);
+                    var distance = Vector3.Distance(card.transform.position, startSlot.position);
+                    if (distance <= _unwantedDragDistance)
+                    {
+                        card.MoveAnimation(_currentPlayer.GetCurrentSlotByCard(card));
+                        return;
+                    }
+
+                    var endSlot = _currentPlayer.SetCardFromHandInTable(card);
+
+                    if (endSlot == null)
+                    {
+                        card.MoveAnimation(_currentPlayer.GetCurrentSlotByCard(card));
+                        return;
+                    }
+
+                    card.MoveAnimation(endSlot);
+                    break;
                 case ECardStateType.OnTable:
+                    //todo: пока если карту тянуть со стола, то она возвращается в свой слот.
+                    //Скорее всего надо будет вообще запретить драгать со стола - атаку реализовать через клик по карте своей => карте врага
+                    card.MoveAnimation(_currentPlayer.GetCurrentSlotByCard(card));
                     break;
                 case ECardStateType.Discard:
                     break;
@@ -126,7 +142,7 @@ namespace DefaultNamespace
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
+
 
         private void DragCard(CardView cardView)
         {
@@ -147,7 +163,7 @@ namespace DefaultNamespace
         public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
         {
             _currentPlayer = _playersProvider.GetPlayer(signal.Player);
-            
+
             //todo: добавить проверку на текущую стадию. Если стадия хода, то текущему игроку восстанавливать и увеличивать ману; брать карту из колоды
         }
     }

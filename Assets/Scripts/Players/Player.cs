@@ -249,6 +249,7 @@ namespace DefaultNamespace
         {
             _currentMana -= card.GetCost();
         }
+        
 
 
     }

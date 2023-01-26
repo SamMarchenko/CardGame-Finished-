@@ -178,7 +178,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!CanBeDragged)
+        if (StateType != ECardStateType.InHand)
         {
             return;
         }
