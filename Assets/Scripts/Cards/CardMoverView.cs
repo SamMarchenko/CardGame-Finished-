@@ -96,8 +96,14 @@ namespace DefaultNamespace
                 return;
             }
 
-            var cardView = signal.CardView;
-            DragCard(cardView);
+            var card = signal.CardView;
+            
+            if (!_currentPlayer.IsEnoughMana(card))
+            {
+                Debug.Log("Не достаточно маны!!!!");
+                return;
+            }
+            DragCard(card);
         }
 
         public void OnDragCardEnd(CardDragSignal signal)
@@ -106,9 +112,10 @@ namespace DefaultNamespace
             {
                 return;
             }
-
+            
             var card = signal.CardView;
 
+            
 
             switch (card.StateType)
             {
@@ -130,6 +137,7 @@ namespace DefaultNamespace
                     }
 
                     card.MoveAnimation(endSlot);
+                    _currentPlayer.ManaUse(card);
                     break;
                 case ECardStateType.OnTable:
                     //todo: пока если карту тянуть со стола, то она возвращается в свой слот.
@@ -142,8 +150,7 @@ namespace DefaultNamespace
                     throw new ArgumentOutOfRangeException();
             }
         }
-
-
+        
         private void DragCard(CardView cardView)
         {
             Ray R = _camera.ScreenPointToRay(Input.mousePosition);

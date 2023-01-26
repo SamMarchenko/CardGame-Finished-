@@ -167,13 +167,13 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnBeginDrag(PointerEventData eventData)
     {
         _bus.FireDragStart(new CardDragSignal(this));
-        Debug.Log("OnBeginDrag");
+//        Debug.Log("OnBeginDrag");
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         _bus.FireDragEnd(new CardDragSignal(this));
-        Debug.Log("OnEndDrag");
+       // Debug.Log("OnEndDrag");
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -183,7 +183,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             return;
         }
         _bus.FireDragging(new CardDragSignal(this));
-        Debug.Log("OnDrag");
+//        Debug.Log("OnDrag");
     }
 
     public void OnPointerClick(PointerEventData eventData)

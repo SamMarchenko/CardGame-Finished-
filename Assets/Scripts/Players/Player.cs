@@ -28,7 +28,7 @@ namespace DefaultNamespace
         private int _startHandCards = 3;
         private ECurrentStageType _currentStageType;
 
-        private int _currentMana;
+        private int _currentMana = 3;
         private int _maxMana = 3;
         private bool _firstMove = true;
         
@@ -39,6 +39,16 @@ namespace DefaultNamespace
         public void SetCurrentStageType(ECurrentStageType stageType)
         {
             _currentStageType = stageType;
+        }
+
+        public int GetCurrentMana()
+        {
+            return _currentMana;
+        }
+
+        public bool IsEnoughMana(CardView card)
+        {
+            return _currentMana - card.GetCost() >= 0;
         }
 
         public void Init(ParentView parentView, EPlayers player)
@@ -169,6 +179,7 @@ namespace DefaultNamespace
         
         public void StartOfMove()
         {
+            
             if (!_firstMove)
             {
                 var card = _deckBuilder.GetTopCardFromDeck(this);
@@ -179,6 +190,7 @@ namespace DefaultNamespace
             
             CanDragCardsFromHand();
             _firstMove = false;
+            Debug.Log($"У игрока {PlayerType} {_currentMana}/{_maxMana} маны");
         }
 
         private void CanDragCardsFromHand()
@@ -253,9 +265,10 @@ namespace DefaultNamespace
             _maxMana = 10;
         }
 
-        private void ManaUse(CardView card)
+        public void ManaUse(CardView card)
         {
             _currentMana -= card.GetCost();
+            Debug.Log($"У игрока {PlayerType} осталось {_currentMana}/{_maxMana} маны.");
         }
         
         
