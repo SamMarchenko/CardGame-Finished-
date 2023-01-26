@@ -57,6 +57,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _healthText.text = data.Health.ToString();
     }
 
+    public int GetCost()
+    {
+        return int.Parse(_cosText.text);
+    }
+    
+
     public void Init(CardSignalBus bus)
     {
         _bus = bus;

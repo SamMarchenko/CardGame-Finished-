@@ -9,6 +9,7 @@ namespace DefaultNamespace
     {
         private Player _firstPlayer;
         private Player _secondPlayer;
+        private Player _currentPlayer;
         private PlayerFactory _playerFactory;
         private readonly DeckBuilder _deckBuilder;
         private ECurrentStageType _stageType;
@@ -46,11 +47,23 @@ namespace DefaultNamespace
         public void OnStageChange(StageChangeSignal signal)
         {
             _stageType = signal.StageType;
+            _firstPlayer.SetCurrentStageType(_stageType);
+            _secondPlayer.SetCurrentStageType(_stageType);
         }
 
         public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
         {
             _currentPlayerType = signal.Player;
+            _currentPlayer = GetPlayer(_currentPlayerType);
+            
+            
+            switch (_stageType)
+            {
+                case ECurrentStageType.MoveStage:
+                    _currentPlayer.StartOfMove();
+                    break;
+             
+            }
         }
     }
 }

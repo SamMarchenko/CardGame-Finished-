@@ -96,24 +96,9 @@ namespace DefaultNamespace
 
         public void OnDragCardEnd(CardDragSignal signal)
         {
-            // ScaleCard(EScaleType.Decrease, signal.CardView);
+            
         }
-
-
-        // private void ScaleCard(EScaleType scaleType, CardView cardView)
-        // {
-        //     switch (scaleType)
-        //     {
-        //         case EScaleType.Increase:
-        //             cardView.transform.localPosition += cardView.StepPosition;
-        //             cardView.transform.localScale *= cardView.Scale;
-        //             break;
-        //         case EScaleType.Decrease:
-        //             cardView.transform.localPosition -= cardView.StepPosition;
-        //             cardView.transform.localScale /= cardView.Scale;
-        //             break;
-        //     }
-        // }
+        
 
         private void DragCard(CardView cardView)
         {
@@ -134,6 +119,8 @@ namespace DefaultNamespace
         public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
         {
             _currentPlayer = _playersProvider.GetPlayer(signal.Player);
+            
+            //todo: добавить проверку на текущую стадию. Если стадия хода, то текущему игроку восстанавливать и увеличивать ману; брать карту из колоды
         }
     }
 }

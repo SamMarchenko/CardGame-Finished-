@@ -25,9 +25,20 @@ namespace DefaultNamespace
         private DeckBuilder _deckBuilder;
 
         private int _startHandCards = 3;
+        private ECurrentStageType _currentStageType;
 
-        public bool ChooseStartHand = false;
+        private int _currentMana;
+        private int _maxMana = 3;
+        private bool _firstMove = true;
+        
+
+
         public EPlayers PlayerType;
+
+        public void SetCurrentStageType(ECurrentStageType stageType)
+        {
+            _currentStageType = stageType;
+        }
 
         public void Init(ParentView parentView, EPlayers player)
         {
@@ -154,6 +165,28 @@ namespace DefaultNamespace
             DeleteCardFromDictionary(_tableCardSlotDictionary, card);
             //todo: тут убивается карта. Мб сигнал надо на анимацию оттсюда запускать
         }
+        
+        public void StartOfMove()
+        {
+            if (!_firstMove)
+            {
+                var card = _deckBuilder.GetTopCardFromDeck(this);
+                SetCardFromDeckInHand(card);
+                ManaIncrease();
+                ManaRegenerate();
+            }
+            
+            CanDragCardsFromHand();
+            _firstMove = false;
+        }
+
+        private void CanDragCardsFromHand()
+        {
+            foreach (var card in _myCardsInHand)
+            {
+                card.CanBeDragged = true;
+            }
+        }
 
 
         private Transform FindFirstFreeSlot(Transform[] slots, Dictionary<CardView, Transform> dictionary)
@@ -180,5 +213,27 @@ namespace DefaultNamespace
         {
             dictionary.Remove(card);
         }
+
+        private void ManaRegenerate()
+        {
+            _currentMana = _maxMana;
+        }
+
+        private void ManaIncrease()
+        {
+            if (_maxMana < 10)
+            {
+                _maxMana++;
+                return;
+            }
+            _maxMana = 10;
+        }
+
+        private void ManaUse(CardView card)
+        {
+            _currentMana -= card.GetCost();
+        }
+
+
     }
 }
