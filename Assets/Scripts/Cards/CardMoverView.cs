@@ -90,13 +90,41 @@ namespace DefaultNamespace
 
         public void OnDraggingCard(CardDragSignal signal)
         {
+            if (signal.CardView.Owner != _currentPlayer)
+            {
+                return;
+            }
             var cardView = signal.CardView;
             DragCard(cardView);
         }
 
         public void OnDragCardEnd(CardDragSignal signal)
         {
+            if (_currentStageType != ECurrentStageType.MoveStage || signal.CardView.Owner != _currentPlayer )
+            {
+                return;
+            }
             
+            var card = signal.CardView;
+            
+
+            switch (card.StateType)
+            {
+                case ECardStateType.InHand:
+                  var slot = _currentPlayer.SetCardFromHandInTable(card);
+                  if (slot == null)
+                  {
+                      card.MoveAnimation(_currentPlayer.GetCurrentSlotByCard(card));
+                  }
+                  card.MoveAnimation(slot);
+                  break;
+                case ECardStateType.OnTable:
+                    break;
+                case ECardStateType.Discard:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
         
 

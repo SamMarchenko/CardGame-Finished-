@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cards;
 using UnityEngine;
 
@@ -189,6 +190,21 @@ namespace DefaultNamespace
         }
 
 
+        public Transform GetCurrentSlotByCard(CardView card)
+        {
+            switch (card.StateType)
+            {
+                case ECardStateType.InDeck:
+                    return _myDeckSlot;
+                case ECardStateType.InHand:
+                    return _handCardSlotDictionary[card];
+                case ECardStateType.OnTable:
+                    return _tableCardSlotDictionary[card];
+            }
+
+            return null;
+        }
+        
         private Transform FindFirstFreeSlot(Transform[] slots, Dictionary<CardView, Transform> dictionary)
         {
             foreach (var slot in slots)
