@@ -100,7 +100,7 @@ namespace DefaultNamespace
             
             if (!_currentPlayer.IsEnoughMana(card))
             {
-                Debug.Log("Не достаточно маны!!!!");
+                Debug.Log($"Недостаточно маны. {_currentPlayer.PlayerType} имеет {_currentPlayer.GetCurrentMana()}. Карта стоит {card.GetCost()}");
                 return;
             }
             DragCard(card);

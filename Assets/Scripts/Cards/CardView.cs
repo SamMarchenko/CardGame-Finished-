@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 using Zenject;
 
 public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler,
-    IDragHandler, IPointerClickHandler
+    IDragHandler, IPointerClickHandler, IDamageable
 {
     [SerializeField] private GameObject _frontCard;
     [Space, SerializeField] private MeshRenderer _icon;
@@ -62,7 +62,16 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         return int.Parse(_cosText.text);
     }
     
+    public int GetHealth()
+    {
+        return int.Parse(_healthText.text);
+    }
 
+    private void SetHealth(int health)
+    {
+        _healthText.text = health.ToString();
+    }
+    
     public void Init(CardSignalBus bus)
     {
         _bus = bus;
@@ -189,5 +198,17 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         _bus.CardClickFire(new CardClickSignal(this));
+    }
+
+    public int ApplyDamage()
+    {
+        return int.Parse(_attackText.text);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        var health = GetHealth();
+        health -= damage;
+        SetHealth(health);
     }
 }

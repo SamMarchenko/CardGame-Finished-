@@ -1391,3 +1391,5 @@ MonoBehaviour:
   _typeText: {fileID: 1307249472091281202}
   _attackText: {fileID: 1307249473160749871}
   _healthText: {fileID: 1307249473871312366}
+  CanBeDragged: 0
+  IsScaled: 0

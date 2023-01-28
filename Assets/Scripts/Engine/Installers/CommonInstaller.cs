@@ -41,8 +41,10 @@ namespace Engine.Installers
             Container.BindInterfacesAndSelfTo<CardDragSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<ChangeStageSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<ChangeCurrentPlayerSignalHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<PlayerClickSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<SignalBusInjector>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<CardSignalBus>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<PlayerSignalBus>().AsSingle().NonLazy();
         }
 
         private void Ui()

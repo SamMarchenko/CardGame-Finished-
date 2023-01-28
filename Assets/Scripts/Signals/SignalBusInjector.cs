@@ -9,37 +9,46 @@ namespace Signals
     /// </summary>
     public class SignalBusInjector : IInitializable
     {
-        private readonly CardSignalBus _bus;
+        private readonly CardSignalBus _cardSignalBus;
+        private readonly PlayerSignalBus _playerSignalBus;
         private readonly CardClickSignalHandler _cardClickSignalHandler;
         private readonly CardPointerSignalHandler _cardPointerSignalHandler;
         private readonly CardDragSignalHandler _cardDragSignalHandler;
         private readonly ChangeStageSignalHandler _changeStageSignalHandler;
         private readonly ChangeCurrentPlayerSignalHandler _changeCurrentPlayerSignalHandler;
+        private readonly PlayerClickSignalHandler _playerClickSignalHandler;
 
-        public SignalBusInjector(CardSignalBus bus,
+        public SignalBusInjector(CardSignalBus cardSignalBus,
             CardClickSignalHandler cardClickSignalHandler,
             CardPointerSignalHandler cardPointerSignalHandler,
             CardDragSignalHandler cardDragSignalHandler,
+            PlayerSignalBus playerSignalBus,
             ChangeStageSignalHandler changeStageSignalHandler,
-            ChangeCurrentPlayerSignalHandler changeCurrentPlayerSignalHandler)
+            ChangeCurrentPlayerSignalHandler changeCurrentPlayerSignalHandler,
+            PlayerClickSignalHandler playerClickSignalHandler)
         {
-            _bus = bus;
+            _cardSignalBus = cardSignalBus;
             _cardClickSignalHandler = cardClickSignalHandler;
             _cardPointerSignalHandler = cardPointerSignalHandler;
             _cardDragSignalHandler = cardDragSignalHandler;
+
+            _playerSignalBus = playerSignalBus;
             _changeStageSignalHandler = changeStageSignalHandler;
             _changeCurrentPlayerSignalHandler = changeCurrentPlayerSignalHandler;
+            _playerClickSignalHandler = playerClickSignalHandler;
         }
 
         // комментарии потом можешь почистить,
         // внедряем зависимости не через конструктор, чтобы избежать циклической зависимости
         public void Initialize()
         {
-            _bus.Init(_cardClickSignalHandler,
+            _cardSignalBus.Init(_cardClickSignalHandler,
                 _cardPointerSignalHandler,
-                _cardDragSignalHandler,
-                _changeStageSignalHandler,
-                _changeCurrentPlayerSignalHandler);
+                _cardDragSignalHandler);
+
+            _playerSignalBus.Init(_changeStageSignalHandler,
+                _changeCurrentPlayerSignalHandler,
+                _playerClickSignalHandler);
         }
     }
 }

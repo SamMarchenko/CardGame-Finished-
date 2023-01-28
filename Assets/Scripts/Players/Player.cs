@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class Player
+    public class Player : IDamageable
     {
         private Transform _myDeckSlot;
         private Transform _enemyDeckSlot;
@@ -270,9 +270,17 @@ namespace DefaultNamespace
             _currentMana -= card.GetCost();
             Debug.Log($"У игрока {PlayerType} осталось {_currentMana}/{_maxMana} маны.");
         }
-        
-        
 
 
+        public int ApplyDamage()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TakeDamage(int damage)
+        {
+            throw new NotImplementedException();
+        }
+        
     }
 }
