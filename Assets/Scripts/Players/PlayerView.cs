@@ -6,6 +6,7 @@ public class PlayerView : MonoBehaviour
     private EPlayers _playerType;
     
     private int _maxHealth = 30;
+    private const int _damage = 0;
     [SerializeField] private int _currentHealth;
     
 

@@ -10,14 +10,12 @@ namespace Engine.Installers
     public class CommonInstaller : MonoInstaller
     {
         [SerializeField] private ParentView _parentView;
-        [SerializeField] private PlayerView _firstPlayerView;
-        [SerializeField] private PlayerView _secondPlayerView;
+        [SerializeField] private AllPlayersView _allPlayersView;
 
         public override void InstallBindings()
         {
             Container.BindInstance(_parentView);
-            Container.BindInstance(_firstPlayerView);
-            Container.BindInstance(_secondPlayerView);
+            Container.BindInstance(_allPlayersView);
 
             Container.BindInterfacesAndSelfTo<CardPropertiesDataProvider>().AsSingle().NonLazy();
 

@@ -8,11 +8,11 @@ namespace DefaultNamespace
         private readonly PlayerView _firstPlayerView;
         private readonly PlayerView _secondPlayerView;
 
-        public PlayerFactory(ParentView parentView, PlayerView firstPlayerView, PlayerView secondPlayerView)
+        public PlayerFactory(ParentView parentView, AllPlayersView allPlayersView)
         {
             _parentView = parentView;
-            _firstPlayerView = firstPlayerView;
-            _secondPlayerView = secondPlayerView;
+            _firstPlayerView = allPlayersView.FirstPlayerView;
+            _secondPlayerView = allPlayersView.SecondPlayerView;
         }
 
         public Player CreatePlayer(EPlayers playerType)
