@@ -7,6 +7,8 @@ namespace DefaultNamespace
 {
     public class Player : IDamageable
     {
+        private PlayerView _playerView;
+        
         private Transform _myDeckSlot;
         private Transform _enemyDeckSlot;
         private List<CardView> _myCardsInDeck;
@@ -28,8 +30,7 @@ namespace DefaultNamespace
         private int _startHandCards = 3;
         private ECurrentStageType _currentStageType;
 
-        private int _currentMana = 3;
-        private int _maxMana = 3;
+        
         private bool _firstMove = true;
         
 
@@ -43,15 +44,15 @@ namespace DefaultNamespace
 
         public int GetCurrentMana()
         {
-            return _currentMana;
+            return _playerView.GetCurrentMana();
         }
 
         public bool IsEnoughMana(CardView card)
         {
-            return _currentMana - card.GetCost() >= 0;
+            return _playerView.GetCurrentMana() - card.GetCost() >= 0;
         }
 
-        public void Init(ParentView parentView, EPlayers player)
+        public void Init(ParentView parentView, EPlayers player, PlayerView playerView)
         {
             PlayerType = player;
             if (player == EPlayers.FirstPlayer)
@@ -73,6 +74,8 @@ namespace DefaultNamespace
                 _enemyTableSlots = parentView.Table1Parent;
             }
 
+            _playerView = playerView;
+            _playerView.Init(PlayerType);
             _myCardsInDeck = new List<CardView>();
             _myCardsInHand = new List<CardView>(_myHandSlots.Length);
             _myCardsInTable = new List<CardView>(_myTableSlots.Length);
@@ -190,7 +193,7 @@ namespace DefaultNamespace
             
             CanDragCardsFromHand();
             _firstMove = false;
-            Debug.Log($"У игрока {PlayerType} {_currentMana}/{_maxMana} маны");
+            _playerView.ManaLog();
         }
 
         private void CanDragCardsFromHand()
@@ -252,23 +255,25 @@ namespace DefaultNamespace
 
         private void ManaRegenerate()
         {
-            _currentMana = _maxMana;
+            _playerView.SetCurrentMana(_playerView.GetMaxMana());
         }
 
         private void ManaIncrease()
         {
-            if (_maxMana < 10)
+            var maxMana = _playerView.GetMaxMana();
+            if (maxMana < 10)
             {
-                _maxMana++;
+                maxMana++;
+                _playerView.SetMaxMana(maxMana);
                 return;
             }
-            _maxMana = 10;
+            _playerView.SetMaxMana(10);
+            
         }
 
         public void ManaUse(CardView card)
         {
-            _currentMana -= card.GetCost();
-            Debug.Log($"У игрока {PlayerType} осталось {_currentMana}/{_maxMana} маны.");
+            _playerView.ManaUse(card);
         }
 
 
