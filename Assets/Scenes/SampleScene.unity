@@ -570,6 +570,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abcc7e5c384a4310af756b5eaaa3b0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerType: 0
+  _currentHealth: 0
+  _currentMana: 0
+  _maxMana: 3
 --- !u!1 &225223940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1382,8 +1386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentView: {fileID: 1897343510}
-  _firstPlayerView: {fileID: 210429111}
-  _secondPlayerView: {fileID: 1491916105}
+  _allPlayersView: {fileID: 1897343512}
 --- !u!114 &914311923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1885,6 +1888,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abcc7e5c384a4310af756b5eaaa3b0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerType: 0
+  _currentHealth: 0
+  _currentMana: 0
+  _maxMana: 3
 --- !u!1 &1498631066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2153,6 +2160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1897343511}
   - component: {fileID: 1897343510}
+  - component: {fileID: 1897343512}
   m_Layer: 0
   m_Name: ParentView
   m_TagString: Untagged
@@ -2226,6 +2234,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1897343512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897343509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0e89c8e3ef8467ebcea8b416a9c380b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FirstPlayerView: {fileID: 210429111}
+  SecondPlayerView: {fileID: 1491916105}
 --- !u!1 &1930818282
 GameObject:
   m_ObjectHideFlags: 0

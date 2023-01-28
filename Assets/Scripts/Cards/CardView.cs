@@ -200,12 +200,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _bus.CardClickFire(new CardClickSignal(this));
     }
 
-    public int ApplyDamage()
+    public int GetDamage()
     {
         return int.Parse(_attackText.text);
     }
 
-    public void TakeDamage(int damage)
+    public void ApplyDamage(int damage)
     {
         var health = GetHealth();
         health -= damage;

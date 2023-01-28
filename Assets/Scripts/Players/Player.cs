@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cards;
+using Signals;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class Player : IDamageable
+    public class Player
     {
         private PlayerView _playerView;
+        private PlayerSignalBus _playerSignalBus;
         
         private Transform _myDeckSlot;
         private Transform _enemyDeckSlot;
@@ -52,9 +54,10 @@ namespace DefaultNamespace
             return _playerView.GetCurrentMana() - card.GetCost() >= 0;
         }
 
-        public void Init(ParentView parentView, EPlayers player, PlayerView playerView)
+        public void Init(ParentView parentView, EPlayers player, PlayerView playerView, PlayerSignalBus playerSignalBus)
         {
             PlayerType = player;
+            _playerSignalBus = playerSignalBus;
             if (player == EPlayers.FirstPlayer)
             {
                 _myDeckSlot = parentView.Deck1Parent;
@@ -75,7 +78,7 @@ namespace DefaultNamespace
             }
 
             _playerView = playerView;
-            _playerView.Init(PlayerType);
+            _playerView.Init(PlayerType, _playerSignalBus);
             _myCardsInDeck = new List<CardView>();
             _myCardsInHand = new List<CardView>(_myHandSlots.Length);
             _myCardsInTable = new List<CardView>(_myTableSlots.Length);
@@ -275,17 +278,7 @@ namespace DefaultNamespace
         {
             _playerView.ManaUse(card);
         }
-
-
-        public int ApplyDamage()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void TakeDamage(int damage)
-        {
-            throw new NotImplementedException();
-        }
+        
         
     }
 }

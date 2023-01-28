@@ -1,20 +1,32 @@
-﻿namespace DefaultNamespace
+﻿using UnityEngine;
+
+namespace DefaultNamespace
 {
-    public class DamageController
+    public class DamageController : ICardClickListener, IPlayerClickListener
     {
-        public IDamageable Attacking;
-        public IDamageable Attacked;
+        public IDamageable DamageDealer;
+        public IDamageable AttackedTarget;
         
         
         
 
         private void Attack()
         {
-           var damage =  Attacking.ApplyDamage();
-           Attacked.TakeDamage(damage);
+           var damage =  DamageDealer.GetDamage();
+           AttackedTarget.ApplyDamage(damage);
 
-           damage = Attacked.ApplyDamage();
-           Attacking.TakeDamage(damage);
+           damage = AttackedTarget.GetDamage();
+           DamageDealer.ApplyDamage(damage);
+        }
+
+        public void OnCardClick(CardClickSignal signal)
+        {
+            
+        }
+
+        public void OnPlayerClick(PlayerClickSignal signal)
+        {
+           Debug.Log($"{signal.PlayerView.PlayerType} имеет {signal.PlayerView.GetCurrentMana()} маны и {signal.PlayerView.GetHealth()} HP.");
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IDamageable
     {
-        public int ApplyDamage();
-        public void TakeDamage(int damage);
+        public int GetDamage();
+        public void ApplyDamage(int damage);
     }
 }

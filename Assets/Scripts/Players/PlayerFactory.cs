@@ -1,16 +1,19 @@
 ﻿using Cards;
+using Signals;
 
 namespace DefaultNamespace
 {
     public class PlayerFactory
     {
         private readonly ParentView _parentView;
+        private readonly PlayerSignalBus _playerSignalBus;
         private readonly PlayerView _firstPlayerView;
         private readonly PlayerView _secondPlayerView;
 
-        public PlayerFactory(ParentView parentView, AllPlayersView allPlayersView)
+        public PlayerFactory(ParentView parentView, AllPlayersView allPlayersView, PlayerSignalBus playerSignalBus)
         {
             _parentView = parentView;
+            _playerSignalBus = playerSignalBus;
             _firstPlayerView = allPlayersView.FirstPlayerView;
             _secondPlayerView = allPlayersView.SecondPlayerView;
         }
@@ -19,7 +22,7 @@ namespace DefaultNamespace
         {
             var playerView = playerType == EPlayers.FirstPlayer ? _firstPlayerView : _secondPlayerView;
             var player = new Player();
-            player.Init(_parentView, playerType, playerView);
+            player.Init(_parentView, playerType, playerView, _playerSignalBus);
 
             return player;
         }
