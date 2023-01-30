@@ -53,7 +53,7 @@ namespace DefaultNamespace
 
         public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
         {
-            _currentPlayerType = signal.Player;
+            _currentPlayerType = signal.PlayerType;
             _currentPlayer = GetPlayer(_currentPlayerType);
             RollCardsInHand();
             

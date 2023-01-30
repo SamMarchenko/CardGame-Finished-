@@ -180,7 +180,7 @@ namespace DefaultNamespace
         {
             _myCardsInTable.Remove(card);
             DeleteCardFromDictionary(_tableCardSlotDictionary, card);
-            //todo: тут убивается карта. Мб сигнал надо на анимацию оттсюда запускать
+            card.DestroySelf();
         }
         
         public void StartOfMove()
@@ -195,6 +195,7 @@ namespace DefaultNamespace
             }
             
             CanDragCardsFromHand();
+            CanAttacksFromTable();
             _firstMove = false;
             _playerView.ManaLog();
         }
@@ -204,6 +205,14 @@ namespace DefaultNamespace
             foreach (var card in _myCardsInHand)
             {
                 card.CanBeDragged = true;
+            }
+        }
+
+        private void CanAttacksFromTable()
+        {
+            foreach (var card in _myCardsInTable)
+            {
+                card.CanAttack = true;
             }
         }
 

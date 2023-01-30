@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
 {
     public EPlayers PlayerType;
+    public bool CanAttack = false;
     private PlayerSignalBus _playerSignalBus;
 
     private int _maxHealth = 30;
@@ -77,9 +78,15 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
         SetHealth(health);
     }
 
+    public void SetCoolDownAttack(bool value)
+    {
+        //в данном прототипе у игрока нет оружия, он никогда не сможет атаковать. Если оружие появится, то будет присваиваться value
+        CanAttack = false;
+    }
+
     private void SetHealth(int health)
     {
-        _currentHealth = _maxHealth;
+        _currentHealth = health;
         // _healthText.text = health.ToString();
     }
 

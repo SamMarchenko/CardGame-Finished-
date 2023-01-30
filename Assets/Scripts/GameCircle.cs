@@ -49,7 +49,7 @@ public class GameCircle : IInitializable, ITickable
     private void BeginStartHandStage()
     {
         _playerSignalBus.StageChangeFire(new StageChangeSignal(_currentStage));
-        _playerSignalBus.CurrentPlayerChangeFire(new CurrentPlayerChangeSignal(_currentPlayerType));
+        _playerSignalBus.CurrentPlayerChangeFire(new CurrentPlayerChangeSignal(_currentPlayerType, _currentPlayer));
         for (int i = 0; i < 3; i++)
         {
             var card = _deckBuilder.GetTopCardFromDeck(_currentPlayer);
@@ -119,6 +119,6 @@ public class GameCircle : IInitializable, ITickable
         
         SetCurrentActivePlayer(_currentPlayerType);
         
-        _playerSignalBus.CurrentPlayerChangeFire(new CurrentPlayerChangeSignal(_currentPlayerType));
+        _playerSignalBus.CurrentPlayerChangeFire(new CurrentPlayerChangeSignal(_currentPlayerType, _currentPlayer));
     }
 }

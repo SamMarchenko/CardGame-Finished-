@@ -169,7 +169,7 @@ namespace DefaultNamespace
 
         public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
         {
-            _currentPlayer = _playersProvider.GetPlayer(signal.Player);
+            _currentPlayer = _playersProvider.GetPlayer(signal.PlayerType);
 
             //todo: добавить проверку на текущую стадию. Если стадия хода, то текущему игроку восстанавливать и увеличивать ману; брать карту из колоды
         }

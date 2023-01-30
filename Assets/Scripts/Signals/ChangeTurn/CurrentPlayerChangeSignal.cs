@@ -1,11 +1,14 @@
 ﻿using Cards;
+using DefaultNamespace;
 
 public class CurrentPlayerChangeSignal
 {
-    public readonly EPlayers Player;
+    public readonly EPlayers PlayerType;
+    public readonly Player Player;
 
-    public CurrentPlayerChangeSignal(EPlayers player)
+    public CurrentPlayerChangeSignal(EPlayers playerType, Player player)
     {
+        PlayerType = playerType;
         Player = player;
     }
 }

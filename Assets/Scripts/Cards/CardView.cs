@@ -41,6 +41,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private CardSignalBus _bus;
     public bool CanBeDragged = false;
+    public bool CanAttack = false;
     public bool IsScaled;
 
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
@@ -70,6 +71,10 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void SetHealth(int health)
     {
         _healthText.text = health.ToString();
+        if (health == 0)
+        {
+            Owner.KillCardFromTable(this);
+        }
     }
     
     public void Init(CardSignalBus bus)
@@ -140,6 +145,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void DestroySelf()
     {
+        Debug.Log($"Карта {_nameText.text} уничтожена!");
+        //todo: включать корутиной анимацию уничтожения. При завершении анимации дестроить.
         Destroy(gameObject);
     }
 
@@ -149,8 +156,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         var startPos = transform.position;
         var endPos = parent.position;
         NormalizedScale();
-        transform.eulerAngles = new Vector3(0, 0, 180);
-        
+        transform.eulerAngles = new Vector3(0, 0,  180);
+    
         while (time < 1f)
         {
             transform.position = Vector3.Lerp(startPos, endPos, time);
@@ -208,7 +215,20 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void ApplyDamage(int damage)
     {
         var health = GetHealth();
-        health -= damage;
+        if (health - damage <= 0)
+        {
+            health = 0;
+        }
+        else
+        {
+            health -= damage;
+        }
+       
         SetHealth(health);
+    }
+
+    public void SetCoolDownAttack(bool value)
+    {
+        CanAttack = value;
     }
 }
