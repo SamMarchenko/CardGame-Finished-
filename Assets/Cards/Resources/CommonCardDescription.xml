@@ -20,15 +20,6 @@
     <Unit Id="107" Name="Boar" Uncollectible="true"/>
     <Unit Id="108" Name="Mechanical Dragonling" Uncollectible="true"/>
     <Unit Id="109" Name="Murloc scout" Uncollectible="true"/>
-    <Unit Id="110" Name="Timber Wolf">
-    Your other Beasts have +1 Attack
-    </Unit>
-    <Unit Id="111" Name="Northshire Cleric">
-      Whenever a minion is healed, draw a card
-    </Unit>
-    <Unit Id="112" Name="Psychic Conjurer">
-      #Battlecry/#: Copy a card in your opponent’s deck and add it to your hand
-    </Unit>
   </Pack>
 
   <Pack Cost="2" Type="Common">
@@ -52,9 +43,6 @@
       #Battlecry/#: Draw a card
     </Unit>
     <Unit Id="208" Name="River Crocolisk"/>
-    <Unit Id="209" Name="Starving Buzzard">
-      Whenever you summon a Beast, draw a card.
-    </Unit>
   </Pack>
 
   <Pack Cost="3" Type="Common">
@@ -83,9 +71,6 @@
     <Unit Id="309" Name="Wolfrider">
       #Charge/#
     </Unit>
-    <Unit Id="310" Name="Warsong Commander">
-      After you summon another minion, give it #Rush/#
-    </Unit>
   </Pack>
 
   <Pack Cost="4" Type="Common">
@@ -98,21 +83,12 @@
     </Unit>
     <Unit Id="404" Name="Oasis Snapjaw"/>
     <Unit Id="405" Name="Ogre Magi">
-      #Spee Damage +1/#
+      #Spell Damage +1/#
     </Unit>
     <Unit Id="406" Name="Sen'jin Shieldmasta">
       #Taunt/#
     </Unit>
     <Unit Id="407" Name="Stormwind Knight">
-      #Charge/#
-    </Unit>
-    <Unit Id="408" Name="Houndmaster">
-      #Battlecry/#: Give a friendly Beast +2/+2 and Taunt
-    </Unit>
-    <Unit Id="409" Name="Water Elemental">
-      Freeze any character damaged by this minion
-    </Unit>
-    <Unit Id="410" Name="Kor'kron Elite">
       #Charge/#
     </Unit>
   </Pack>
@@ -127,7 +103,7 @@
     <Unit Id="503" Name="Frostwolf Warlord">
       #Battlecry/#: Gain +1/+1 for each other friendly minion on the battlefield
     </Unit>
-    <Unit Id="504" Name="Gurubashi Berserer">
+    <Unit Id="504" Name="Gurubashi Berserker">
       Whenever this minion takes damage, gain +3 Attack
     </Unit>
     <Unit Id="505" Name="Nightblade">
@@ -135,9 +111,6 @@
     </Unit>
     <Unit Id="506" Name="Stormpike Commando">
       #Battlecry/#: Deal 2 damage
-    </Unit>
-    <Unit Id="507" Name="Tundra Rhino">
-      #Charge/#
     </Unit>
   </Pack>
 
@@ -176,11 +149,13 @@
       #Charge/#
     </Unit>
   </Pack>
+  
   <Pack Type="Mage">
     <Unit Id="901" Name="Water Elemental">
       Freeze any character damaged by this minion
     </Unit>
   </Pack>
+  
   <Pack Type="Warrior">
     <Unit Id="1001" Name="Warsong Commander">
       After you summon another minion, give it #Rush/#
@@ -189,6 +164,7 @@
       #Charge/#
     </Unit>
   </Pack>
+  
   <Pack Type="Priest">
     <Unit Id="1101" Name="Northshire Cleric">
       Whenever a minion is healed, draw a card
