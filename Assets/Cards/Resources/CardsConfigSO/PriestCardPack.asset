@@ -21,6 +21,10 @@ MonoBehaviour:
     Attack: 1
     Health: 3
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 1
   - Id: 1102
     Cost: 1
     Name: Psychic Conjurer
@@ -28,3 +32,7 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 1
+    Ability: 0

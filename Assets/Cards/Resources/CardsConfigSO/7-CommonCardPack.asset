@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4cf6de20b2646f4193e999d2dee71e4, type: 3}
   m_Name: 7-CommonCardPack
   m_EditorClassIdentifier: 
-  eSideType: 0
+  heroType: 0
   _cards:
   - Id: 701
     Cost: 7
@@ -21,6 +21,10 @@ MonoBehaviour:
     Attack: 9
     Health: 5
     Type: 2
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 0
   - Id: 702
     Cost: 7
     Name: Stormwind Champion
@@ -28,6 +32,10 @@ MonoBehaviour:
     Attack: 6
     Health: 6
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 1
   - Id: 703
     Cost: 7
     Name: War Golem
@@ -35,3 +43,7 @@ MonoBehaviour:
     Attack: 7
     Health: 7
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 0

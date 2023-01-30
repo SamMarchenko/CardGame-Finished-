@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4cf6de20b2646f4193e999d2dee71e4, type: 3}
   m_Name: 2-CommonCardPack
   m_EditorClassIdentifier: 
-  eSideType: 0
+  heroType: 0
   _cards:
   - Id: 201
     Cost: 2
@@ -21,6 +21,10 @@ MonoBehaviour:
     Attack: 3
     Health: 2
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 1
+    Ability: 0
   - Id: 202
     Cost: 2
     Name: Bloodfen Raptor
@@ -28,6 +32,10 @@ MonoBehaviour:
     Attack: 3
     Health: 2
     Type: 2
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 0
   - Id: 203
     Cost: 2
     Name: Bluegill Warrior
@@ -35,6 +43,10 @@ MonoBehaviour:
     Attack: 2
     Health: 1
     Type: 1
+    Taunt: 0
+    Charge: 1
+    Battlecry: 0
+    Ability: 0
   - Id: 204
     Cost: 2
     Name: Frostwolf Grunt
@@ -42,6 +54,10 @@ MonoBehaviour:
     Attack: 2
     Health: 2
     Type: 0
+    Taunt: 1
+    Charge: 0
+    Battlecry: 0
+    Ability: 0
   - Id: 205
     Cost: 2
     Name: Kobold Geomancer
@@ -49,6 +65,10 @@ MonoBehaviour:
     Attack: 2
     Health: 2
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 0
   - Id: 206
     Cost: 2
     Name: Murloc Tidehunter
@@ -56,6 +76,10 @@ MonoBehaviour:
     Attack: 2
     Health: 1
     Type: 1
+    Taunt: 0
+    Charge: 0
+    Battlecry: 1
+    Ability: 0
   - Id: 207
     Cost: 2
     Name: Novice Engineer
@@ -63,6 +87,10 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 1
   - Id: 208
     Cost: 2
     Name: River Crocolisk
@@ -70,3 +98,7 @@ MonoBehaviour:
     Attack: 2
     Health: 3
     Type: 2
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 0

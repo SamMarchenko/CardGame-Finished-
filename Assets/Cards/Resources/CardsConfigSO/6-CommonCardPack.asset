@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4cf6de20b2646f4193e999d2dee71e4, type: 3}
   m_Name: 6-CommonCardPack
   m_EditorClassIdentifier: 
-  eSideType: 0
+  heroType: 0
   _cards:
   - Id: 601
     Cost: 6
@@ -21,6 +21,10 @@ MonoBehaviour:
     Attack: 4
     Health: 7
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 0
   - Id: 602
     Cost: 6
     Name: Boulderfist Ogre
@@ -28,6 +32,10 @@ MonoBehaviour:
     Attack: 6
     Health: 7
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 0
   - Id: 603
     Cost: 6
     Name: Lord of the Arena
@@ -35,6 +43,10 @@ MonoBehaviour:
     Attack: 6
     Health: 5
     Type: 0
+    Taunt: 1
+    Charge: 0
+    Battlecry: 0
+    Ability: 0
   - Id: 604
     Cost: 6
     Name: Reckless Rocketeer
@@ -42,3 +54,7 @@ MonoBehaviour:
     Attack: 5
     Health: 2
     Type: 0
+    Taunt: 0
+    Charge: 1
+    Battlecry: 0
+    Ability: 0

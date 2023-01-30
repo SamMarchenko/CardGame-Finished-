@@ -21,6 +21,10 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 2
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 1
   - Id: 802
     Cost: 2
     Name: Starving Buzzard
@@ -28,6 +32,10 @@ MonoBehaviour:
     Attack: 2
     Health: 1
     Type: 2
+    Taunt: 0
+    Charge: 0
+    Battlecry: 0
+    Ability: 1
   - Id: 803
     Cost: 4
     Name: Houndmaster
@@ -35,6 +43,10 @@ MonoBehaviour:
     Attack: 4
     Health: 3
     Type: 0
+    Taunt: 0
+    Charge: 0
+    Battlecry: 1
+    Ability: 0
   - Id: 804
     Cost: 5
     Name: Tundra Rhino
@@ -42,3 +54,7 @@ MonoBehaviour:
     Attack: 2
     Health: 5
     Type: 2
+    Taunt: 0
+    Charge: 1
+    Battlecry: 0
+    Ability: 0
