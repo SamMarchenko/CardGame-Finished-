@@ -53,7 +53,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _cosText.text = data.Cost.ToString();
         _nameText.text = data.Name;
         _descriptionText.text = description;
-        _typeText.text = data.Type == ECardUnitType.None ? string.Empty : data.Type.ToString();
+        _typeText.text = data.Type == ECardUnitType.All ? string.Empty : data.Type.ToString();
         _attackText.text = data.Attack.ToString();
         _healthText.text = data.Health.ToString();
     }

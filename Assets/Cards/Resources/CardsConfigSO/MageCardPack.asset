@@ -21,7 +21,4 @@ MonoBehaviour:
     Attack: 3
     Health: 6
     Type: 3
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
-    Ability: 1
+    Ability: 5

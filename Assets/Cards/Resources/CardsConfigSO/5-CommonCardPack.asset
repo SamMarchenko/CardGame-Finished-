@@ -21,10 +21,7 @@ MonoBehaviour:
     Attack: 5
     Health: 4
     Type: 0
-    Taunt: 1
-    Charge: 0
-    Battlecry: 0
-    Ability: 0
+    Ability: 1
   - Id: 502
     Cost: 5
     Name: Darkscale Healer
@@ -32,10 +29,7 @@ MonoBehaviour:
     Attack: 4
     Health: 5
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 503
     Cost: 5
     Name: Frostwolf Warlord
@@ -43,10 +37,7 @@ MonoBehaviour:
     Attack: 4
     Health: 4
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 504
     Cost: 5
     Name: Gurubashi Berserer
@@ -54,10 +45,7 @@ MonoBehaviour:
     Attack: 2
     Health: 7
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
-    Ability: 1
+    Ability: 4
   - Id: 505
     Cost: 5
     Name: Nightblade
@@ -65,10 +53,7 @@ MonoBehaviour:
     Attack: 4
     Health: 4
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 506
     Cost: 5
     Name: Stormpike Commando
@@ -76,7 +61,4 @@ MonoBehaviour:
     Attack: 4
     Health: 2
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3

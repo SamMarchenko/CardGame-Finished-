@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +6,21 @@ namespace Cards
 {
 	public enum ECardUnitType : byte
 	{
-		None = 0,
+		All = 0,
 		Murloc = 1,
 		Beast = 2,
 		Elemental = 3,
 		Mech = 4
+	}
+
+	public enum EAbility
+	{
+		None,
+		Taunt,
+		Charge,
+		Battlecry,
+		Buff,
+		Debuff
 	}
 
 	public enum ECurrentStageType

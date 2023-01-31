@@ -21,9 +21,6 @@ MonoBehaviour:
     Attack: 1
     Health: 4
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 302
     Cost: 3
@@ -32,10 +29,7 @@ MonoBehaviour:
     Attack: 2
     Health: 2
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 303
     Cost: 3
     Name: Ironfur Grizzly
@@ -43,10 +37,7 @@ MonoBehaviour:
     Attack: 3
     Health: 3
     Type: 2
-    Taunt: 1
-    Charge: 0
-    Battlecry: 0
-    Ability: 0
+    Ability: 1
   - Id: 304
     Cost: 3
     Name: Magma Rager
@@ -54,9 +45,6 @@ MonoBehaviour:
     Attack: 5
     Health: 1
     Type: 3
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 305
     Cost: 3
@@ -65,10 +53,7 @@ MonoBehaviour:
     Attack: 2
     Health: 2
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
-    Ability: 1
+    Ability: 4
   - Id: 306
     Cost: 3
     Name: Razorfen Hunter
@@ -76,10 +61,7 @@ MonoBehaviour:
     Attack: 2
     Health: 3
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 307
     Cost: 3
     Name: Shattered Sun Cleric
@@ -87,10 +69,7 @@ MonoBehaviour:
     Attack: 3
     Health: 2
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 308
     Cost: 3
     Name: Silverback Patriarch
@@ -98,10 +77,7 @@ MonoBehaviour:
     Attack: 1
     Health: 4
     Type: 2
-    Taunt: 1
-    Charge: 0
-    Battlecry: 0
-    Ability: 0
+    Ability: 1
   - Id: 309
     Cost: 3
     Name: Wolfrider
@@ -109,7 +85,4 @@ MonoBehaviour:
     Attack: 3
     Health: 1
     Type: 0
-    Taunt: 0
-    Charge: 1
-    Battlecry: 0
-    Ability: 0
+    Ability: 2

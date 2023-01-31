@@ -21,9 +21,6 @@ MonoBehaviour:
     Attack: 4
     Health: 7
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 602
     Cost: 6
@@ -32,9 +29,6 @@ MonoBehaviour:
     Attack: 6
     Health: 7
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 603
     Cost: 6
@@ -43,10 +37,7 @@ MonoBehaviour:
     Attack: 6
     Health: 5
     Type: 0
-    Taunt: 1
-    Charge: 0
-    Battlecry: 0
-    Ability: 0
+    Ability: 1
   - Id: 604
     Cost: 6
     Name: Reckless Rocketeer
@@ -54,7 +45,4 @@ MonoBehaviour:
     Attack: 5
     Health: 2
     Type: 0
-    Taunt: 0
-    Charge: 1
-    Battlecry: 0
-    Ability: 0
+    Ability: 2

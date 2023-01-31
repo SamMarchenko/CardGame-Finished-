@@ -20,14 +20,8 @@ namespace Cards
         public ushort Health;
         [Width(65)]
         public ECardUnitType Type;
-        [Width(35)]
-        public bool Taunt = false;
-        [Width(45)]
-        public bool Charge = false;
-        [Width(55)]
-        public bool Battlecry = false;
-        [Width(40)]
-        public bool Ability = false;
+        
+        public EAbility Ability;
         
         
         public CardParamsData GetParams()

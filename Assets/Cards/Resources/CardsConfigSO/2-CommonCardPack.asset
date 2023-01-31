@@ -21,10 +21,7 @@ MonoBehaviour:
     Attack: 3
     Health: 2
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 202
     Cost: 2
     Name: Bloodfen Raptor
@@ -32,9 +29,6 @@ MonoBehaviour:
     Attack: 3
     Health: 2
     Type: 2
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 203
     Cost: 2
@@ -43,10 +37,7 @@ MonoBehaviour:
     Attack: 2
     Health: 1
     Type: 1
-    Taunt: 0
-    Charge: 1
-    Battlecry: 0
-    Ability: 0
+    Ability: 2
   - Id: 204
     Cost: 2
     Name: Frostwolf Grunt
@@ -54,10 +45,7 @@ MonoBehaviour:
     Attack: 2
     Health: 2
     Type: 0
-    Taunt: 1
-    Charge: 0
-    Battlecry: 0
-    Ability: 0
+    Ability: 1
   - Id: 205
     Cost: 2
     Name: Kobold Geomancer
@@ -65,9 +53,6 @@ MonoBehaviour:
     Attack: 2
     Health: 2
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 206
     Cost: 2
@@ -76,10 +61,7 @@ MonoBehaviour:
     Attack: 2
     Health: 1
     Type: 1
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 207
     Cost: 2
     Name: Novice Engineer
@@ -87,10 +69,7 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
-    Ability: 1
+    Ability: 3
   - Id: 208
     Cost: 2
     Name: River Crocolisk
@@ -98,7 +77,4 @@ MonoBehaviour:
     Attack: 2
     Health: 3
     Type: 2
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0

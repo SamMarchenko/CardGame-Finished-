@@ -21,9 +21,6 @@ MonoBehaviour:
     Attack: 4
     Health: 5
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 402
     Cost: 4
@@ -32,10 +29,7 @@ MonoBehaviour:
     Attack: 2
     Health: 4
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 403
     Cost: 4
     Name: Gnomish Inventor
@@ -43,10 +37,7 @@ MonoBehaviour:
     Attack: 2
     Health: 4
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 404
     Cost: 4
     Name: Oasis Snapjaw
@@ -54,9 +45,6 @@ MonoBehaviour:
     Attack: 2
     Health: 7
     Type: 2
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 405
     Cost: 4
@@ -65,9 +53,6 @@ MonoBehaviour:
     Attack: 4
     Health: 4
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 406
     Cost: 4
@@ -76,10 +61,7 @@ MonoBehaviour:
     Attack: 3
     Health: 5
     Type: 0
-    Taunt: 1
-    Charge: 0
-    Battlecry: 0
-    Ability: 0
+    Ability: 1
   - Id: 407
     Cost: 4
     Name: Stormwind Knight
@@ -87,7 +69,4 @@ MonoBehaviour:
     Attack: 2
     Health: 5
     Type: 0
-    Taunt: 0
-    Charge: 1
-    Battlecry: 0
-    Ability: 0
+    Ability: 2

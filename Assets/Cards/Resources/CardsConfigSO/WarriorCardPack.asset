@@ -21,10 +21,7 @@ MonoBehaviour:
     Attack: 2
     Health: 3
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
-    Ability: 1
+    Ability: 4
   - Id: 1002
     Cost: 4
     Name: Kor'kron Elite
@@ -32,7 +29,4 @@ MonoBehaviour:
     Attack: 4
     Health: 3
     Type: 0
-    Taunt: 0
-    Charge: 1
-    Battlecry: 0
-    Ability: 0
+    Ability: 2

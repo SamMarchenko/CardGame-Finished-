@@ -21,10 +21,7 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 1
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
-    Ability: 1
+    Ability: 4
   - Id: 102
     Cost: 1
     Name: Elven Archer
@@ -32,10 +29,7 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 103
     Cost: 1
     Name: Goldshire Footman
@@ -43,10 +37,7 @@ MonoBehaviour:
     Attack: 1
     Health: 2
     Type: 0
-    Taunt: 1
-    Charge: 0
-    Battlecry: 0
-    Ability: 0
+    Ability: 1
   - Id: 104
     Cost: 1
     Name: Stonetusk Boar
@@ -54,10 +45,7 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 2
-    Taunt: 0
-    Charge: 1
-    Battlecry: 0
-    Ability: 0
+    Ability: 2
   - Id: 105
     Cost: 1
     Name: Voodoo Doctor
@@ -65,10 +53,7 @@ MonoBehaviour:
     Attack: 2
     Health: 1
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 1
-    Ability: 0
+    Ability: 3
   - Id: 106
     Cost: 1
     Name: Murloc Raider
@@ -76,9 +61,6 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 1
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 107
     Cost: 1
@@ -87,9 +69,6 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 2
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 108
     Cost: 1
@@ -98,9 +77,6 @@ MonoBehaviour:
     Attack: 2
     Health: 1
     Type: 4
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 109
     Cost: 1
@@ -109,7 +85,4 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 1
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0

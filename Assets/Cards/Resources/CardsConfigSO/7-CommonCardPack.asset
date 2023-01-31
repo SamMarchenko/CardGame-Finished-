@@ -21,9 +21,6 @@ MonoBehaviour:
     Attack: 9
     Health: 5
     Type: 2
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
   - Id: 702
     Cost: 7
@@ -32,10 +29,7 @@ MonoBehaviour:
     Attack: 6
     Health: 6
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
-    Ability: 1
+    Ability: 4
   - Id: 703
     Cost: 7
     Name: War Golem
@@ -43,7 +37,4 @@ MonoBehaviour:
     Attack: 7
     Health: 7
     Type: 0
-    Taunt: 0
-    Charge: 0
-    Battlecry: 0
     Ability: 0
