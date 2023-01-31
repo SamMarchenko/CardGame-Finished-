@@ -32,6 +32,11 @@ public class CardPacksContainer : ScriptableObject
         return true;
     }
 
+    public List<int> GetCardsWithAbilityType(EAbility ability)
+    {
+        return FindCardsForAbility(ability);
+    }
+
     public bool ValidHeroCard(uint id, EHeroType hero)
     {
         FindCardForID(id, out var heroType);
@@ -58,5 +63,23 @@ public class CardPacksContainer : ScriptableObject
         heroType = EHeroType.Common;
         return card;
     }
+
+    private List<int> FindCardsForAbility(EAbility ability)
+    {
+        var cardId = new List<int>();
+        
+        foreach (var cardPack in CardPackConfigurations)
+        {
+            foreach (var cardPropertiesData in cardPack.Cards)
+            {
+                if (cardPropertiesData.Ability == ability)
+                {
+                    cardId.Add((int)cardPropertiesData.Id);
+                }
+            }
+        }
+        return cardId;
+    }
+    
     
 }

@@ -29,7 +29,7 @@ MonoBehaviour:
     Attack: 2
     Health: 1
     Type: 2
-    Ability: 4
+    Ability: 7
   - Id: 803
     Cost: 4
     Name: Houndmaster

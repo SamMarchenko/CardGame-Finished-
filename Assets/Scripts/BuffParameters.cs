@@ -9,12 +9,15 @@ namespace DefaultNamespace
     public class BuffParameters
     {
         [Width(50)]
-        public int _cardId;
+        public int ID = 0;
         [Width(80)]
-        public int _damageBuff;
+        public int DamageBuff = 0;
         [Width(50)]
-        public int _hpBuff;
+        public int HpBuff = 0;
         [Width(85)]
-        public ECardUnitType _unitTypeBuff;
+        public ECardUnitType UnitTypeBuff = ECardUnitType.All;
+        
+        
+        
     }
 }

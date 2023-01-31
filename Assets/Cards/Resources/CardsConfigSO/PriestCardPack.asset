@@ -21,7 +21,7 @@ MonoBehaviour:
     Attack: 1
     Health: 3
     Type: 0
-    Ability: 4
+    Ability: 7
   - Id: 1102
     Cost: 1
     Name: Psychic Conjurer
@@ -29,4 +29,4 @@ MonoBehaviour:
     Attack: 1
     Health: 1
     Type: 0
-    Ability: 3
+    Ability: 7

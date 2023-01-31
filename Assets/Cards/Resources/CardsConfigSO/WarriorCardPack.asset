@@ -21,7 +21,7 @@ MonoBehaviour:
     Attack: 2
     Health: 3
     Type: 0
-    Ability: 4
+    Ability: 5
   - Id: 1002
     Cost: 4
     Name: Kor'kron Elite

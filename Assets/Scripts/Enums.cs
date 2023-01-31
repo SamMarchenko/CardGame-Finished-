@@ -10,7 +10,8 @@ namespace Cards
 		Murloc = 1,
 		Beast = 2,
 		Elemental = 3,
-		Mech = 4
+		Mech = 4,
+		Self = 5
 	}
 
 	public enum EAbility
@@ -19,8 +20,10 @@ namespace Cards
 		Taunt,
 		Charge,
 		Battlecry,
-		Buff,
-		Debuff
+		IncreaseStats,
+		SetBuff,
+		SetDebuff,
+		DrawCard
 	}
 
 	public enum ECurrentStageType

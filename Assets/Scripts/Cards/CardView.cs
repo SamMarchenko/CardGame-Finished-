@@ -20,7 +20,9 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private TextMeshPro _typeText;
     [SerializeField] private TextMeshPro _attackText;
     [SerializeField] private TextMeshPro _healthText;
-    
+    [SerializeField] private int _cardId;
+    public int CardId => _cardId;
+
 
     private Vector3 _stepPosition = new Vector3(0, 0.5f, 0);
     public Vector3 StepPosition => _stepPosition;
@@ -43,6 +45,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public bool CanBeDragged = false;
     public bool CanAttack = false;
     public bool IsScaled;
+    public EAbility StartAbilityType;
 
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
     public Player Owner;
@@ -56,13 +59,15 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _typeText.text = data.Type == ECardUnitType.All ? string.Empty : data.Type.ToString();
         _attackText.text = data.Attack.ToString();
         _healthText.text = data.Health.ToString();
+        StartAbilityType = data.Ability;
+        _cardId = (int) data.Id;
     }
 
     public int GetCost()
     {
         return int.Parse(_cosText.text);
     }
-    
+
     public int GetHealth()
     {
         return int.Parse(_healthText.text);
@@ -76,7 +81,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             Owner.KillCardFromTable(this);
         }
     }
-    
+
     public void Init(CardSignalBus bus)
     {
         _bus = bus;
@@ -94,6 +99,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             return;
         }
+
         transform.localPosition += _stepPosition;
         transform.localScale *= _scale;
         IsScaled = true;
@@ -105,6 +111,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             return;
         }
+
         transform.localPosition -= _stepPosition;
         transform.localScale /= _scale;
         IsScaled = false;
@@ -122,7 +129,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         return _startPosition;
     }
-    
+
     public Transform GetEndCardPosition()
     {
         return _endPosition;
@@ -132,7 +139,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _startPosition = startPosition;
     }
-    
+
     public void SetEndCardPosition(Transform endPosition)
     {
         _endPosition = endPosition;
@@ -156,20 +163,19 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         var startPos = transform.position;
         var endPos = parent.position;
         NormalizedScale();
-        transform.eulerAngles = new Vector3(0, 0,  180);
-    
+        transform.eulerAngles = new Vector3(0, 0, 180);
+
         while (time < 1f)
         {
             transform.position = Vector3.Lerp(startPos, endPos, time);
             time += Time.deltaTime;
             yield return null;
         }
-        
+
         //todo: тут передавался parent. Не знаю почему, заменил на position.
         transform.position = parent.position;
-        
-        
     }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         _bus.FirePointerOn(new CardPointerSignal(this));
@@ -189,7 +195,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnEndDrag(PointerEventData eventData)
     {
         _bus.FireDragEnd(new CardDragSignal(this));
-       // Debug.Log("OnEndDrag");
+        // Debug.Log("OnEndDrag");
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -198,6 +204,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             return;
         }
+
         _bus.FireDragging(new CardDragSignal(this));
 //        Debug.Log("OnDrag");
     }
@@ -223,7 +230,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             health -= damage;
         }
-       
+
         SetHealth(health);
     }
 

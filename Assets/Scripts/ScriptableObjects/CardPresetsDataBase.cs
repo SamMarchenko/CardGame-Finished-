@@ -8,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/CardPresets")]
 public class CardPresetsDataBase : ScriptableObject
 {
-    [SerializeField] private CardPacksContainer CardPacksContainer;
+    [SerializeField] private CardPacksContainer _cardPacksContainer;
 
     public EHeroType Hero;
 
@@ -18,7 +18,7 @@ public class CardPresetsDataBase : ScriptableObject
     [ContextMenu("Set Class Cards")]
     public void SetClassCards()
     {
-        foreach (var pack in CardPacksContainer.CardPackConfigurations)
+        foreach (var pack in _cardPacksContainer.CardPackConfigurations)
         {
             if (Hero != EHeroType.Common && pack.HeroType == Hero)
             {
@@ -37,7 +37,7 @@ public class CardPresetsDataBase : ScriptableObject
     {
         foreach (var id in CardsId)
         {
-            foreach (var cardPack in CardPacksContainer.CardPackConfigurations)
+            foreach (var cardPack in _cardPacksContainer.CardPackConfigurations)
             {
                 foreach (var cardPropertiesData in cardPack.Cards)
                 {
@@ -69,7 +69,7 @@ public class CardPresetsDataBase : ScriptableObject
     {
         foreach (var id in CardsId)
         {
-            if (!CardPacksContainer.HasCardId(id))
+            if (!_cardPacksContainer.HasCardId(id))
             {
                 return false;
             }
@@ -105,7 +105,7 @@ public class CardPresetsDataBase : ScriptableObject
     {
         foreach (var id in CardsId)
         {
-            if (CardPacksContainer.ValidHeroCard(id, Hero)) continue;
+            if (_cardPacksContainer.ValidHeroCard(id, Hero)) continue;
             Debug.LogError($"Карта с Id {id} не общая и не пренадлежит классу {Hero}!!!");
             return false;
         }
