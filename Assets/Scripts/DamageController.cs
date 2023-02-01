@@ -41,7 +41,7 @@ namespace DefaultNamespace
                 return;
             }
 
-            if (signal.CardView.Owner != _currentPlayer)
+            if (signal.CardView.Owner != _currentPlayer && signal.CardView.StateType == ECardStateType.OnTable)
             {
                 AttackedTarget = signal.CardView;
                 Attack();
