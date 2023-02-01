@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _someDatabase: {fileID: 0}
   _packsContainer: {fileID: 11400000, guid: d9dded7121cd1634894881f387bfd147, type: 2}
+  configCardsWithAbilities: {fileID: 11400000, guid: d45db92223bdea04a9d5271e7b2dd3b4, type: 2}

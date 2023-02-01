@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Cards;
 using DefaultNamespace;
 using Signals;
@@ -12,7 +13,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     IDragHandler, IPointerClickHandler, IDamageable
 {
     [SerializeField] private IncreaseStatsParameters _increaseStatsParameters;
-    
+    public List<EAbility> MyAbilities;
+
     [SerializeField] private GameObject _frontCard;
     [Space, SerializeField] private MeshRenderer _icon;
     [SerializeField] private TextMeshPro _cosText;
@@ -73,6 +75,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             return;
         }
         _increaseStatsParameters = increaseStatsParameters;
+        
+        if (!MyAbilities.Contains(EAbility.IncreaseStats))
+        {
+            MyAbilities.Add(EAbility.IncreaseStats);
+        }
+        
     }
 
     public int GetCost()
@@ -248,6 +256,6 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void SetCoolDownAttack(bool value)
     {
-        CanAttack = value;
+        CanAttack = !value;
     }
 }

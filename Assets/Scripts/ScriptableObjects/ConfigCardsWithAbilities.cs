@@ -6,16 +6,45 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    [CreateAssetMenu(fileName = "NewCardBuffParameters", menuName = "CardIncreaseStats/CardIncreaseStats Parameters")]
-    public class ConfigIncreaseStatsParameters : ScriptableObject
+    [CreateAssetMenu(fileName = "NewConfigCardsWithAbilities", menuName = "CardsWithAbilities")]
+    public class ConfigCardsWithAbilities : ScriptableObject
     {
         [SerializeField] private CardPacksContainer _cardPacksContainer;
 
         [SerializeField, OneLine(Header = LineHeader.Short)]
         private List<IncreaseStatsParameters> _increaseStatsConfig;
         private List<IncreaseStatsParameters> _savedStatsConfig;
+        [SerializeField, OneLine(Header = LineHeader.Short)]
+        private List<int> _idCardsWithTauntConfig;
+        [SerializeField, OneLine(Header = LineHeader.Short)]
+        private List<int> _idCardsWithChargeConfig;
+        public List<int> IDCardsWithTauntConfig => _idCardsWithTauntConfig;
+        public List<int> IDCardsWithChargeConfig => _idCardsWithChargeConfig;
         public List<IncreaseStatsParameters> IncreaseStatsConfig => _increaseStatsConfig;
-        
+
+        [ContextMenu("Set all cards with ability \"Taunt\"")]
+        public void SetCardsWithTaunt()
+        {
+            _idCardsWithTauntConfig.Clear();
+            var list = _cardPacksContainer.GetCardsWithAbilityType(EAbility.Taunt);
+            _idCardsWithTauntConfig.Capacity = list.Count;
+            for (var i = 0; i < _idCardsWithTauntConfig.Capacity; i++)
+            {
+                _idCardsWithTauntConfig.Add(list[i]);
+            }
+        }
+        [ContextMenu("Set all cards with ability \"Charge\"")]
+        public void SetCardsWithCharge()
+        {
+            _idCardsWithChargeConfig.Clear();
+            var list = _cardPacksContainer.GetCardsWithAbilityType(EAbility.Charge);
+            _idCardsWithChargeConfig.Capacity = list.Count;
+            for (var i = 0; i < _idCardsWithChargeConfig.Capacity; i++)
+            {
+                _idCardsWithChargeConfig.Add(list[i]);
+            }
+        }
+
         [ContextMenu("Set all cards with ability \"Increase Stats\"" )]
         public void SetCardsWithIncreaseStats()
         {

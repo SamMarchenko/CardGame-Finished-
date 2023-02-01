@@ -155,6 +155,12 @@ namespace DefaultNamespace
             AddCardInDictionary(_tableCardSlotDictionary, card, slot, state);
             _myCardsInTable.Add(card);
 
+            //todo: пока абилка "Charge" включается тут при выкладывании карты на стол
+            if (card.MyAbilities.Contains(EAbility.Charge))
+            {
+                card.CanAttack = true;
+            }
+
 
             return slot;
         }
