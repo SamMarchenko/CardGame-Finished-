@@ -46,7 +46,6 @@ namespace DefaultNamespace
             cardView.Init(_bus);
             cardView.Configuration(random, CardUtility.GetDescriptionById(random.Id), newMat);
             _abilitiesProvider.SetAbilitiesToCards(cardView);
-            //cardView.SetIncreaseStatsParameters(_abilitiesProvider.GetIncreaseStatsParameters(cardView));
 
             return cardView;
         }

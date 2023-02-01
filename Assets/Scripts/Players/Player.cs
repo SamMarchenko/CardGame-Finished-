@@ -9,6 +9,7 @@ namespace DefaultNamespace
     public class Player
     {
         private PlayerView _playerView;
+        public PlayerView PlayerView => _playerView;
         private PlayerSignalBus _playerSignalBus;
         
         private Transform _myDeckSlot;
@@ -292,6 +293,19 @@ namespace DefaultNamespace
         public void ManaUse(CardView card)
         {
             _playerView.ManaUse(card);
+        }
+
+        public bool HasTauntOnTable()
+        {
+            foreach (var card in _myCardsInTable)
+            {
+                if (card.MyAbilities.Contains(EAbility.Taunt))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
         
         

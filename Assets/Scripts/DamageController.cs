@@ -6,11 +6,18 @@ namespace DefaultNamespace
     public class DamageController : ICardClickListener, IPlayerClickListener, IChangeStageListener,
         IChangeCurrentPlayerListener
     {
+        private readonly PlayersProvider _playersProvider;
         private ECurrentStageType _currentStageType;
-        private Player _currentPlayer;
+        private Player _currentDamageDealerPlayer;
+        private Player _attackedPlayer;
         private EPlayers _currentPlayerType;
         public IDamageable DamageDealer;
         public IDamageable AttackedTarget;
+
+        public DamageController(PlayersProvider playersProvider)
+        {
+            _playersProvider = playersProvider;
+        }
 
 
         private void Attack()
@@ -36,16 +43,22 @@ namespace DefaultNamespace
                 return;
             }
 
-            if (signal.CardView.Owner != _currentPlayer && DamageDealer == null)
+            if (signal.CardView.Owner != _currentDamageDealerPlayer && DamageDealer == null)
             {
                 return;
             }
 
-            if (signal.CardView.Owner != _currentPlayer && signal.CardView.StateType == ECardStateType.OnTable)
+            if (signal.CardView.Owner != _currentDamageDealerPlayer && signal.CardView.StateType == ECardStateType.OnTable)
             {
+                if (signal.CardView.Owner.HasTauntOnTable() && !signal.CardView.MyAbilities.Contains(EAbility.Taunt))
+                {
+                    Debug.Log("У героя на столе есть Taunt. Атаковать других юнитов запрещено!!!");
+                    return;
+                }
                 AttackedTarget = signal.CardView;
                 Attack();
                 ClearDealerAndTarget();
+                return;
             }
 
             if (signal.CardView.CanAttack)
@@ -63,6 +76,12 @@ namespace DefaultNamespace
 
             if (DamageDealer != null)
             {
+                var attackedPlayer = _playersProvider.GetPlayer(signal.PlayerView.PlayerType);
+                if (attackedPlayer.HasTauntOnTable())
+                {
+                    Debug.Log("У данного героя есть Taunt на столе!!!");
+                    return;
+                }
                 AttackedTarget = signal.PlayerView;
                 Attack();
                 ClearDealerAndTarget();
@@ -80,7 +99,9 @@ namespace DefaultNamespace
         public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
         {
             _currentPlayerType = signal.PlayerType;
-            _currentPlayer = signal.Player;
+            _currentDamageDealerPlayer = signal.Player;
+            
+            _attackedPlayer = _playersProvider.GetPlayer(_currentPlayerType == EPlayers.FirstPlayer ? EPlayers.SecondPlayer : EPlayers.FirstPlayer);
         }
     }
 }
