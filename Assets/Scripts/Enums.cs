@@ -11,7 +11,8 @@ namespace Cards
 		Beast = 2,
 		Elemental = 3,
 		Mech = 4,
-		Self = 5
+		Self = 5,
+		None = 6
 	}
 
 	public enum EAbility

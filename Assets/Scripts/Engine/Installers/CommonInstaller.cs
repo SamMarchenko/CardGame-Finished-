@@ -30,6 +30,7 @@ namespace Engine.Installers
 
             Container.BindInterfacesAndSelfTo<CardMoverView>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<DamageController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<IncreaseStatsParametersProvider>().AsSingle().NonLazy();
             
 
             

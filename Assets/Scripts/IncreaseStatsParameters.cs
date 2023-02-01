@@ -1,12 +1,11 @@
 ﻿using System;
 using Cards;
 using OneLine;
-using UnityEngine;
 
 namespace DefaultNamespace
 {
     [Serializable]
-    public class BuffParameters
+    public class IncreaseStatsParameters
     {
         [Width(50)]
         public int ID = 0;
@@ -15,7 +14,7 @@ namespace DefaultNamespace
         [Width(50)]
         public int HpBuff = 0;
         [Width(85)]
-        public ECardUnitType UnitTypeBuff = ECardUnitType.All;
+        public ECardUnitType UnitTypeBuff = ECardUnitType.None;
         
         
         

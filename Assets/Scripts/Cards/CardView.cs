@@ -11,6 +11,8 @@ using Zenject;
 public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler,
     IDragHandler, IPointerClickHandler, IDamageable
 {
+    [SerializeField] private IncreaseStatsParameters _increaseStatsParameters;
+    
     [SerializeField] private GameObject _frontCard;
     [Space, SerializeField] private MeshRenderer _icon;
     [SerializeField] private TextMeshPro _cosText;
@@ -61,6 +63,16 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _healthText.text = data.Health.ToString();
         StartAbilityType = data.Ability;
         _cardId = (int) data.Id;
+    }
+
+    public void SetIncreaseStatsParameters(IncreaseStatsParameters increaseStatsParameters)
+    {
+        if (increaseStatsParameters == null)
+        {
+            _increaseStatsParameters = new IncreaseStatsParameters();
+            return;
+        }
+        _increaseStatsParameters = increaseStatsParameters;
     }
 
     public int GetCost()

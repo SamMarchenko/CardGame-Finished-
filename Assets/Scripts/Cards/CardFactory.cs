@@ -12,6 +12,7 @@ namespace DefaultNamespace
         private readonly CardPropertiesDataProvider _cardPropertiesDataProvider;
         private readonly CardView _cardViewPrefab;
         private readonly CardSignalBus _bus;
+        private readonly IncreaseStatsParametersProvider _increaseStatsParametersProvider;
 
 
         private Material _baseMat;
@@ -20,12 +21,14 @@ namespace DefaultNamespace
         public CardFactory(
             CardPropertiesDataProvider cardPropertiesDataProvider,
             CardView cardViewPrefab,
-            CardSignalBus bus
+            CardSignalBus bus,
+            IncreaseStatsParametersProvider increaseStatsParametersProvider
         )
         {
             _cardPropertiesDataProvider = cardPropertiesDataProvider;
             _cardViewPrefab = cardViewPrefab;
             _bus = bus;
+            _increaseStatsParametersProvider = increaseStatsParametersProvider;
         }
 
         public void Initialize()
@@ -42,6 +45,7 @@ namespace DefaultNamespace
             newMat.mainTexture = random.Texture;
             cardView.Init(_bus);
             cardView.Configuration(random, CardUtility.GetDescriptionById(random.Id), newMat);
+            cardView.SetIncreaseStatsParameters(_increaseStatsParametersProvider.GetIncreaseStatsParameters(cardView));
 
             return cardView;
         }
