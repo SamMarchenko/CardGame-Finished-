@@ -11,7 +11,7 @@ namespace DefaultNamespace
         private PlayerView _playerView;
         public PlayerView PlayerView => _playerView;
         private PlayerSignalBus _playerSignalBus;
-        
+
         private Transform _myDeckSlot;
         private Transform _enemyDeckSlot;
         private List<CardView> _myCardsInDeck;
@@ -20,12 +20,16 @@ namespace DefaultNamespace
         private Transform[] _myHandSlots;
         private Transform[] _enemyHandSlots;
         private List<CardView> _myCardsInHand;
+        
+        public List<CardView> MyIncreaseStatsCardsOnTable = new List<CardView>();
+        public List<CardView> MyCardsInHand => _myCardsInHand;
         private Dictionary<CardView, Transform> _handCardSlotDictionary = new Dictionary<CardView, Transform>();
         private List<Transform> _canSwapedCardSlots = new List<Transform>(3);
 
         private Transform[] _myTableSlots;
         private Transform[] _enemyTableSlots;
         private List<CardView> _myCardsInTable;
+        public List<CardView> MyCardsInTable => _myCardsInTable;
         private Dictionary<CardView, Transform> _tableCardSlotDictionary = new Dictionary<CardView, Transform>();
 
         private DeckBuilder _deckBuilder;
@@ -33,12 +37,12 @@ namespace DefaultNamespace
         private int _startHandCards = 3;
         private ECurrentStageType _currentStageType;
 
-        
+
         private bool _firstMove = true;
-        
 
 
         public EPlayers PlayerType;
+        private AbilitiesProvider _abilitiesProvider;
 
         public void SetCurrentStageType(ECurrentStageType stageType)
         {
@@ -55,7 +59,8 @@ namespace DefaultNamespace
             return _playerView.GetCurrentMana() - card.GetCost() >= 0;
         }
 
-        public void Init(ParentView parentView, EPlayers player, PlayerView playerView, PlayerSignalBus playerSignalBus)
+        public void Init(ParentView parentView, EPlayers player, PlayerView playerView, PlayerSignalBus playerSignalBus,
+            AbilitiesProvider abilitiesProvider)
         {
             PlayerType = player;
             _playerSignalBus = playerSignalBus;
@@ -78,6 +83,7 @@ namespace DefaultNamespace
                 _enemyTableSlots = parentView.Table1Parent;
             }
 
+            _abilitiesProvider = abilitiesProvider;
             _playerView = playerView;
             _playerView.Init(PlayerType, _playerSignalBus);
             _myCardsInDeck = new List<CardView>();
@@ -97,7 +103,7 @@ namespace DefaultNamespace
         public bool CanSwapCard(CardView card)
         {
             var slot = _handCardSlotDictionary[card];
-            
+
             return _canSwapedCardSlots.Contains(slot);
         }
 
@@ -155,15 +161,22 @@ namespace DefaultNamespace
 
             AddCardInDictionary(_tableCardSlotDictionary, card, slot, state);
             _myCardsInTable.Add(card);
+            
+            ActivateAllAbilities(card);
 
             //todo: пока абилка "Charge" включается тут при выкладывании карты на стол
-            if (card.MyAbilities.Contains(EAbility.Charge))
-            {
-                card.CanAttack = true;
-            }
+            // if (card.MyAbilities.Contains(EAbility.Charge))
+            // {
+            //     card.CanAttack = true;
+            // }
 
 
             return slot;
+        }
+
+        private void ActivateAllAbilities(CardView card)
+        {
+            _abilitiesProvider.ActivateAbilities(card);
         }
 
         public void SetCardFromHandInDeck(CardView card)
@@ -172,11 +185,11 @@ namespace DefaultNamespace
 
             _myCardsInHand.Remove(card);
             _myCardsInDeck.Add(card);
-            
-            var slot= _handCardSlotDictionary[card];
+
+            var slot = _handCardSlotDictionary[card];
             DeleteCardFromDictionary(_handCardSlotDictionary, card);
             _canSwapedCardSlots.Remove(slot);
-            
+
             card.StateType = state;
             card.MoveAnimation(_myDeckSlot);
             card.SwitchVisual();
@@ -186,13 +199,13 @@ namespace DefaultNamespace
         public void KillCardFromTable(CardView card)
         {
             _myCardsInTable.Remove(card);
+            _abilitiesProvider.DeactivateAbilities(card);
             DeleteCardFromDictionary(_tableCardSlotDictionary, card);
             card.DestroySelf();
         }
-        
+
         public void StartOfMove()
         {
-            
             if (!_firstMove)
             {
                 var card = _deckBuilder.GetTopCardFromDeck(this);
@@ -200,7 +213,7 @@ namespace DefaultNamespace
                 ManaIncrease();
                 ManaRegenerate();
             }
-            
+
             CanDragCardsFromHand();
             CanAttacksFromTable();
             _firstMove = false;
@@ -246,7 +259,7 @@ namespace DefaultNamespace
                 card.IsEnable = visible;
             }
         }
-        
+
         private Transform FindFirstFreeSlot(Transform[] slots, Dictionary<CardView, Transform> dictionary)
         {
             foreach (var slot in slots)
@@ -286,8 +299,8 @@ namespace DefaultNamespace
                 _playerView.SetMaxMana(maxMana);
                 return;
             }
+
             _playerView.SetMaxMana(10);
-            
         }
 
         public void ManaUse(CardView card)
@@ -299,7 +312,7 @@ namespace DefaultNamespace
         {
             foreach (var card in _myCardsInTable)
             {
-                if (card.MyAbilities.Contains(EAbility.Taunt))
+                if (card.IsTaunt)
                 {
                     return true;
                 }
@@ -307,7 +320,5 @@ namespace DefaultNamespace
 
             return false;
         }
-        
-        
     }
 }

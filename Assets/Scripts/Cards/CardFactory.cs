@@ -45,7 +45,7 @@ namespace DefaultNamespace
             newMat.mainTexture = random.Texture;
             cardView.Init(_bus);
             cardView.Configuration(random, CardUtility.GetDescriptionById(random.Id), newMat);
-            _abilitiesProvider.SetAbilitiesToCards(cardView);
+            _abilitiesProvider.SetAbilityTypesToCards(cardView);
 
             return cardView;
         }

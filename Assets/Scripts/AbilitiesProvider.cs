@@ -7,13 +7,15 @@ namespace DefaultNamespace
     public class AbilitiesProvider
     {
         private ConfigCardsWithAbilities _configCardsWithAbilities;
+        private readonly Abilities _abilities;
 
-        public AbilitiesProvider(ConfigCardsWithAbilities configCardsWithAbilities)
+        public AbilitiesProvider(ConfigCardsWithAbilities configCardsWithAbilities, Abilities abilities)
         {
             _configCardsWithAbilities = configCardsWithAbilities;
+            _abilities = abilities;
         }
 
-        public void SetAbilitiesToCards(CardView card)
+        public void SetAbilityTypesToCards(CardView card)
         {
            card.SetIncreaseStatsParameters(GetIncreaseStatsParameters(card));
 
@@ -62,7 +64,37 @@ namespace DefaultNamespace
 
             return null;
         }
-        
-        
+
+        public void ActivateAbilities(CardView card)
+        {
+            var abilitiesList = card.MyAbilities;
+            
+            if (abilitiesList.Contains(EAbility.IncreaseStats))
+            {
+                _abilities.DoIncreaseStats(card);
+            }
+
+            if (abilitiesList.Contains(EAbility.Charge))
+            {
+                _abilities.ActivateCharge(card);
+            }
+
+            if (abilitiesList.Contains(EAbility.Taunt))
+            {
+                _abilities.ActivateTaunt(card);
+            }
+            
+        }
+
+
+        public void DeactivateAbilities(CardView card)
+        {
+            var abilitiesList = card.MyAbilities;
+
+            if (abilitiesList.Contains(EAbility.IncreaseStats))
+            {
+                _abilities.DoDecreaseStats(card);
+            }
+        }
     }
 }

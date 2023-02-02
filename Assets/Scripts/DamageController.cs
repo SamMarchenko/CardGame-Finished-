@@ -50,7 +50,7 @@ namespace DefaultNamespace
 
             if (signal.CardView.Owner != _currentDamageDealerPlayer && signal.CardView.StateType == ECardStateType.OnTable)
             {
-                if (signal.CardView.Owner.HasTauntOnTable() && !signal.CardView.MyAbilities.Contains(EAbility.Taunt))
+                if (signal.CardView.Owner.HasTauntOnTable() && !signal.CardView.IsTaunt)
                 {
                     Debug.Log("У героя на столе есть Taunt. Атаковать других юнитов запрещено!!!");
                     return;

@@ -13,27 +13,29 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     IDragHandler, IPointerClickHandler, IDamageable
 {
     [SerializeField] private IncreaseStatsParameters _increaseStatsParameters;
-    public List<EAbility> MyAbilities;
-
     [SerializeField] private GameObject _frontCard;
     [Space, SerializeField] private MeshRenderer _icon;
     [SerializeField] private TextMeshPro _cosText;
     [SerializeField] private TextMeshPro _nameText;
-    public TextMeshPro NameText => _nameText;
     [SerializeField] private TextMeshPro _descriptionText;
     [SerializeField] private TextMeshPro _typeText;
-    [SerializeField] private TextMeshPro _attackText;
+    [SerializeField] private TextMeshPro _damageText;
     [SerializeField] private TextMeshPro _healthText;
     [SerializeField] private int _cardId;
-    public int CardId => _cardId;
-
 
     private Vector3 _stepPosition = new Vector3(0, 0.5f, 0);
-    public Vector3 StepPosition => _stepPosition;
     private const float _scale = 1.7f;
-    public float Scale => _scale;
     private Transform _startPosition;
     private Transform _endPosition;
+    private CardSignalBus _bus;
+    
+    
+    public List<CardView> MyBuffers = new List<CardView>();
+    public List<EAbility> MyAbilities;
+    public TextMeshPro NameText => _nameText;
+    public int CardId => _cardId;
+    public Vector3 StepPosition => _stepPosition;
+    public float Scale => _scale;
 
     public bool IsEnable
     {
@@ -45,14 +47,17 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    private CardSignalBus _bus;
-    public bool CanBeDragged = false;
-    public bool CanAttack = false;
+    public bool CanBeDragged;
+    public bool CanAttack;
     public bool IsScaled;
-    public EAbility StartAbilityType;
-
+    public bool IsTaunt;
+    public int HealthIncreaseBuff = 0;
+    public int DamageIncreaseBuff = 0;
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
     public Player Owner;
+    public IncreaseStatsParameters IncreaseStatsParameters => _increaseStatsParameters;
+    public ECardUnitType MyType;
+
 
     public void Configuration(CardPropertiesData data, string description, Material icon)
     {
@@ -61,11 +66,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _nameText.text = data.Name;
         _descriptionText.text = description;
         _typeText.text = data.Type == ECardUnitType.All ? string.Empty : data.Type.ToString();
-        _attackText.text = data.Attack.ToString();
-        _healthText.text = data.Health.ToString();
-        StartAbilityType = data.Ability;
+        _damageText.text = (data.Attack + DamageIncreaseBuff).ToString();
+        _healthText.text = (data.Health + HealthIncreaseBuff).ToString();
         _cardId = (int) data.Id;
+        MyType = data.Type;
     }
+
 
     public void SetIncreaseStatsParameters(IncreaseStatsParameters increaseStatsParameters)
     {
@@ -74,13 +80,13 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             _increaseStatsParameters = new IncreaseStatsParameters();
             return;
         }
+
         _increaseStatsParameters = increaseStatsParameters;
-        
+
         if (!MyAbilities.Contains(EAbility.IncreaseStats))
         {
             MyAbilities.Add(EAbility.IncreaseStats);
         }
-        
     }
 
     public int GetCost()
@@ -93,7 +99,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         return int.Parse(_healthText.text);
     }
 
-    private void SetHealth(int health)
+    public void SetHealth(int health)
     {
         _healthText.text = health.ToString();
         if (health == 0)
@@ -236,7 +242,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public int GetDamage()
     {
-        return int.Parse(_attackText.text);
+        return int.Parse(_damageText.text);
+    }
+
+    public void SetDamage(int value)
+    {
+        _damageText.text = value.ToString();
     }
 
     public void ApplyDamage(int damage)
