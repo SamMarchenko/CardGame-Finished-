@@ -8,15 +8,17 @@ namespace DefaultNamespace
         private readonly ParentView _parentView;
         private readonly PlayerSignalBus _playerSignalBus;
         private readonly AbilitiesProvider _abilitiesProvider;
+        private readonly BuffController _buffController;
         private readonly PlayerView _firstPlayerView;
         private readonly PlayerView _secondPlayerView;
 
         public PlayerFactory(ParentView parentView, AllPlayersView allPlayersView, PlayerSignalBus playerSignalBus,
-        AbilitiesProvider abilitiesProvider)
+        AbilitiesProvider abilitiesProvider, BuffController buffController)
         {
             _parentView = parentView;
             _playerSignalBus = playerSignalBus;
             _abilitiesProvider = abilitiesProvider;
+            _buffController = buffController;
             _firstPlayerView = allPlayersView.FirstPlayerView;
             _secondPlayerView = allPlayersView.SecondPlayerView;
         }
@@ -25,7 +27,7 @@ namespace DefaultNamespace
         {
             var playerView = playerType == EPlayers.FirstPlayer ? _firstPlayerView : _secondPlayerView;
             var player = new Player();
-            player.Init(_parentView, playerType, playerView, _playerSignalBus, _abilitiesProvider);
+            player.Init(_parentView, playerType, playerView, _playerSignalBus, _abilitiesProvider, _buffController);
 
             return player;
         }

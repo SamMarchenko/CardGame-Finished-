@@ -32,6 +32,7 @@ namespace Engine.Installers
             Container.BindInterfacesAndSelfTo<DamageController>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<Abilities>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<AbilitiesProvider>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<BuffController>().AsSingle().NonLazy();
             
 
             

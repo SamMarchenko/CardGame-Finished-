@@ -52,7 +52,9 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public bool IsScaled;
     public bool IsTaunt;
     public int HealthIncreaseBuff = 0;
+    public int BaseHp;
     public int DamageIncreaseBuff = 0;
+    public int BaseDMG;
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
     public Player Owner;
     public IncreaseStatsParameters IncreaseStatsParameters => _increaseStatsParameters;
@@ -70,6 +72,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _healthText.text = (data.Health + HealthIncreaseBuff).ToString();
         _cardId = (int) data.Id;
         MyType = data.Type;
+        BaseHp = data.Health;
+        BaseDMG = data.Attack;
     }
 
 
@@ -94,14 +98,23 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         return int.Parse(_cosText.text);
     }
 
-    public int GetHealth()
+    public int GetActualHealth()
     {
         return int.Parse(_healthText.text);
+    }
+
+    public int GetBaseHealth()
+    {
+        return BaseHp;
     }
 
     public void SetHealth(int health)
     {
         _healthText.text = health.ToString();
+        if (HealthIncreaseBuff > 0)
+        {
+            _healthText.color = Color.green;
+        }
         if (health == 0)
         {
             Owner.KillCardFromTable(this);
@@ -240,19 +253,29 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _bus.CardClickFire(new CardClickSignal(this));
     }
 
-    public int GetDamage()
+    public int GetActualDamage()
     {
         return int.Parse(_damageText.text);
     }
 
+    public int GetBaseDamage()
+    {
+        return BaseDMG;
+    }
+    
+
     public void SetDamage(int value)
     {
         _damageText.text = value.ToString();
+        if (DamageIncreaseBuff > 0)
+        {
+            _damageText.color = Color.green;
+        }
     }
 
     public void ApplyDamage(int damage)
     {
-        var health = GetHealth();
+        var health = GetActualHealth();
         if (health - damage <= 0)
         {
             health = 0;

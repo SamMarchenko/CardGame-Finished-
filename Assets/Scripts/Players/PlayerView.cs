@@ -66,7 +66,7 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
         _playerSignalBus.PlayerClickFire(new PlayerClickSignal(this));
     }
 
-    public int GetDamage()
+    public int GetActualDamage()
     {
         return _damage;
     }

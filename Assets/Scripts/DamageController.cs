@@ -22,10 +22,10 @@ namespace DefaultNamespace
 
         private void Attack()
         {
-            var damage = DamageDealer.GetDamage();
+            var damage = DamageDealer.GetActualDamage();
             AttackedTarget.ApplyDamage(damage);
 
-            damage = AttackedTarget.GetDamage();
+            damage = AttackedTarget.GetActualDamage();
             DamageDealer.ApplyDamage(damage);
             DamageDealer.SetCoolDownAttack(true);
         }

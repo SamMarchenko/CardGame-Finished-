@@ -8,6 +8,7 @@ namespace DefaultNamespace
     {
         private ConfigCardsWithAbilities _configCardsWithAbilities;
         private readonly Abilities _abilities;
+        private readonly BuffController _buffController;
 
         public AbilitiesProvider(ConfigCardsWithAbilities configCardsWithAbilities, Abilities abilities)
         {
@@ -47,6 +48,7 @@ namespace DefaultNamespace
                     abilitiesList.Add(EAbility.Charge);
                 }
             }
+            //todo: остальные абилки добавлять сюда!
 
             return abilitiesList;
 
@@ -85,6 +87,11 @@ namespace DefaultNamespace
             }
             
         }
+
+        // public void UpdateBuffsOnTable(Player player)
+        // {
+        //     _buffController.UpdateBuffersListForCardsOnTable(player);
+        // }
 
 
         public void DeactivateAbilities(CardView card)

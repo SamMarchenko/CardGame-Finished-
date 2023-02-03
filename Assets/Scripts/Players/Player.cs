@@ -30,6 +30,8 @@ namespace DefaultNamespace
         private Transform[] _enemyTableSlots;
         private List<CardView> _myCardsInTable;
         public List<CardView> MyCardsInTable => _myCardsInTable;
+
+        public List<CardView> MyBuffersInTable = new List<CardView>();
         private Dictionary<CardView, Transform> _tableCardSlotDictionary = new Dictionary<CardView, Transform>();
 
         private DeckBuilder _deckBuilder;
@@ -43,6 +45,7 @@ namespace DefaultNamespace
 
         public EPlayers PlayerType;
         private AbilitiesProvider _abilitiesProvider;
+        private BuffController _buffController;
 
         public void SetCurrentStageType(ECurrentStageType stageType)
         {
@@ -60,7 +63,7 @@ namespace DefaultNamespace
         }
 
         public void Init(ParentView parentView, EPlayers player, PlayerView playerView, PlayerSignalBus playerSignalBus,
-            AbilitiesProvider abilitiesProvider)
+            AbilitiesProvider abilitiesProvider, BuffController buffController)
         {
             PlayerType = player;
             _playerSignalBus = playerSignalBus;
@@ -84,6 +87,7 @@ namespace DefaultNamespace
             }
 
             _abilitiesProvider = abilitiesProvider;
+            _buffController = buffController;
             _playerView = playerView;
             _playerView.Init(PlayerType, _playerSignalBus);
             _myCardsInDeck = new List<CardView>();
@@ -163,6 +167,7 @@ namespace DefaultNamespace
             _myCardsInTable.Add(card);
             
             ActivateAllAbilities(card);
+            UpdateAllBuffsOnTable();
 
             //todo: пока абилка "Charge" включается тут при выкладывании карты на стол
             // if (card.MyAbilities.Contains(EAbility.Charge))
@@ -172,6 +177,12 @@ namespace DefaultNamespace
 
 
             return slot;
+        }
+
+        private void UpdateAllBuffsOnTable()
+        {
+            _buffController.UpdateBuffersListForCardsOnTable(this);
+            // _abilitiesProvider.UpdateBuffsOnTable(this);
         }
 
         private void ActivateAllAbilities(CardView card)
@@ -201,6 +212,13 @@ namespace DefaultNamespace
             _myCardsInTable.Remove(card);
             _abilitiesProvider.DeactivateAbilities(card);
             DeleteCardFromDictionary(_tableCardSlotDictionary, card);
+
+            if (MyBuffersInTable.Contains(card))
+            {
+                MyBuffersInTable.Remove(card);
+                UpdateAllBuffsOnTable();
+            }
+            
             card.DestroySelf();
         }
 
