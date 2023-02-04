@@ -29,24 +29,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Transform _endPosition;
     private CardSignalBus _bus;
 
-    //public Dictionary<CardView, bool> MyBuffers = new Dictionary<CardView, bool>();
-    //public List<CardView> MyBuffers = new List<CardView>();
+
     public List<EAbility> MyAbilities;
     public TextMeshPro NameText => _nameText;
     public int CardId => _cardId;
     public Vector3 StepPosition => _stepPosition;
     public float Scale => _scale;
-
-    public bool IsEnable
-    {
-        get => _icon.enabled;
-        set
-        {
-            _icon.enabled = value;
-            _frontCard.SetActive(value);
-        }
-    }
-
     public bool CanBeDragged;
     public bool CanAttack;
     public bool IsScaled;
@@ -60,6 +48,20 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public IncreaseStatsParameters BuffStatsParameters => buffStatsParameters;
     public ECardUnitType MyType;
 
+    public bool IsEnable
+    {
+        get => _icon.enabled;
+        set
+        {
+            _icon.enabled = value;
+            _frontCard.SetActive(value);
+        }
+    }
+
+    public void Init(CardSignalBus bus)
+    {
+        _bus = bus;
+    }
 
     public void Configuration(CardPropertiesData data, string description, Material icon)
     {
@@ -108,6 +110,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         SumHpBuff += hpBuff;
         _healthText.text = currentHp.ToString();
+        Hp = Int32.Parse(_healthText.text);
         _healthText.color = SumHpBuff > 0 ? Color.green : Color.white;
 
         if (currentHp == 0)
@@ -116,10 +119,6 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    public void Init(CardSignalBus bus)
-    {
-        _bus = bus;
-    }
 
     [ContextMenu("Switch Visual")]
     public void SwitchVisual()
@@ -157,26 +156,6 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             DownScaleCard();
         }
-    }
-
-    public Transform GetStartCardPosition()
-    {
-        return _startPosition;
-    }
-
-    public Transform GetEndCardPosition()
-    {
-        return _endPosition;
-    }
-
-    public void SetStartCardPosition(Transform startPosition)
-    {
-        _startPosition = startPosition;
-    }
-
-    public void SetEndCardPosition(Transform endPosition)
-    {
-        _endPosition = endPosition;
     }
 
     public void MoveAnimation(Transform endPosition)
@@ -256,6 +235,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         SumDmgBuff += dmgBuff;
         _damageText.text = currentDmg.ToString();
+        DMG = Int32.Parse(_damageText.text);
         _damageText.color = SumDmgBuff > 0 ? Color.green : Color.white;
     }
 

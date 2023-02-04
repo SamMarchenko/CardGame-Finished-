@@ -86,7 +86,17 @@ namespace DefaultNamespace
             {
                 _abilities.ActivateTaunt(card);
             }
+        }
+
+        public void DeactivateAbilitiesByThisCard(CardView card)
+        {
+            var abilitiesList = card.MyAbilities;
             
+            
+            if (abilitiesList.Contains(EAbility.IncreaseStats))
+            {
+                _abilities.DeleteBuffs(card);
+            }
         }
         
 

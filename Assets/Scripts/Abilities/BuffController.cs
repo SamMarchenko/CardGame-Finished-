@@ -9,33 +9,33 @@ namespace DefaultNamespace
     {
         private readonly PlayersProvider _playersProvider;
         private readonly Abilities _abilities;
-        private Player _firstPlayer;
-        private Player _secondPlayer;
+       // private Player _firstPlayer;
+       // private Player _secondPlayer;
 
         public BuffController(Abilities abilities)
         {
             _abilities = abilities;
         }
 
-        private void SetPlayer(Player player)
-        {
-            switch (player.PlayerType)
-            {
-                case EPlayers.FirstPlayer when _firstPlayer == null:
-                    _firstPlayer = player;
-                    return;
-                case EPlayers.SecondPlayer when _secondPlayer == null:
-                    _secondPlayer = player;
-                    return;
-            }
-        }
+        // private void SetPlayer(Player player)
+        // {
+        //     switch (player.PlayerType)
+        //     {
+        //         case EPlayers.FirstPlayer when _firstPlayer == null:
+        //             _firstPlayer = player;
+        //             return;
+        //         case EPlayers.SecondPlayer when _secondPlayer == null:
+        //             _secondPlayer = player;
+        //             return;
+        //     }
+        // }
 
-        public void UpdateBuffsOnTable(Player player)
-        {
-            SetPlayer(player);
-            // RemoveBuffersFromCardsOnTable(player);
-            // AddBuffersToCardsOnTable(player);
-        }
+        // public void UpdateBuffsOnTable(Player player)
+        // {
+        //     SetPlayer(player);
+        //     // RemoveBuffersFromCardsOnTable(player);
+        //     // AddBuffersToCardsOnTable(player);
+        // }
 
         public void CheckAndGiveBuffToThisCard(CardView card)
         {
