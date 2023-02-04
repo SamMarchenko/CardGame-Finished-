@@ -18,31 +18,49 @@ namespace DefaultNamespace
         public int AbilityId => _abilityId;
 
 
-        public void DoIncreaseStats(CardView card)
+        public void DoBuffStats(CardView buffer)
         {
-            SetBufferToPlayer(card);
+            SetBufferToPlayer(buffer);
 
-            var stats = card.IncreaseStatsParameters;
+            BuffAllCardsInTableByCurrentBuffer(buffer);
+        }
 
-            switch (stats.UnitTypeBuff)
+        private void BuffAllCardsInTableByCurrentBuffer(CardView buffer)
+        {
+            foreach (var card in buffer.Owner.MyCardsInTable)
             {
-                case ECardUnitType.All:
-                    SetBuffersForCardsInTable(card, ECardUnitType.All);
-                    break;
-                case ECardUnitType.Murloc:
-                    SetBuffersForCardsInTable(card, ECardUnitType.Murloc);
-                    break;
-                case ECardUnitType.Beast:
-                    SetBuffersForCardsInTable(card, ECardUnitType.Beast);
-                    break;
-                case ECardUnitType.Elemental:
-                    SetBuffersForCardsInTable(card, ECardUnitType.Elemental);
-                    break;
-                case ECardUnitType.Mech:
-                    SetBuffersForCardsInTable(card, ECardUnitType.Mech);
-                    break;
+                BuffCard(card, buffer);
             }
         }
+
+        public void BuffCard(CardView card, CardView buffer)
+        {
+            if (card != buffer)
+            {
+                if (buffer.BuffStatsParameters.UnitTypeBuff == ECardUnitType.All || card.MyType == buffer.BuffStatsParameters.UnitTypeBuff)
+                {
+                    ActivateBuffOnCard(card, buffer);
+                }
+            }
+        }
+
+        private void ActivateBuffOnCard(CardView card, CardView buffer)
+        {
+            var buffDmg = buffer.BuffStatsParameters.DamageBuff;
+            var buffHp = buffer.BuffStatsParameters.HpBuff;
+            if (buffDmg > 0)
+            {
+                var currentDmg = card.GetDamage() + buffDmg;
+                card.SetDamage(currentDmg, buffDmg);
+            }
+
+            if (buffHp > 0)
+            {
+                var currentHp = card.GetHealth() + buffHp;
+                card.SetHealth(currentHp, buffHp);
+            }
+        }
+
 
         private void SetBufferToPlayer(CardView card)
         {
@@ -60,47 +78,6 @@ namespace DefaultNamespace
         public void ActivateTaunt(CardView card)
         {
             card.IsTaunt = true;
-        }
-
-        private void SetBuffersForCardsInTable(CardView buffer, ECardUnitType unitType)
-        {
-            foreach (var card in buffer.Owner.MyCardsInTable)
-            {
-                // if ((card == buffer) || (card.MyType != unitType && unitType != ECardUnitType.All) ||
-                //     (card.MyBuffers.Contains(buffer)))
-                // {
-                //     continue;
-                // }
-
-                if (card == buffer)
-                {
-                    continue;
-                }
-                
-                if (card.MyType != unitType && unitType != ECardUnitType.All)
-                {
-                    continue;
-                }
-                
-                if (card.MyBuffers.Contains(buffer))
-                {
-                    continue;
-                }
-                Debug.Log($"{card.NameText.text} добавился тут баффер!");
-                card.MyBuffers.Add(buffer);
-
-                // if (card != buffer && (unitType == ECardUnitType.All || card.MyType == unitType) &&
-                //     !card.MyBuffers.Contains(buffer))
-                // {
-                //     card.MyBuffers.Add(buffer);
-                // }
-
-                
-            }
-        }
-
-        public void DoDecreaseStats(CardView card)
-        {
         }
     }
 }

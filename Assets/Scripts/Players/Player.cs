@@ -20,7 +20,7 @@ namespace DefaultNamespace
         private Transform[] _myHandSlots;
         private Transform[] _enemyHandSlots;
         private List<CardView> _myCardsInHand;
-        
+
         public List<CardView> MyIncreaseStatsCardsOnTable = new List<CardView>();
         public List<CardView> MyCardsInHand => _myCardsInHand;
         private Dictionary<CardView, Transform> _handCardSlotDictionary = new Dictionary<CardView, Transform>();
@@ -148,48 +148,8 @@ namespace DefaultNamespace
 
             return slot;
         }
-
-        public Transform SetCardFromHandInTable(CardView card)
-        {
-            var state = ECardStateType.OnTable;
-            var slot = FindFirstFreeSlot(_myTableSlots, _tableCardSlotDictionary);
-
-            if (slot == null)
-            {
-                Debug.Log("На столе нет свободного слота. Карта из руки не может добавиться");
-                return null;
-            }
-
-            DeleteCardFromDictionary(_handCardSlotDictionary, card);
-            _myCardsInHand.Remove(card);
-
-            AddCardInDictionary(_tableCardSlotDictionary, card, slot, state);
-            _myCardsInTable.Add(card);
-            
-            ActivateAllAbilities(card);
-            UpdateAllBuffsOnTable();
-
-            //todo: пока абилка "Charge" включается тут при выкладывании карты на стол
-            // if (card.MyAbilities.Contains(EAbility.Charge))
-            // {
-            //     card.CanAttack = true;
-            // }
-
-
-            return slot;
-        }
-
-        private void UpdateAllBuffsOnTable()
-        {
-            _buffController.UpdateBuffersListForCardsOnTable(this);
-            // _abilitiesProvider.UpdateBuffsOnTable(this);
-        }
-
-        private void ActivateAllAbilities(CardView card)
-        {
-            _abilitiesProvider.ActivateAbilities(card);
-        }
-
+        
+        
         public void SetCardFromHandInDeck(CardView card)
         {
             var state = ECardStateType.InDeck;
@@ -207,20 +167,6 @@ namespace DefaultNamespace
             _deckBuilder.ShuffleDeck(_myCardsInDeck);
         }
 
-        public void KillCardFromTable(CardView card)
-        {
-            _myCardsInTable.Remove(card);
-            _abilitiesProvider.DeactivateAbilities(card);
-            DeleteCardFromDictionary(_tableCardSlotDictionary, card);
-
-            if (MyBuffersInTable.Contains(card))
-            {
-                MyBuffersInTable.Remove(card);
-                UpdateAllBuffsOnTable();
-            }
-            
-            card.DestroySelf();
-        }
 
         public void StartOfMove()
         {
@@ -337,6 +283,45 @@ namespace DefaultNamespace
             }
 
             return false;
+        }
+
+        public Transform SetCardFromHandInTable(CardView card)
+        {
+            var state = ECardStateType.OnTable;
+            var slot = FindFirstFreeSlot(_myTableSlots, _tableCardSlotDictionary);
+
+            if (slot == null)
+            {
+                Debug.Log("На столе нет свободного слота. Карта из руки не может добавиться");
+                return null;
+            }
+
+            DeleteCardFromDictionary(_handCardSlotDictionary, card);
+            _myCardsInHand.Remove(card);
+
+            AddCardInDictionary(_tableCardSlotDictionary, card, slot, state);
+            _myCardsInTable.Add(card);
+
+            _abilitiesProvider.ActivateAbilitiesByThisCard(card);
+            _buffController.UpdateBuffsOnTable(this);
+            _buffController.CheckAndGiveBuffToThisCard(card);
+
+            return slot;
+        }
+
+        public void KillCardFromTable(CardView card)
+        {
+            _myCardsInTable.Remove(card);
+            //_abilitiesProvider.DeactivateAbilities(card);
+            DeleteCardFromDictionary(_tableCardSlotDictionary, card);
+
+            if (MyBuffersInTable.Contains(card))
+            {
+                MyBuffersInTable.Remove(card);
+                _buffController.UpdateBuffsOnTable(this);
+            }
+
+            card.DestroySelf();
         }
     }
 }

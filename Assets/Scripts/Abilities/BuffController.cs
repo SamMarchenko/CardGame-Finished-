@@ -1,10 +1,11 @@
-﻿using Cards;
+﻿using System.Linq;
+using Cards;
 using UnityEngine;
 using Zenject;
 
 namespace DefaultNamespace
 {
-    public class BuffController : ITickable
+    public class BuffController
     {
         private readonly PlayersProvider _playersProvider;
         private readonly Abilities _abilities;
@@ -29,55 +30,47 @@ namespace DefaultNamespace
             }
         }
 
-        public void UpdateBuffersListForCardsOnTable(Player player)
+        public void UpdateBuffsOnTable(Player player)
         {
             SetPlayer(player);
-            foreach (var buffer in player.MyBuffersInTable)
+            // RemoveBuffersFromCardsOnTable(player);
+            // AddBuffersToCardsOnTable(player);
+        }
+
+        public void CheckAndGiveBuffToThisCard(CardView card)
+        {
+            foreach (var buffer in card.Owner.MyBuffersInTable)
             {
-                var bufferUnitType = buffer.IncreaseStatsParameters.UnitTypeBuff;
-                foreach (var card in player.MyCardsInTable)
-                {
-                    if (card != buffer)
-                    {
-                        if (bufferUnitType == ECardUnitType.All || bufferUnitType == card.MyType)
-                        {
-                            if (!card.MyBuffers.Contains(buffer))
-                            {
-                                Debug.Log($"{card.NameText.text} добавился тут баффер!");
-                                card.MyBuffers.Add(buffer);
-                            }
-                        }
-                    }
-                    // if (bufferUnitType == ECardUnitType.All || bufferUnitType == card.MyType && !card.MyBuffers.Contains(buffer))
-                    // {
-                    //     card.MyBuffers.Add(buffer);
-                    // }
-
-
-                    foreach (var myBuffer in card.MyBuffers)
-                    {
-                        if (!player.MyBuffersInTable.Contains(myBuffer))
-                        {
-                            card.MyBuffers.Remove(myBuffer);
-                        }
-                    }
-                }
+                _abilities.BuffCard(card, buffer);
             }
-
-            ActualizeBuffs(_firstPlayer);
-            ActualizeBuffs(_secondPlayer);
         }
 
+      
 
-        public void Tick()
+        
+
+        private void DeactivateBuffToAllCardsOnTable(Player player, CardView buffer)
         {
-            // ActualizeBuffs(_firstPlayer);
-            // ActualizeBuffs(_secondPlayer);
+            foreach (var card in player.MyCardsInTable)
+            {
+                DeactivateBuffToCard(card, buffer);
+            }
         }
 
-        private void ActualizeBuffs(Player player)
+        
+
+        private void DeactivateBuffToCard(CardView card, CardView buffer)
         {
-            //todo: говно ебаное
+            var dmg = 0;
+            var hp = 0;
+            var dmgBuff = buffer.BuffStatsParameters.DamageBuff;
+            var hpBuff = buffer.BuffStatsParameters.HpBuff;
+
+            dmg = card.GetDamage() - dmgBuff;
+            hp = card.GetHealth() - hpBuff;
+
+            card.SetDamage(dmg, -dmgBuff);
+            card.SetHealth(hp, -hpBuff);
         }
     }
 }

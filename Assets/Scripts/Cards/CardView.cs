@@ -12,7 +12,7 @@ using Zenject;
 public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler,
     IDragHandler, IPointerClickHandler, IDamageable
 {
-    [SerializeField] private IncreaseStatsParameters _increaseStatsParameters;
+    [SerializeField] private IncreaseStatsParameters buffStatsParameters;
     [SerializeField] private GameObject _frontCard;
     [Space, SerializeField] private MeshRenderer _icon;
     [SerializeField] private TextMeshPro _cosText;
@@ -28,9 +28,9 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Transform _startPosition;
     private Transform _endPosition;
     private CardSignalBus _bus;
-    
-    
-    public List<CardView> MyBuffers = new List<CardView>();
+
+    //public Dictionary<CardView, bool> MyBuffers = new Dictionary<CardView, bool>();
+    //public List<CardView> MyBuffers = new List<CardView>();
     public List<EAbility> MyAbilities;
     public TextMeshPro NameText => _nameText;
     public int CardId => _cardId;
@@ -51,13 +51,13 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public bool CanAttack;
     public bool IsScaled;
     public bool IsTaunt;
-    public int HealthIncreaseBuff = 0;
-    public int BaseHp;
-    public int DamageIncreaseBuff = 0;
-    public int BaseDMG;
+    public int SumHpBuff = 0;
+    public int Hp;
+    public int SumDmgBuff = 0;
+    public int DMG;
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
     public Player Owner;
-    public IncreaseStatsParameters IncreaseStatsParameters => _increaseStatsParameters;
+    public IncreaseStatsParameters BuffStatsParameters => buffStatsParameters;
     public ECardUnitType MyType;
 
 
@@ -68,12 +68,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _nameText.text = data.Name;
         _descriptionText.text = description;
         _typeText.text = data.Type == ECardUnitType.All ? string.Empty : data.Type.ToString();
-        _damageText.text = (data.Attack + DamageIncreaseBuff).ToString();
-        _healthText.text = (data.Health + HealthIncreaseBuff).ToString();
+        _damageText.text = data.Attack.ToString();
+        _healthText.text = data.Health.ToString();
         _cardId = (int) data.Id;
         MyType = data.Type;
-        BaseHp = data.Health;
-        BaseDMG = data.Attack;
+        Hp = data.Health;
+        DMG = data.Attack;
     }
 
 
@@ -81,11 +81,11 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (increaseStatsParameters == null)
         {
-            _increaseStatsParameters = new IncreaseStatsParameters();
+            buffStatsParameters = new IncreaseStatsParameters();
             return;
         }
 
-        _increaseStatsParameters = increaseStatsParameters;
+        buffStatsParameters = increaseStatsParameters;
 
         if (!MyAbilities.Contains(EAbility.IncreaseStats))
         {
@@ -98,24 +98,19 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         return int.Parse(_cosText.text);
     }
 
-    public int GetActualHealth()
+    public int GetHealth()
     {
-        return int.Parse(_healthText.text);
+        Hp = int.Parse(_healthText.text);
+        return Hp;
     }
 
-    public int GetBaseHealth()
+    public void SetHealth(int currentHp, int hpBuff)
     {
-        return BaseHp;
-    }
+        SumHpBuff += hpBuff;
+        _healthText.text = currentHp.ToString();
+        _healthText.color = SumHpBuff > 0 ? Color.green : Color.white;
 
-    public void SetHealth(int health)
-    {
-        _healthText.text = health.ToString();
-        if (HealthIncreaseBuff > 0)
-        {
-            _healthText.color = Color.green;
-        }
-        if (health == 0)
+        if (currentHp == 0)
         {
             Owner.KillCardFromTable(this);
         }
@@ -228,13 +223,11 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnBeginDrag(PointerEventData eventData)
     {
         _bus.FireDragStart(new CardDragSignal(this));
-//        Debug.Log("OnBeginDrag");
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         _bus.FireDragEnd(new CardDragSignal(this));
-        // Debug.Log("OnEndDrag");
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -245,7 +238,6 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
 
         _bus.FireDragging(new CardDragSignal(this));
-//        Debug.Log("OnDrag");
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -253,29 +245,23 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _bus.CardClickFire(new CardClickSignal(this));
     }
 
-    public int GetActualDamage()
+    public int GetDamage()
     {
-        return int.Parse(_damageText.text);
+        DMG = int.Parse(_damageText.text);
+        return DMG;
     }
 
-    public int GetBaseDamage()
-    {
-        return BaseDMG;
-    }
-    
 
-    public void SetDamage(int value)
+    public void SetDamage(int currentDmg, int dmgBuff)
     {
-        _damageText.text = value.ToString();
-        if (DamageIncreaseBuff > 0)
-        {
-            _damageText.color = Color.green;
-        }
+        SumDmgBuff += dmgBuff;
+        _damageText.text = currentDmg.ToString();
+        _damageText.color = SumDmgBuff > 0 ? Color.green : Color.white;
     }
 
     public void ApplyDamage(int damage)
     {
-        var health = GetActualHealth();
+        var health = GetHealth();
         if (health - damage <= 0)
         {
             health = 0;
@@ -285,7 +271,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             health -= damage;
         }
 
-        SetHealth(health);
+        SetHealth(health, 0);
     }
 
     public void SetCoolDownAttack(bool value)

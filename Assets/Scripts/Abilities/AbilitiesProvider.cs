@@ -67,13 +67,14 @@ namespace DefaultNamespace
             return null;
         }
 
-        public void ActivateAbilities(CardView card)
+        public void ActivateAbilitiesByThisCard(CardView card)
         {
             var abilitiesList = card.MyAbilities;
             
+            
             if (abilitiesList.Contains(EAbility.IncreaseStats))
             {
-                _abilities.DoIncreaseStats(card);
+                _abilities.DoBuffStats(card);
             }
 
             if (abilitiesList.Contains(EAbility.Charge))
@@ -87,21 +88,8 @@ namespace DefaultNamespace
             }
             
         }
+        
 
-        // public void UpdateBuffsOnTable(Player player)
-        // {
-        //     _buffController.UpdateBuffersListForCardsOnTable(player);
-        // }
-
-
-        public void DeactivateAbilities(CardView card)
-        {
-            var abilitiesList = card.MyAbilities;
-
-            if (abilitiesList.Contains(EAbility.IncreaseStats))
-            {
-                _abilities.DoDecreaseStats(card);
-            }
-        }
+        
     }
 }
