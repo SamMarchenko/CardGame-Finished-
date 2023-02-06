@@ -99,7 +99,7 @@ namespace DefaultNamespace
 
             if (abilitiesList.Contains(EAbility.Battlecry))
             {
-                AtivateButtlecry(card);
+                // AtivateButtlecry(card);
             }
         }
 
@@ -114,12 +114,21 @@ namespace DefaultNamespace
             }
         }
         
-        private void AtivateButtlecry(CardView card)
-        {
-            switch (_cardsWithButtlecry)
-            {
-                
-            }
-        }
+        // private void AtivateButtlecry(CardView card)
+        // {
+        //     var id = card.CardId;
+        //     var description = string.Empty;
+        //     foreach (var battlecryParameter in _cardsWithButtlecry)
+        //     {
+        //         if (battlecryParameter.ID == id)
+        //         {
+        //             description = battlecryParameter.Description;
+        //             break;
+        //         }
+        //     }
+        //
+        //     description.Contains("Summon");
+        //
+        // }
     }
 }

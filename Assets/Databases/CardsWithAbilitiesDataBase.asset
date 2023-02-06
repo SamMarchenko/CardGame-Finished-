@@ -22,10 +22,6 @@ MonoBehaviour:
     DamageBuff: 1
     HpBuff: 0
     UnitTypeBuff: 0
-  - ID: 504
-    DamageBuff: 3
-    HpBuff: 0
-    UnitTypeBuff: 5
   - ID: 702
     DamageBuff: 1
     HpBuff: 1
@@ -36,3 +32,76 @@ MonoBehaviour:
     UnitTypeBuff: 2
   _idCardsWithTauntConfig: 67000000cc0000002f0100003401000096010000f50100005b020000
   _idCardsWithChargeConfig: 68000000cb00000035010000970100005c02000024030000ea030000
+  _battlecriesConfig:
+  - ID: 102
+    Action: 0
+    DMG: 1
+    HP: 0
+    SummonId: 0
+    Target: 2
+  - ID: 105
+    Action: 1
+    DMG: 0
+    HP: 2
+    SummonId: 0
+    Target: 2
+  - ID: 206
+    Action: 2
+    DMG: 1
+    HP: 1
+    SummonId: 109
+    Target: 0
+  - ID: 207
+    Action: 3
+    DMG: 0
+    HP: 0
+    SummonId: 0
+    Target: 0
+  - ID: 302
+    Action: 0
+    DMG: 1
+    HP: 0
+    SummonId: 0
+    Target: 2
+  - ID: 306
+    Action: 2
+    DMG: 1
+    HP: 1
+    SummonId: 107
+    Target: 0
+  - ID: 307
+    Action: 4
+    DMG: 1
+    HP: 1
+    SummonId: 0
+    Target: 2
+  - ID: 402
+    Action: 2
+    DMG: 2
+    HP: 1
+    SummonId: 108
+    Target: 0
+  - ID: 403
+    Action: 3
+    DMG: 0
+    HP: 0
+    SummonId: 0
+    Target: 0
+  - ID: 502
+    Action: 1
+    DMG: 0
+    HP: 2
+    SummonId: 0
+    Target: 4
+  - ID: 505
+    Action: 0
+    DMG: 3
+    HP: 0
+    SummonId: 0
+    Target: 3
+  - ID: 506
+    Action: 0
+    DMG: 2
+    HP: 0
+    SummonId: 0
+    Target: 2

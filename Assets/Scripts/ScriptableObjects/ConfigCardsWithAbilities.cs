@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Cards;
 using DefaultNamespace;
 using OneLine;
+using UnityEditor;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -10,6 +13,7 @@ namespace DefaultNamespace
     [CreateAssetMenu(fileName = "NewConfigCardsWithAbilities", menuName = "CardsWithAbilities")]
     public class ConfigCardsWithAbilities : ScriptableObject
     {
+
         [SerializeField] private CardPacksContainer _cardPacksContainer;
 
         [SerializeField, OneLine(Header = LineHeader.Short)]
@@ -77,6 +81,7 @@ namespace DefaultNamespace
                 _battlecriesConfig.Add(new BattlecriesParameters());
                 _battlecriesConfig[i].ID = list[i];
             }
+            
         }
 
         [ContextMenu("Save list \"Increase Stats\". Перезатрёт текущее сохранение")]
@@ -101,7 +106,11 @@ namespace DefaultNamespace
             {
                 _savedBattlecriesList.Add(new BattlecriesParameters());
                 _savedBattlecriesList[i].ID = _battlecriesConfig[i].ID;
-                _savedBattlecriesList[i].Description = _battlecriesConfig[i].Description;
+                _savedBattlecriesList[i].Action = _battlecriesConfig[i].Action;
+                _savedBattlecriesList[i].DMG = _battlecriesConfig[i].DMG;
+                _savedBattlecriesList[i].HP = _battlecriesConfig[i].HP;
+                _savedBattlecriesList[i].SummonId = _battlecriesConfig[i].SummonId;
+                _savedBattlecriesList[i].Target = _battlecriesConfig[i].Target;
             }
         }
         
@@ -129,7 +138,11 @@ namespace DefaultNamespace
             {
                 _battlecriesConfig.Add(new BattlecriesParameters());
                 _battlecriesConfig[i].ID = _savedBattlecriesList[i].ID;
-                _battlecriesConfig[i].Description = _savedBattlecriesList[i].Description;
+                _battlecriesConfig[i].Action = _savedBattlecriesList[i].Action;
+                _battlecriesConfig[i].DMG = _savedBattlecriesList[i].DMG;
+                _battlecriesConfig[i].HP = _savedBattlecriesList[i].HP;
+                _battlecriesConfig[i].SummonId = _savedBattlecriesList[i].SummonId;
+                _battlecriesConfig[i].Target = _savedBattlecriesList[i].Target;
             }
         }
         

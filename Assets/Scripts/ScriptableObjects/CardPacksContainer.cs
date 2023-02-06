@@ -37,6 +37,8 @@ public class CardPacksContainer : ScriptableObject
         return FindCardsForAbility(ability);
     }
 
+    
+
     public bool ValidHeroCard(uint id, EHeroType hero)
     {
         FindCardForID(id, out var heroType);

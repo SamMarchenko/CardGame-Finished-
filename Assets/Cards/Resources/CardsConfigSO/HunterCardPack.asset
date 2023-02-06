@@ -37,7 +37,7 @@ MonoBehaviour:
     Attack: 4
     Health: 3
     Type: 0
-    Ability: 3
+    Ability: 0
   - Id: 804
     Cost: 5
     Name: Tundra Rhino

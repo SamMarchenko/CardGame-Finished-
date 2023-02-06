@@ -21,7 +21,7 @@ MonoBehaviour:
     Attack: 3
     Health: 2
     Type: 0
-    Ability: 3
+    Ability: 0
   - Id: 202
     Cost: 2
     Name: Bloodfen Raptor

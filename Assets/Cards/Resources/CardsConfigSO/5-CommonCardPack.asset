@@ -37,7 +37,7 @@ MonoBehaviour:
     Attack: 4
     Health: 4
     Type: 0
-    Ability: 3
+    Ability: 0
   - Id: 504
     Cost: 5
     Name: Gurubashi Berserer
@@ -45,7 +45,7 @@ MonoBehaviour:
     Attack: 2
     Health: 7
     Type: 0
-    Ability: 4
+    Ability: 0
   - Id: 505
     Cost: 5
     Name: Nightblade

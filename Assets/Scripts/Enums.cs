@@ -27,6 +27,24 @@ namespace Cards
 		DrawCard
 	}
 
+	public enum EBattlecryAction
+	{
+		Deal,
+		Restore,
+		Summon,
+		Draw,
+		Buff
+	}
+
+	public enum EBattlecryTarget
+	{
+		None,
+		Self,
+		PointUnit,
+		Hero,
+		All
+	}
+
 	public enum ECurrentStageType
 	{
 		StartWaiting,
