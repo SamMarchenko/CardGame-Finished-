@@ -7,7 +7,7 @@ namespace DefaultNamespace
     public class AbilitiesProvider
     {
         private ConfigCardsWithAbilities _configCardsWithAbilities;
-        private List<BattlecriesParameters> _cardsWithButtlecry;
+        private List<BattlecryParameters> _cardsWithButtlecry;
         private readonly Abilities _abilities;
         private readonly BuffController _buffController;
 
@@ -99,7 +99,7 @@ namespace DefaultNamespace
 
             if (abilitiesList.Contains(EAbility.Battlecry))
             {
-                // AtivateButtlecry(card);
+                AtivateButtlecry(card);
             }
         }
 
@@ -114,21 +114,19 @@ namespace DefaultNamespace
             }
         }
         
-        // private void AtivateButtlecry(CardView card)
-        // {
-        //     var id = card.CardId;
-        //     var description = string.Empty;
-        //     foreach (var battlecryParameter in _cardsWithButtlecry)
-        //     {
-        //         if (battlecryParameter.ID == id)
-        //         {
-        //             description = battlecryParameter.Description;
-        //             break;
-        //         }
-        //     }
-        //
-        //     description.Contains("Summon");
-        //
-        // }
+        private void AtivateButtlecry(CardView card)
+        {
+            var cardsWithBC = _configCardsWithAbilities.BattlecriesConfig;
+
+            foreach (var battlecriesParameters in cardsWithBC)
+            {
+                if (battlecriesParameters.ID == card.CardId)
+                {
+                    card.BattlecryParameters = battlecriesParameters;
+                    break;
+                }
+            }
+            Debug.Log("Вложил батлкрай в карту");
+        }
     }
 }

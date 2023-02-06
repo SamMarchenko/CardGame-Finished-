@@ -46,6 +46,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
     public Player Owner;
     public BuffParameters BuffStatsParameters => buffStatsParameters;
+    public BattlecryParameters BattlecryParameters = new BattlecryParameters();
     public ECardUnitType MyType;
 
     public bool IsEnable
@@ -76,6 +77,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         MyType = data.Type;
         Hp = data.Health;
         DMG = data.Attack;
+        BattlecryParameters.ID = _cardId;
     }
 
 

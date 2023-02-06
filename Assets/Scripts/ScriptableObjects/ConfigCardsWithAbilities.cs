@@ -24,11 +24,11 @@ namespace DefaultNamespace
         [SerializeField, OneLine(Header = LineHeader.Short)]
         private List<int> _idCardsWithChargeConfig;
         [SerializeField, OneLine(Header = LineHeader.Short)]
-        private List<BattlecriesParameters> _battlecriesConfig;
+        private List<BattlecryParameters> _battlecriesConfig;
 
-        private List<BattlecriesParameters> _savedBattlecriesList;
+        private List<BattlecryParameters> _savedBattlecriesList;
 
-        public List<BattlecriesParameters> BattlecriesConfig => _battlecriesConfig;
+        public List<BattlecryParameters> BattlecriesConfig => _battlecriesConfig;
         public List<int> IDCardsWithTauntConfig => _idCardsWithTauntConfig;
         public List<int> IDCardsWithChargeConfig => _idCardsWithChargeConfig;
         public List<BuffParameters> IncreaseStatsConfig => _increaseStatsConfig;
@@ -78,7 +78,7 @@ namespace DefaultNamespace
             
             for (var i = 0; i < _battlecriesConfig.Capacity; i++)
             {
-                _battlecriesConfig.Add(new BattlecriesParameters());
+                _battlecriesConfig.Add(new BattlecryParameters());
                 _battlecriesConfig[i].ID = list[i];
             }
             
@@ -101,10 +101,10 @@ namespace DefaultNamespace
         [ContextMenu("Save list \"Battlecries\". Перезатрёт текущее сохранение")]
         public void SaveBattlecryList()
         {
-            _savedBattlecriesList = new List<BattlecriesParameters>(_battlecriesConfig.Count);
+            _savedBattlecriesList = new List<BattlecryParameters>(_battlecriesConfig.Count);
             for (var i = 0; i < _savedBattlecriesList.Capacity; i++)
             {
-                _savedBattlecriesList.Add(new BattlecriesParameters());
+                _savedBattlecriesList.Add(new BattlecryParameters());
                 _savedBattlecriesList[i].ID = _battlecriesConfig[i].ID;
                 _savedBattlecriesList[i].Action = _battlecriesConfig[i].Action;
                 _savedBattlecriesList[i].DMG = _battlecriesConfig[i].DMG;
@@ -136,7 +136,7 @@ namespace DefaultNamespace
             _battlecriesConfig.Capacity = _savedBattlecriesList.Count;
             for (var i = 0; i < _battlecriesConfig.Capacity; i++)
             {
-                _battlecriesConfig.Add(new BattlecriesParameters());
+                _battlecriesConfig.Add(new BattlecryParameters());
                 _battlecriesConfig[i].ID = _savedBattlecriesList[i].ID;
                 _battlecriesConfig[i].Action = _savedBattlecriesList[i].Action;
                 _battlecriesConfig[i].DMG = _savedBattlecriesList[i].DMG;

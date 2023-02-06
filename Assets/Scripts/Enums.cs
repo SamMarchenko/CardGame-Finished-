@@ -29,6 +29,7 @@ namespace Cards
 
 	public enum EBattlecryAction
 	{
+		None,
 		Deal,
 		Restore,
 		Summon,
