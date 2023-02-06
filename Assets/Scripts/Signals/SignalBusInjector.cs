@@ -14,6 +14,7 @@ namespace Signals
         private readonly CardClickSignalHandler _cardClickSignalHandler;
         private readonly CardPointerSignalHandler _cardPointerSignalHandler;
         private readonly CardDragSignalHandler _cardDragSignalHandler;
+        private readonly CardDoBattlecrySignalHandler _cardDoBattlecrySignalHandler;
         private readonly ChangeStageSignalHandler _changeStageSignalHandler;
         private readonly ChangeCurrentPlayerSignalHandler _changeCurrentPlayerSignalHandler;
         private readonly PlayerClickSignalHandler _playerClickSignalHandler;
@@ -22,6 +23,7 @@ namespace Signals
             CardClickSignalHandler cardClickSignalHandler,
             CardPointerSignalHandler cardPointerSignalHandler,
             CardDragSignalHandler cardDragSignalHandler,
+            CardDoBattlecrySignalHandler cardDoBattlecrySignalHandler,
             PlayerSignalBus playerSignalBus,
             ChangeStageSignalHandler changeStageSignalHandler,
             ChangeCurrentPlayerSignalHandler changeCurrentPlayerSignalHandler,
@@ -31,20 +33,20 @@ namespace Signals
             _cardClickSignalHandler = cardClickSignalHandler;
             _cardPointerSignalHandler = cardPointerSignalHandler;
             _cardDragSignalHandler = cardDragSignalHandler;
+            _cardDoBattlecrySignalHandler = cardDoBattlecrySignalHandler;
 
             _playerSignalBus = playerSignalBus;
             _changeStageSignalHandler = changeStageSignalHandler;
             _changeCurrentPlayerSignalHandler = changeCurrentPlayerSignalHandler;
             _playerClickSignalHandler = playerClickSignalHandler;
         }
-
-        // комментарии потом можешь почистить,
+        
         // внедряем зависимости не через конструктор, чтобы избежать циклической зависимости
         public void Initialize()
         {
             _cardSignalBus.Init(_cardClickSignalHandler,
                 _cardPointerSignalHandler,
-                _cardDragSignalHandler);
+                _cardDragSignalHandler, _cardDoBattlecrySignalHandler);
 
             _playerSignalBus.Init(_changeStageSignalHandler,
                 _changeCurrentPlayerSignalHandler,

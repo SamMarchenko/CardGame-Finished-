@@ -5,9 +5,10 @@ using Signals;
 using UnityEngine;
 using Zenject;
 
-public class GameCircle : IInitializable, ITickable
+public class GameCircle : IInitializable, ITickable, ICardDoBattlecryListener
 {
     private ECurrentStageType _currentStage = ECurrentStageType.StartWaiting;
+    private EBattlecrySubStage _battlecrySubStage = EBattlecrySubStage.False;
     private EPlayers _currentPlayerType = EPlayers.FirstPlayer;
     private readonly DeckBuilder _deckBuilder;
     private readonly CardMoverView _cardMoverView;
@@ -105,7 +106,7 @@ public class GameCircle : IInitializable, ITickable
                 return;
             }
 
-            if (_currentStage == ECurrentStageType.MoveStage)
+            if (_currentStage == ECurrentStageType.MoveStage && _battlecrySubStage == EBattlecrySubStage.False)
             {
                 Debug.Log("Ход окончен");
                 ChangeSide();
@@ -120,5 +121,11 @@ public class GameCircle : IInitializable, ITickable
         SetCurrentActivePlayer(_currentPlayerType);
         
         _playerSignalBus.CurrentPlayerChangeFire(new CurrentPlayerChangeSignal(_currentPlayerType, _currentPlayer));
+    }
+
+    public void OnCardDoBattlecry(CardDoBattlecrySignal signal)
+    {
+        _battlecrySubStage = signal.IsBattleryStage;
+        Debug.Log("Применяется баттлкрай в данный момент");
     }
 }

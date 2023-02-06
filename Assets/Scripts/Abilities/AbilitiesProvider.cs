@@ -127,6 +127,8 @@ namespace DefaultNamespace
                 }
             }
             Debug.Log("Вложил батлкрай в карту");
+
+            _abilities.DoBattleCry(card);
         }
     }
 }

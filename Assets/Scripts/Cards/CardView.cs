@@ -27,7 +27,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private const float _scale = 1.7f;
     private Transform _startPosition;
     private Transform _endPosition;
-    private CardSignalBus _bus;
+    private CardSignalBus _cardSignalBus;
 
 
     public List<EAbility> MyAbilities;
@@ -61,7 +61,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void Init(CardSignalBus bus)
     {
-        _bus = bus;
+        _cardSignalBus = bus;
     }
 
     public void Configuration(CardPropertiesData data, string description, Material icon)
@@ -193,22 +193,22 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _bus.FirePointerOn(new CardPointerSignal(this));
+        _cardSignalBus.FirePointerOn(new CardPointerSignal(this));
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        _bus.FirePointerOff(new CardPointerSignal(this));
+        _cardSignalBus.FirePointerOff(new CardPointerSignal(this));
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _bus.FireDragStart(new CardDragSignal(this));
+        _cardSignalBus.FireDragStart(new CardDragSignal(this));
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _bus.FireDragEnd(new CardDragSignal(this));
+        _cardSignalBus.FireDragEnd(new CardDragSignal(this));
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -218,12 +218,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             return;
         }
 
-        _bus.FireDragging(new CardDragSignal(this));
+        _cardSignalBus.FireDragging(new CardDragSignal(this));
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _bus.CardClickFire(new CardClickSignal(this));
+        _cardSignalBus.CardClickFire(new CardClickSignal(this));
     }
 
     public int GetDamage()

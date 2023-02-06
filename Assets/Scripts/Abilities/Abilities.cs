@@ -1,11 +1,18 @@
 ﻿using System;
 using Cards;
+using Signals;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
     public class Abilities
     {
+        private readonly CardSignalBus _cardSignalBus;
+
+        public Abilities(CardSignalBus cardSignalBus)
+        {
+            _cardSignalBus = cardSignalBus;
+        }
         public void DoBuffStats(CardView buffer)
         {
             SetBufferToPlayer(buffer);
@@ -18,6 +25,34 @@ namespace DefaultNamespace
             DeleteBufferFromPlayer(buffer);
             CancelBuffFromAllCardsInTableByCurrentBuffer(buffer);
         }
+
+        public void BuffCard(CardView card, CardView buffer)
+        {
+            if (card != buffer)
+            {
+                if (buffer.BuffStatsParameters.UnitTypeBuff == ECardUnitType.All ||
+                    card.MyType == buffer.BuffStatsParameters.UnitTypeBuff)
+                {
+                    ActivateBuffOnCard(card, buffer);
+                }
+            }
+        }
+
+        public void ActivateCharge(CardView card)
+        {
+            card.CanAttack = true;
+        }
+
+        public void ActivateTaunt(CardView card)
+        {
+            card.IsTaunt = true;
+        }
+
+        public void DoBattleCry(CardView card)
+        {
+           _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.True));
+        }
+
 
         private void CancelBuffFromAllCardsInTableByCurrentBuffer(CardView buffer)
         {
@@ -66,17 +101,6 @@ namespace DefaultNamespace
             }
         }
 
-        public void BuffCard(CardView card, CardView buffer)
-        {
-            if (card != buffer)
-            {
-                if (buffer.BuffStatsParameters.UnitTypeBuff == ECardUnitType.All ||
-                    card.MyType == buffer.BuffStatsParameters.UnitTypeBuff)
-                {
-                    ActivateBuffOnCard(card, buffer);
-                }
-            }
-        }
 
         private void ActivateBuffOnCard(CardView card, CardView buffer)
         {
@@ -112,14 +136,6 @@ namespace DefaultNamespace
             }
         }
 
-        public void ActivateCharge(CardView card)
-        {
-            card.CanAttack = true;
-        }
-
-        public void ActivateTaunt(CardView card)
-        {
-            card.IsTaunt = true;
-        }
+        
     }
 }

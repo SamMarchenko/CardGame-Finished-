@@ -52,7 +52,13 @@ namespace Cards
 		ChooseStartHandStage,
 		MoveStage
 	}
-	
+
+	public enum EBattlecrySubStage
+	{
+		True,
+		False
+	}
+
 
 	public enum EHeroType : byte
 	{
