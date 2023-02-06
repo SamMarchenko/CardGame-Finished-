@@ -12,7 +12,7 @@ using Zenject;
 public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler,
     IDragHandler, IPointerClickHandler, IDamageable
 {
-    [SerializeField] private IncreaseStatsParameters buffStatsParameters;
+    [SerializeField] private BuffParameters buffStatsParameters;
     [SerializeField] private GameObject _frontCard;
     [Space, SerializeField] private MeshRenderer _icon;
     [SerializeField] private TextMeshPro _cosText;
@@ -45,7 +45,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public int DMG;
     public ECardStateType StateType { get; set; } = ECardStateType.InDeck;
     public Player Owner;
-    public IncreaseStatsParameters BuffStatsParameters => buffStatsParameters;
+    public BuffParameters BuffStatsParameters => buffStatsParameters;
     public ECardUnitType MyType;
 
     public bool IsEnable
@@ -79,15 +79,15 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
 
-    public void SetIncreaseStatsParameters(IncreaseStatsParameters increaseStatsParameters)
+    public void SetIncreaseStatsParameters(BuffParameters buffParameters)
     {
-        if (increaseStatsParameters == null)
+        if (buffParameters == null)
         {
-            buffStatsParameters = new IncreaseStatsParameters();
+            buffStatsParameters = new BuffParameters();
             return;
         }
 
-        buffStatsParameters = increaseStatsParameters;
+        buffStatsParameters = buffParameters;
 
         if (!MyAbilities.Contains(EAbility.IncreaseStats))
         {
