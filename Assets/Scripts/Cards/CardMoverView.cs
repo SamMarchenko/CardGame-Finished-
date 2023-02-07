@@ -50,7 +50,8 @@ namespace DefaultNamespace
             if (card.Owner == _currentPlayer && _currentPlayer.CanSwapCard(card))
             {
                 _currentPlayer.SetCardFromHandInDeck(card);
-                _currentPlayer.SetCardFromDeckInHand(_deckBuilder.GetTopCardFromDeck(_currentPlayer));
+              //  _currentPlayer.SetCardFromDeckInHand(_deckBuilder.GetTopCardFromDeck(_currentPlayer));
+              _currentPlayer.SetCardFromDeckInHand();
             }
         }
 

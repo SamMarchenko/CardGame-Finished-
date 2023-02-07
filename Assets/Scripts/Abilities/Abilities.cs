@@ -85,6 +85,8 @@ namespace DefaultNamespace
         private void DrawCardAbility(CardView card)
         {
             Debug.Log("DrawCardAbility");
+
+            card.Owner.SetCardFromDeckInHand();
             
             _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
         }

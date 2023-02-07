@@ -111,8 +111,9 @@ namespace DefaultNamespace
             SetDeck();
         }
 
-        public Transform SetCardFromDeckInHand(CardView card)
+        public Transform SetCardFromDeckInHand()
         {
+            var card = _deckBuilder.GetTopCardFromDeck(this);
             var state = ECardStateType.InHand;
             var slot = FindFirstFreeSlot(_myHandSlots, _handCardSlotDictionary);
 
@@ -132,7 +133,6 @@ namespace DefaultNamespace
 
             return slot;
         }
-
 
         public void SetCardFromHandInDeck(CardView card)
         {
@@ -156,8 +156,9 @@ namespace DefaultNamespace
         {
             if (!_firstMove)
             {
-                var card = _deckBuilder.GetTopCardFromDeck(this);
-                SetCardFromDeckInHand(card);
+                //var card = _deckBuilder.GetTopCardFromDeck(this);
+                // SetCardFromDeckInHand(card);
+                SetCardFromDeckInHand();
                 ManaIncrease();
                 ManaRegenerate();
             }

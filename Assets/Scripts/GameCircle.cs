@@ -53,8 +53,9 @@ public class GameCircle : IInitializable, ITickable, ICardDoBattlecryListener
         _playerSignalBus.CurrentPlayerChangeFire(new CurrentPlayerChangeSignal(_currentPlayerType, _currentPlayer));
         for (int i = 0; i < 3; i++)
         {
-            var card = _deckBuilder.GetTopCardFromDeck(_currentPlayer);
-            _currentPlayer.SetCardFromDeckInHand(card);
+            //var card = _deckBuilder.GetTopCardFromDeck(_currentPlayer);
+            // _currentPlayer.SetCardFromDeckInHand(card);
+            _currentPlayer.SetCardFromDeckInHand();
         }
     }
 
