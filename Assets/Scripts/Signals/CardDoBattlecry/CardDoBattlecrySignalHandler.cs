@@ -9,7 +9,7 @@ public class CardDoBattlecrySignalHandler
         _listeners = listeners;
     }
 
-    public void Fire(CardDoBattlecrySignal signal)
+    public void OnStartBattlecryFire(CardDoBattlecrySignal signal)
     {
         foreach (var listener in _listeners)
         {

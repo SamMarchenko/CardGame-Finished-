@@ -48,6 +48,7 @@ namespace Engine.Installers
             Container.BindInterfacesAndSelfTo<CardPointerSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<CardDragSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<CardDoBattlecrySignalHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<CardDoBattlecryAttackSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<ChangeStageSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<ChangeCurrentPlayerSignalHandler>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<PlayerClickSignalHandler>().AsSingle().NonLazy();

@@ -8,6 +8,8 @@ namespace DefaultNamespace
     public class Abilities
     {
         private readonly CardSignalBus _cardSignalBus;
+        
+
 
         public Abilities(CardSignalBus cardSignalBus)
         {
@@ -78,7 +80,7 @@ namespace DefaultNamespace
         private void OneTimeBuffAbility(CardView card)
         {
             Debug.Log("OneTimeBuffAbility");
-            
+
             _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
         }
 
@@ -87,7 +89,7 @@ namespace DefaultNamespace
             Debug.Log("DrawCardAbility");
 
             card.Owner.SetCardFromDeckInHand();
-            
+
             _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
         }
 
@@ -123,7 +125,9 @@ namespace DefaultNamespace
         {
             Debug.Log("DealDamageAbility");
             
-            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+            _cardSignalBus.CardBattlecryAttack(new CardBattlecryAttackSignal(card));
+            //тут сигнал о завершении батлкрая приходит от дэмеджконтроллера, т.к. он наносит урон
+            
         }
 
 
