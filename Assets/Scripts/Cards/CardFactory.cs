@@ -11,7 +11,7 @@ namespace DefaultNamespace
     {
         private readonly CardPropertiesDataProvider _cardPropertiesDataProvider;
         private readonly CardView _cardViewPrefab;
-        private readonly CardSignalBus _bus;
+        private readonly CardSignalBus _cardSignalBus;
         private readonly AbilitiesProvider _abilitiesProvider;
 
 
@@ -21,13 +21,13 @@ namespace DefaultNamespace
         public CardFactory(
             CardPropertiesDataProvider cardPropertiesDataProvider,
             CardView cardViewPrefab,
-            CardSignalBus bus,
+            CardSignalBus cardSignalBus,
             AbilitiesProvider abilitiesProvider
         )
         {
             _cardPropertiesDataProvider = cardPropertiesDataProvider;
             _cardViewPrefab = cardViewPrefab;
-            _bus = bus;
+            _cardSignalBus = cardSignalBus;
             _abilitiesProvider = abilitiesProvider;
         }
 
@@ -43,10 +43,33 @@ namespace DefaultNamespace
             var random = _allCards[Random.Range(0, _allCards.Count)];
             var newMat = new Material(_baseMat);
             newMat.mainTexture = random.Texture;
-            cardView.Init(_bus);
+            cardView.Init(_cardSignalBus);
             cardView.Configuration(random, CardUtility.GetDescriptionById(random.Id), newMat);
             _abilitiesProvider.SetAbilityTypesToCards(cardView);
 
+            return cardView;
+        }
+
+        public CardView SummonCardForAbility(int id, Transform slot)
+        {
+            var cardView = MonoBehaviour.Instantiate(_cardViewPrefab, slot);
+            var cardData = new CardPropertiesData();
+            foreach (var cardPropertiesData in _allCards)
+            {
+                if (cardPropertiesData.Id == (uint)id)
+                {
+                    cardData = cardPropertiesData;
+                    break;
+                }
+            }
+            var newMat = new Material(_baseMat);
+            newMat.mainTexture = cardData.Texture;
+            
+            cardView.Init(_cardSignalBus);
+            cardView.Configuration(cardData, CardUtility.GetDescriptionById(cardData.Id), newMat);
+            _abilitiesProvider.SetAbilityTypesToCards(cardView);
+            
+            
             return cardView;
         }
 

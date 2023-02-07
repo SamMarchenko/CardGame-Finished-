@@ -87,6 +87,13 @@ namespace DefaultNamespace
             _currentDeck.Remove(_topCard);
             return _topCard;
         }
-        
+
+        public CardView SummonCard(int id, Transform slot)
+        {
+            var createdCard = _cardFactory.SummonCardForAbility(id, slot);
+            createdCard.transform.localPosition = new Vector3(0f, 0, 0f);
+            createdCard.transform.eulerAngles = new Vector3(0, 0, 180f);
+            return createdCard;
+        }
     }
 }

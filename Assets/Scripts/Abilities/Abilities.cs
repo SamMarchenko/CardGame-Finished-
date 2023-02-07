@@ -13,6 +13,7 @@ namespace DefaultNamespace
         {
             _cardSignalBus = cardSignalBus;
         }
+
         public void DoBuffStats(CardView buffer)
         {
             SetBufferToPlayer(buffer);
@@ -48,9 +49,79 @@ namespace DefaultNamespace
             card.IsTaunt = true;
         }
 
-        public void DoBattleCry(CardView card)
+        public void DoBattlecry(CardView card)
         {
-           _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.True));
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.True));
+
+            switch (card.BattlecryParameters.Action)
+            {
+                case EBattlecryAction.None:
+                    break;
+                case EBattlecryAction.Deal:
+                    DealDamageAbility(card);
+                    break;
+                case EBattlecryAction.Restore:
+                    RestoreHpAbility(card);
+                    break;
+                case EBattlecryAction.Summon:
+                    SummonUnitAbility(card);
+                    break;
+                case EBattlecryAction.Draw:
+                    DrawCardAbility(card);
+                    break;
+                case EBattlecryAction.Buff:
+                    OneTimeBuffAbility(card);
+                    break;
+            }
+        }
+
+        private void OneTimeBuffAbility(CardView card)
+        {
+            Debug.Log("OneTimeBuffAbility");
+            
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+        }
+
+        private void DrawCardAbility(CardView card)
+        {
+            Debug.Log("DrawCardAbility");
+            
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+        }
+
+        private void SummonUnitAbility(CardView card)
+        {
+            var player = card.Owner;
+            var slot = player.GiveFirstFreeTableSlotForDrawAbility();
+            if (slot == null)
+            {
+                Debug.Log("На столе нет свободного слота. Summon абилка не может быть выполнена");
+                _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+                return;
+            }
+
+            var id = card.BattlecryParameters.SummonId;
+            var dmg = card.BattlecryParameters.DMG;
+            var hp = card.BattlecryParameters.HP;
+
+            player.SummonCardOnTableFromBattlecry(id, dmg, hp, slot);
+
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+        }
+
+
+        private void RestoreHpAbility(CardView card)
+        {
+            Debug.Log("RestoreHpAbility");
+
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+        }
+
+        private void DealDamageAbility(CardView card)
+        {
+            Debug.Log("DealDamageAbility");
+            
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
         }
 
 
@@ -135,7 +206,5 @@ namespace DefaultNamespace
                 card.Owner.MyBuffersInTable.Remove(card);
             }
         }
-
-        
     }
 }

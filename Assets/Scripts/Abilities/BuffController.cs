@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Cards;
+using ModestTree;
 using UnityEngine;
 using Zenject;
 
@@ -39,7 +40,12 @@ namespace DefaultNamespace
 
         public void CheckAndGiveBuffToThisCard(CardView card)
         {
-            foreach (var buffer in card.Owner.MyBuffersInTable)
+            var playersBuffers = card.Owner.MyBuffersInTable;
+            if (playersBuffers.IsEmpty())
+            {
+                return;
+            }
+            foreach (var buffer in playersBuffers)
             {
                 _abilities.BuffCard(card, buffer);
             }

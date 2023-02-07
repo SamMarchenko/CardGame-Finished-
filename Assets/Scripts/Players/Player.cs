@@ -232,6 +232,19 @@ namespace DefaultNamespace
             return slot;
         }
 
+        public void SummonCardOnTableFromBattlecry(int id, int dmg, int hp, Transform slot)
+        {
+            var card = _deckBuilder.SummonCard(id, slot);
+            card.SetDamage(dmg, 0);
+            card.SetHealth(hp, 0);
+            card.Owner = this;
+            AddCardInDictionary(_tableCardSlotDictionary, card, slot, ECardStateType.OnTable);
+            _myCardsInTable.Add(card);
+
+            _abilitiesProvider.ActivateAbilitiesByThisCard(card);
+            _buffController.CheckAndGiveBuffToThisCard(card);
+        }
+
         public void KillCardFromTable(CardView card)
         {
             _myCardsInTable.Remove(card);
@@ -269,6 +282,11 @@ namespace DefaultNamespace
             }
         }
 
+        public Transform GiveFirstFreeTableSlotForDrawAbility()
+        {
+            var slot = FindFirstFreeSlot(_myTableSlots, _tableCardSlotDictionary);
+            return slot;
+        }
 
         private Transform FindFirstFreeSlot(Transform[] slots, Dictionary<CardView, Transform> dictionary)
         {

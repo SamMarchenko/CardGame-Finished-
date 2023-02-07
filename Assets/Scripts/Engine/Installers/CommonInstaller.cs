@@ -19,6 +19,8 @@ namespace Engine.Installers
 
             Container.BindInterfacesAndSelfTo<CardPropertiesDataProvider>().AsSingle().NonLazy();
 
+            Container.BindInterfacesAndSelfTo<Abilities>().AsSingle().NonLazy();
+            
             BindFactories();
 
             // Порядок важен
@@ -30,7 +32,7 @@ namespace Engine.Installers
 
             Container.BindInterfacesAndSelfTo<CardMoverView>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<DamageController>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<Abilities>().AsSingle().NonLazy();
+            
             Container.BindInterfacesAndSelfTo<AbilitiesProvider>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<BuffController>().AsSingle().NonLazy();
             

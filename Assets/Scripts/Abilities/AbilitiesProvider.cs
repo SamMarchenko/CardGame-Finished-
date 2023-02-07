@@ -11,6 +11,8 @@ namespace DefaultNamespace
         private readonly Abilities _abilities;
         private readonly BuffController _buffController;
 
+        public Abilities Abilities { get; set;}
+
         public AbilitiesProvider(ConfigCardsWithAbilities configCardsWithAbilities, Abilities abilities)
         {
             _configCardsWithAbilities = configCardsWithAbilities;
@@ -128,7 +130,7 @@ namespace DefaultNamespace
             }
             Debug.Log("Вложил батлкрай в карту");
 
-            _abilities.DoBattleCry(card);
+            _abilities.DoBattlecry(card);
         }
     }
 }
