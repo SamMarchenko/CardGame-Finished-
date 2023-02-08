@@ -28,6 +28,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Transform _startPosition;
     private Transform _endPosition;
     private CardSignalBus _cardSignalBus;
+    private int _startMaxHp;
+    private int _currentMaxHp;
 
 
     public List<EAbility> MyAbilities;
@@ -76,6 +78,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _cardId = (int) data.Id;
         MyType = data.Type;
         Hp = data.Health;
+        _startMaxHp = Hp;
+        _currentMaxHp = _startMaxHp + SumHpBuff;
         DMG = data.Attack;
         BattlecryParameters.ID = _cardId;
     }
@@ -97,6 +101,16 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
+    public void RestoreHp(int value)
+    {
+        if (Hp + value > _currentMaxHp)
+        {
+            SetHealth(_currentMaxHp, 0);
+            return;
+        }
+        SetHealth(Hp + value, 0);
+    }
+
     public int GetCost()
     {
         return int.Parse(_cosText.text);
@@ -113,12 +127,18 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         SumHpBuff += hpBuff;
         _healthText.text = currentHp.ToString();
         Hp = Int32.Parse(_healthText.text);
+        UpdateCurrentMaxHp();
         _healthText.color = SumHpBuff > 0 ? Color.green : Color.white;
 
         if (currentHp == 0)
         {
             Owner.KillCardFromTable(this);
         }
+    }
+
+    private void UpdateCurrentMaxHp()
+    {
+        _currentMaxHp = _startMaxHp + SumHpBuff;
     }
 
 

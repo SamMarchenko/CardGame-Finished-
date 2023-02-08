@@ -8,7 +8,6 @@ namespace DefaultNamespace
     public class Abilities
     {
         private readonly CardSignalBus _cardSignalBus;
-        
 
 
         public Abilities(CardSignalBus cardSignalBus)
@@ -118,16 +117,29 @@ namespace DefaultNamespace
         {
             Debug.Log("RestoreHpAbility");
 
+            switch (card.BattlecryParameters.Target)
+            {
+                case EBattlecryTarget.PointUnit:
+                    break;
+                case EBattlecryTarget.All:
+                    foreach (var cardOnTable in card.Owner.MyCardsInTable)
+                    {
+                        if (cardOnTable == card) continue;
+                        
+                        cardOnTable.RestoreHp(card.BattlecryParameters.HP);
+                    }
+                    break;
+            }
+
             _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
         }
 
         private void DealDamageAbility(CardView card)
         {
             Debug.Log("DealDamageAbility");
-            
+
             _cardSignalBus.CardBattlecryAttack(new CardBattlecryAttackSignal(card));
             //тут сигнал о завершении батлкрая приходит от дэмеджконтроллера, т.к. он наносит урон
-            
         }
 
 
