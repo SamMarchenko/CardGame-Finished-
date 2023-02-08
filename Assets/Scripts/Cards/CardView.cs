@@ -106,9 +106,11 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (Hp + value > _currentMaxHp)
         {
             SetHealth(_currentMaxHp, 0);
+            Debug.Log($"{_nameText.text} отхилен на {_currentMaxHp}");
             return;
         }
         SetHealth(Hp + value, 0);
+        Debug.Log($"{_nameText.text} отхилен на {Hp + value}");
     }
 
     public int GetCost()

@@ -78,6 +78,19 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
         SetHealth(health);
     }
 
+    public void RestoreHealth(int value)
+    {
+        var health = GetHealth();
+        if (health + value > _maxHealth)
+        {
+            SetHealth(_maxHealth);
+            Debug.Log($"{PlayerType} отхилен до {_maxHealth}");
+            return;
+        }
+        SetHealth(health + value);
+        Debug.Log($"{PlayerType} отхилен до {health + value}");
+    }
+
     public void SetCoolDownAttack(bool value)
     {
         //в данном прототипе у игрока нет оружия, он никогда не сможет атаковать. Если оружие появится, то будет присваиваться value

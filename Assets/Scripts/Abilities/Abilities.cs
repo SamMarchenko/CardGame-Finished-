@@ -52,7 +52,7 @@ namespace DefaultNamespace
 
         public void DoBattlecry(CardView card)
         {
-            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.True));
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.True, card));
 
             switch (card.BattlecryParameters.Action)
             {
@@ -80,7 +80,7 @@ namespace DefaultNamespace
         {
             Debug.Log("OneTimeBuffAbility");
 
-            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
         }
 
         private void DrawCardAbility(CardView card)
@@ -89,7 +89,7 @@ namespace DefaultNamespace
 
             card.Owner.SetCardFromDeckInHand();
 
-            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
         }
 
         private void SummonUnitAbility(CardView card)
@@ -99,7 +99,7 @@ namespace DefaultNamespace
             if (slot == null)
             {
                 Debug.Log("На столе нет свободного слота. Summon абилка не может быть выполнена");
-                _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+                _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
                 return;
             }
 
@@ -109,7 +109,7 @@ namespace DefaultNamespace
 
             player.SummonCardOnTableFromBattlecry(id, dmg, hp, slot);
 
-            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
         }
 
 
@@ -120,6 +120,7 @@ namespace DefaultNamespace
             switch (card.BattlecryParameters.Target)
             {
                 case EBattlecryTarget.PointUnit:
+                    _cardSignalBus.CardBattlecryClicker(new CardBattlecryClickerSignal(card));
                     break;
                 case EBattlecryTarget.All:
                     foreach (var cardOnTable in card.Owner.MyCardsInTable)
@@ -128,17 +129,18 @@ namespace DefaultNamespace
                         
                         cardOnTable.RestoreHp(card.BattlecryParameters.HP);
                     }
+                    _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
                     break;
             }
 
-            _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+           
         }
 
         private void DealDamageAbility(CardView card)
         {
             Debug.Log("DealDamageAbility");
 
-            _cardSignalBus.CardBattlecryAttack(new CardBattlecryAttackSignal(card));
+            _cardSignalBus.CardBattlecryClicker(new CardBattlecryClickerSignal(card));
             //тут сигнал о завершении батлкрая приходит от дэмеджконтроллера, т.к. он наносит урон
         }
 

@@ -2,10 +2,12 @@
 
 public class CardDoBattlecrySignal
 {
-    public readonly EBattlecrySubStage IsBattleryStage;
+    public readonly EBattlecrySubStage IsBattlecrySubStage;
+    public readonly CardView Card;
 
-    public CardDoBattlecrySignal(EBattlecrySubStage isBattleryStage)
+    public CardDoBattlecrySignal(EBattlecrySubStage isBattlecrySubStage, CardView card)
     {
-        IsBattleryStage = isBattleryStage;
+        IsBattlecrySubStage = isBattlecrySubStage;
+        Card = card;
     }
 }

@@ -6,17 +6,19 @@ using UnityEngine;
 namespace DefaultNamespace
 {
     public class DamageController : ICardClickListener, IPlayerClickListener, IChangeStageListener,
-        IChangeCurrentPlayerListener, ICardDoBattlecryListener, ICardBattlecryAttackListener
+        IChangeCurrentPlayerListener, ICardDoBattlecryListener, ICardBattlecryClickerListener
     {
         private readonly PlayersProvider _playersProvider;
         private readonly CardSignalBus _cardSignalBus;
         private ECurrentStageType _currentStageType;
-        private EBattlecrySubStage _battlecrySubStage;
+        private EBattlecrySubStage _battlecrySubStage = EBattlecrySubStage.False;
         private Player _currentDamageDealerPlayer;
         private Player _attackedPlayer;
         private EPlayers _currentPlayerType;
         private int _battlecryDamage;
-        private bool _isPointBattlecryTarget;
+        private CardView _battlecryCard;
+        private bool _isAttackBattlecry;
+        private bool _isRestoreBattlecry;
 
 
         public EBattlecryTarget CurrentBattlecryTarget = EBattlecryTarget.None;
@@ -54,16 +56,26 @@ namespace DefaultNamespace
 
             if (_battlecrySubStage == EBattlecrySubStage.True && _currentPlayerType != signal.CardView.Owner.PlayerType)
             {
-                if (!_isPointBattlecryTarget) return;
+                if (!_isAttackBattlecry) return;
 
                 var card = signal.CardView;
                 card.ApplyDamage(_battlecryDamage);
                 _battlecryDamage = 0;
-                _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+                _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
+                return;
             }
-
+            
+            //отхил союзного юнита по клику
             if (_battlecrySubStage == EBattlecrySubStage.True && _currentPlayerType == signal.CardView.Owner.PlayerType)
             {
+                if (!_isRestoreBattlecry) return;
+                if (_battlecryCard.BattlecryParameters.Action == EBattlecryAction.Restore && _battlecryCard.BattlecryParameters.Target == EBattlecryTarget.PointUnit)
+                {
+                    signal.CardView.RestoreHp(_battlecryCard.BattlecryParameters.HP);
+                    _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
+                    _isAttackBattlecry = false;
+                    return;
+                }
                 Debug.Log("Выберите карту врага на столе, на которую хотите применить Battlecry");
                 return;
             }
@@ -104,7 +116,7 @@ namespace DefaultNamespace
 
             if (_battlecrySubStage == EBattlecrySubStage.True && _currentPlayerType != signal.PlayerView.PlayerType)
             {
-                if (!_isPointBattlecryTarget) return;
+                if (!_isAttackBattlecry) return;
 
                 var target = signal.PlayerView;
                 target.ApplyDamage(_battlecryDamage);
@@ -113,7 +125,23 @@ namespace DefaultNamespace
                           $" и имеет {signal.PlayerView.GetHealth()} HP.");
                 _battlecryDamage = 0;
                 
-                _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+                _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
+                return;
+            }
+            
+            //отхил героя по клику
+            if (_battlecrySubStage == EBattlecrySubStage.True && _currentPlayerType == signal.PlayerView.PlayerType)
+            {
+                if (!_isRestoreBattlecry) return;
+                
+                if (_battlecryCard.BattlecryParameters.Action == EBattlecryAction.Restore && _battlecryCard.BattlecryParameters.Target == EBattlecryTarget.PointUnit)
+                {
+                    signal.PlayerView.RestoreHealth(_battlecryCard.BattlecryParameters.HP);
+                    _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
+                    _isAttackBattlecry = false;
+                    return;
+                }
+                Debug.Log("Выберите карту врага на столе, на которую хотите применить Battlecry");
                 return;
             }
 
@@ -129,6 +157,7 @@ namespace DefaultNamespace
                 AttackedTarget = signal.PlayerView;
                 Attack();
                 ClearDealerAndTarget();
+                return;
             }
 
             Debug.Log($"{signal.PlayerView.PlayerType} имеет {signal.PlayerView.GetCurrentMana()}"
@@ -152,24 +181,40 @@ namespace DefaultNamespace
 
         public void OnCardDoBattlecry(CardDoBattlecrySignal signal)
         {
-            _battlecrySubStage = signal.IsBattleryStage;
+            _battlecrySubStage = signal.IsBattlecrySubStage;
+            _battlecryCard = signal.Card;
         }
 
-        public void OnDoBattlecryAttack(CardBattlecryAttackSignal signal)
+        public void OnDoBattlecryClick(CardBattlecryClickerSignal signal)
         {
             var card = signal.Card;
+
+            switch (card.BattlecryParameters.Action)
+            {
+                case EBattlecryAction.Restore:
+                    _isRestoreBattlecry = true;
+                    break;
+                case EBattlecryAction.Deal:
+                    BattlecryAttackAbility(card);
+                    break;
+            }
+            
+        }
+
+        private void BattlecryAttackAbility(CardView card)
+        {
             _battlecryDamage = card.BattlecryParameters.DMG;
             switch (card.BattlecryParameters.Target)
             {
                 case EBattlecryTarget.PointUnit:
                 {
-                    _isPointBattlecryTarget = true;
+                    _isAttackBattlecry = true;
                 }
                     break;
 
                 case EBattlecryTarget.Hero:
                 {
-                    _isPointBattlecryTarget = false;
+                    _isAttackBattlecry = false;
                     var target = card.Owner.PlayerType == EPlayers.FirstPlayer
                         ? _playersProvider.GetPlayer(EPlayers.SecondPlayer)
                         : _playersProvider.GetPlayer(EPlayers.FirstPlayer);
@@ -177,7 +222,7 @@ namespace DefaultNamespace
                     Debug.Log($"{target.PlayerType} получил {card.DMG} от {card.NameText.text}");
                     _battlecryDamage = 0;
                     
-                    _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False));
+                    _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
                     break;
                 }
             }

@@ -6,7 +6,7 @@
         private CardPointerSignalHandler _cardPointerSignalHandler;
         private CardDragSignalHandler _cardDragSignalHandler;
         private CardDoBattlecrySignalHandler _cardDoBattlecrySignalHandler;
-        private CardDoBattlecryAttackSignalHandler _cardDoBattlecryAttackSignalHandler;
+        private CardDoBattlecryClickerSignalHandler _cardDoBattlecryClickerSignalHandler;
 
 
         public void Init(
@@ -14,13 +14,13 @@
             CardPointerSignalHandler cardPointerSignalHandler,
             CardDragSignalHandler cardDragSignalHandler,
             CardDoBattlecrySignalHandler cardDoBattlecrySignalHandler,
-            CardDoBattlecryAttackSignalHandler cardDoBattlecryAttackSignalHandler)
+            CardDoBattlecryClickerSignalHandler cardDoBattlecryClickerSignalHandler)
         {
             _cardClickSignalHandler = cardClickSignalHandler;
             _cardPointerSignalHandler = cardPointerSignalHandler;
             _cardDragSignalHandler = cardDragSignalHandler;
             _cardDoBattlecrySignalHandler = cardDoBattlecrySignalHandler;
-            _cardDoBattlecryAttackSignalHandler = cardDoBattlecryAttackSignalHandler;
+            _cardDoBattlecryClickerSignalHandler = cardDoBattlecryClickerSignalHandler;
         }
 
         public void CardDoBattlecryFire(CardDoBattlecrySignal signal)
@@ -28,9 +28,9 @@
             _cardDoBattlecrySignalHandler.OnStartBattlecryFire(signal);
         }
 
-        public void CardBattlecryAttack(CardBattlecryAttackSignal signal)
+        public void CardBattlecryClicker(CardBattlecryClickerSignal signal)
         {
-            _cardDoBattlecryAttackSignalHandler.OnBattlecryAttackPlayerFire(signal);
+            _cardDoBattlecryClickerSignalHandler.OnBattlecryClickerFire(signal);
         }
 
         public void CardClickFire(CardClickSignal signal)

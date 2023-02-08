@@ -126,7 +126,7 @@ public class GameCircle : IInitializable, ITickable, ICardDoBattlecryListener
 
     public void OnCardDoBattlecry(CardDoBattlecrySignal signal)
     {
-        _battlecrySubStage = signal.IsBattleryStage;
+        _battlecrySubStage = signal.IsBattlecrySubStage;
         Debug.Log("Применяется баттлкрай в данный момент");
     }
 }
