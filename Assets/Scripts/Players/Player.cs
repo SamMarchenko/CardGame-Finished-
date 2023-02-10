@@ -38,9 +38,10 @@ namespace DefaultNamespace
         public List<CardView> MyCardsInTable => _myCardsInTable;
         public List<CardView> MyBuffersInTable = new List<CardView>();
         public EPlayers PlayerType;
+        private AnimationController _animationController;
 
         public void Init(ParentView parentView, EPlayers player, PlayerView playerView, PlayerSignalBus playerSignalBus,
-            AbilitiesProvider abilitiesProvider, BuffController buffController)
+            AbilitiesProvider abilitiesProvider, BuffController buffController, AnimationController animationController )
         {
             PlayerType = player;
             _playerSignalBus = playerSignalBus;
@@ -63,6 +64,7 @@ namespace DefaultNamespace
                 _enemyTableSlots = parentView.Table1Parent;
             }
 
+            _animationController = animationController;
             _abilitiesProvider = abilitiesProvider;
             _buffController = buffController;
             _playerView = playerView;
@@ -188,6 +190,7 @@ namespace DefaultNamespace
         {
             foreach (var card in _myCardsInHand)
             {
+                _animationController.PlayRollCardAnimation(card);
                 card.IsEnable = visible;
             }
         }
@@ -244,16 +247,18 @@ namespace DefaultNamespace
 
             _abilitiesProvider.ActivateAbilitiesByThisCard(card);
             _buffController.CheckAndGiveBuffToThisCard(card);
+            _animationController.PlaySummonCardAnimation(card);
         }
 
         public void KillCardFromTable(CardView card)
         {
+            _animationController.PlayDeathAnimation(card);
             _myCardsInTable.Remove(card);
             DeleteCardFromDictionary(_tableCardSlotDictionary, card);
 
             _abilitiesProvider.DeactivateAbilitiesByThisCard(card);
-
-            card.DestroySelf();
+            
+            //card.DestroySelf();
         }
 
 
@@ -330,6 +335,11 @@ namespace DefaultNamespace
             }
 
             _playerView.SetMaxMana(10);
+        }
+
+        public void PlayDamageAnimation(CardView card)
+        {
+            _animationController.PlayDamageAnimation(card);
         }
     }
 }

@@ -1286,6 +1286,7 @@ GameObject:
   - component: {fileID: 1307249474124220041}
   - component: {fileID: 1307249474124220040}
   - component: {fileID: 2126859815115996309}
+  - component: {fileID: 7187804483432744998}
   m_Layer: 0
   m_Name: CardPrefab
   m_TagString: Untagged
@@ -1383,7 +1384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b131e0e03859d4e33919a73141fdfc93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _increaseStatsParameters:
+  buffStatsParameters:
     ID: 0
     DamageBuff: 0
     HpBuff: 0
@@ -1397,12 +1398,39 @@ MonoBehaviour:
   _damageText: {fileID: 1307249473160749871}
   _healthText: {fileID: 1307249473871312366}
   _cardId: 0
-  MyBuffers: []
   MyAbilities: 
   CanBeDragged: 0
   CanAttack: 0
   IsScaled: 0
   IsTaunt: 0
-  HealthIncreaseBuff: 0
-  DamageIncreaseBuff: 0
+  SumHpBuff: 0
+  Hp: 0
+  SumDmgBuff: 0
+  DMG: 0
+  BattlecryParameters:
+    ID: 0
+    Action: 0
+    DMG: 0
+    HP: 0
+    SummonId: 0
+    Target: 0
   MyType: 0
+--- !u!95 &7187804483432744998
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307249474124220039}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c2213f6ed294d5b41ba18e9fd8e78983, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

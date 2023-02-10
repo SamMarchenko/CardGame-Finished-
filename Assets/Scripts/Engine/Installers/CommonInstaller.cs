@@ -20,7 +20,7 @@ namespace Engine.Installers
             Container.BindInterfacesAndSelfTo<CardPropertiesDataProvider>().AsSingle().NonLazy();
 
             Container.BindInterfacesAndSelfTo<Abilities>().AsSingle().NonLazy();
-            
+            Container.BindInterfacesAndSelfTo<AnimationController>().AsSingle().NonLazy();
             BindFactories();
 
             // Порядок важен

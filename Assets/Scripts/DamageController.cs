@@ -10,6 +10,7 @@ namespace DefaultNamespace
     {
         private readonly PlayersProvider _playersProvider;
         private readonly CardSignalBus _cardSignalBus;
+        private readonly AnimationController _animationController;
         private ECurrentStageType _currentStageType;
         private EBattlecrySubStage _battlecrySubStage = EBattlecrySubStage.False;
         private Player _currentDamageDealerPlayer;
@@ -25,10 +26,12 @@ namespace DefaultNamespace
         public IDamageable DamageDealer;
         public IDamageable AttackedTarget;
 
-        public DamageController(PlayersProvider playersProvider, CardSignalBus cardSignalBus)
+        public DamageController(PlayersProvider playersProvider, CardSignalBus cardSignalBus,
+            AnimationController animationController)
         {
             _playersProvider = playersProvider;
             _cardSignalBus = cardSignalBus;
+            _animationController = animationController;
         }
 
         private void Attack()
@@ -64,18 +67,20 @@ namespace DefaultNamespace
                 _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
                 return;
             }
-            
+
             //отхил союзного юнита по клику
             if (_battlecrySubStage == EBattlecrySubStage.True && _currentPlayerType == signal.CardView.Owner.PlayerType)
             {
                 if (!_isRestoreBattlecry) return;
-                if (_battlecryCard.BattlecryParameters.Action == EBattlecryAction.Restore && _battlecryCard.BattlecryParameters.Target == EBattlecryTarget.PointUnit)
+                if (_battlecryCard.BattlecryParameters.Action == EBattlecryAction.Restore &&
+                    _battlecryCard.BattlecryParameters.Target == EBattlecryTarget.PointUnit)
                 {
                     signal.CardView.RestoreHp(_battlecryCard.BattlecryParameters.HP);
                     _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
                     _isAttackBattlecry = false;
                     return;
                 }
+
                 Debug.Log("Выберите карту врага на столе, на которую хотите применить Battlecry");
                 return;
             }
@@ -120,27 +125,29 @@ namespace DefaultNamespace
 
                 var target = signal.PlayerView;
                 target.ApplyDamage(_battlecryDamage);
-                
+
                 Debug.Log($"{signal.PlayerView.PlayerType} получил с баттлкрая {_battlecryDamage}" +
                           $" и имеет {signal.PlayerView.GetHealth()} HP.");
                 _battlecryDamage = 0;
-                
+
                 _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
                 return;
             }
-            
+
             //отхил героя по клику
             if (_battlecrySubStage == EBattlecrySubStage.True && _currentPlayerType == signal.PlayerView.PlayerType)
             {
                 if (!_isRestoreBattlecry) return;
-                
-                if (_battlecryCard.BattlecryParameters.Action == EBattlecryAction.Restore && _battlecryCard.BattlecryParameters.Target == EBattlecryTarget.PointUnit)
+
+                if (_battlecryCard.BattlecryParameters.Action == EBattlecryAction.Restore &&
+                    _battlecryCard.BattlecryParameters.Target == EBattlecryTarget.PointUnit)
                 {
                     signal.PlayerView.RestoreHealth(_battlecryCard.BattlecryParameters.HP);
                     _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
                     _isAttackBattlecry = false;
                     return;
                 }
+
                 Debug.Log("Выберите карту врага на столе, на которую хотите применить Battlecry");
                 return;
             }
@@ -198,7 +205,6 @@ namespace DefaultNamespace
                     BattlecryAttackAbility(card);
                     break;
             }
-            
         }
 
         private void BattlecryAttackAbility(CardView card)
@@ -221,7 +227,7 @@ namespace DefaultNamespace
                     target.PlayerView.ApplyDamage(_battlecryDamage);
                     Debug.Log($"{target.PlayerType} получил {card.DMG} от {card.NameText.text}");
                     _battlecryDamage = 0;
-                    
+
                     _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
                     break;
                 }

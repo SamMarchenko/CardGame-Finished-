@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cards;
 using DefaultNamespace;
+using DG.Tweening;
 using Signals;
 using TMPro;
 using UnityEngine;
@@ -184,7 +185,10 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void MoveAnimation(Transform endPosition)
     {
-        StartCoroutine(MoveCardRoutine(endPosition));
+        NormalizedScale();
+        transform.DOMove(endPosition.position, 1f);
+        
+        //StartCoroutine(MoveCardRoutine(endPosition));
     }
 
     public void DestroySelf()
@@ -196,6 +200,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private IEnumerator MoveCardRoutine(Transform parent)
     {
+
         var time = 0f;
         var startPos = transform.position;
         var endPos = parent.position;
@@ -265,6 +270,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void ApplyDamage(int damage)
     {
+        Owner.PlayDamageAnimation(this);
+        
         var health = GetHealth();
         if (health - damage <= 0)
         {

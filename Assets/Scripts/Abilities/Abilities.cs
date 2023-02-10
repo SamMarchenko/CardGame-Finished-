@@ -78,8 +78,8 @@ namespace DefaultNamespace
 
         private void OneTimeBuffAbility(CardView card)
         {
-            Debug.Log("OneTimeBuffAbility");
-
+            Debug.Log("OneTimeBuffAbility не реализован!!!");
+            
             _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
         }
 
