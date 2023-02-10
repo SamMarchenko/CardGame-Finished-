@@ -17,6 +17,7 @@ namespace DefaultNamespace
 
         private Material _baseMat;
         private List<CardPropertiesData> _allCards;
+        private List<uint> _firstPlayerID = new List<uint>(30);
 
         public CardFactory(
             CardPropertiesDataProvider cardPropertiesDataProvider,
@@ -36,12 +37,39 @@ namespace DefaultNamespace
             FillAllCards();
         }
 
-        public CardView CreateCard(Transform parent)
+        public void SetFirstPlayerCardsID(uint[] idArray)
+        {
+            foreach (var id in idArray)
+            {
+                _firstPlayerID.Add(id);
+            }
+        }
+
+        public CardView CreateCard(Transform parent, EPlayers playerType)
         {
             var cardView = MonoBehaviour.Instantiate(_cardViewPrefab, parent);
+            var newMat = new Material(_baseMat);
+            if (playerType == EPlayers.FirstPlayer)
+            {
+                foreach (var cardPropertiesData in _allCards)
+                {
+                    if (_firstPlayerID.Contains(cardPropertiesData.Id))
+                    {
+                        var data = cardPropertiesData;
+                        newMat.mainTexture = data.Texture;
+                        cardView.Init(_cardSignalBus);
+                        cardView.Configuration(data, CardUtility.GetDescriptionById(data.Id), newMat);
+                        _abilitiesProvider.SetAbilityTypesToCards(cardView);
+
+                        _firstPlayerID.Remove(cardPropertiesData.Id);
+                        break;
+                    }
+                }
+
+                return cardView;
+            }
 
             var random = _allCards[Random.Range(0, _allCards.Count)];
-            var newMat = new Material(_baseMat);
             newMat.mainTexture = random.Texture;
             cardView.Init(_cardSignalBus);
             cardView.Configuration(random, CardUtility.GetDescriptionById(random.Id), newMat);

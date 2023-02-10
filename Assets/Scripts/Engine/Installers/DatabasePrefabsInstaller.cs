@@ -10,7 +10,8 @@ namespace Engine.Installers
     {
         [SerializeField] private GameObject _someDatabase;
         [SerializeField] private CardPacksContainer _packsContainer;
-        [SerializeField] private ConfigCardsWithAbilities configCardsWithAbilities;
+        [SerializeField] private ConfigCardsWithAbilities _configCardsWithAbilities;
+        [SerializeField] private CardPresetsDataBase _cardPresetsDataBase;
 
        
 
@@ -19,9 +20,11 @@ namespace Engine.Installers
             Container.BindInstance(_someDatabase);
             
             Container.BindInstance(_packsContainer);
-            _packsContainer.InstallBindings(Container);
+            
 
-            Container.BindInstance(configCardsWithAbilities);
+            Container.BindInstance(_configCardsWithAbilities);
+            Container.BindInstance(_cardPresetsDataBase);
+            _packsContainer.InstallBindings(Container);
 
         }
     }
