@@ -123,6 +123,11 @@ namespace DefaultNamespace
         public CardView GetTopCardFromDeck(Player player)
         {
             var _currentDeck = player.MyCardsInDeck;
+            if (_currentDeck.Count == 0)
+            {
+                Debug.Log($"Колода игрока {player.PlayerType} пустая!");
+                return null;
+            }
             var _topCard = _currentDeck[_currentDeck.Count - 1];
             _currentDeck.Remove(_topCard);
             return _topCard;

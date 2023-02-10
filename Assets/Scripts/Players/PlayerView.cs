@@ -103,6 +103,11 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
     private void SetHealth(int health)
     {
         _currentHealth = health;
+        if (_currentHealth <= 0)
+        {
+            Debug.Log($"GAME OVER. {PlayerType} проиграл!!!");
+            //todo: подавать сигнал окончания игры
+        }
         // _healthText.text = health.ToString();
     }
 

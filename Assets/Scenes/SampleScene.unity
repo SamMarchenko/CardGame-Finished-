@@ -571,6 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerType: 0
+  CanAttack: 0
   _currentHealth: 0
   _currentMana: 0
   _maxMana: 3
@@ -1889,6 +1890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerType: 0
+  CanAttack: 0
   _currentHealth: 0
   _currentMana: 0
   _maxMana: 3

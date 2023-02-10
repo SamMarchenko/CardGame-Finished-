@@ -117,12 +117,19 @@ namespace DefaultNamespace
         public Transform SetCardFromDeckInHand()
         {
             var card = _deckBuilder.GetTopCardFromDeck(this);
+            if (card == null)
+            {
+                _playerView.ApplyDamage(1);
+                return null;
+            }
             var state = ECardStateType.InHand;
             var slot = FindFirstFreeSlot(_myHandSlots, _handCardSlotDictionary);
 
             if (slot == null)
             {
                 Debug.Log("В руке нет свободного слота. Карта из колоды не может добавиться");
+                _myCardsInDeck.Remove(card);
+                KillCardFromTable(card);
                 return null;
             }
 
