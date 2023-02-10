@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cards;
+using DG.Tweening;
 using Signals;
 using UnityEngine;
 
@@ -41,7 +42,7 @@ namespace DefaultNamespace
         private AnimationController _animationController;
 
         public void Init(ParentView parentView, EPlayers player, PlayerView playerView, PlayerSignalBus playerSignalBus,
-            AbilitiesProvider abilitiesProvider, BuffController buffController, AnimationController animationController )
+            AbilitiesProvider abilitiesProvider, BuffController buffController, AnimationController animationController)
         {
             PlayerType = player;
             _playerSignalBus = playerSignalBus;
@@ -247,18 +248,26 @@ namespace DefaultNamespace
 
             _abilitiesProvider.ActivateAbilitiesByThisCard(card);
             _buffController.CheckAndGiveBuffToThisCard(card);
-            _animationController.PlaySummonCardAnimation(card);
+            DOTween.Sequence()
+                .Append(card.transform.DOScale(new Vector3(0, 0, 0), 0.3f))
+                .Append(card.transform.DOScale(new Vector3(70, 1, 100), 0.3f));
+            //card.transform.DOScale(new Vector3(0, 0, 0), 0.3f);
+            //_animationController.PlaySummonCardAnimation(card);
         }
 
         public void KillCardFromTable(CardView card)
         {
-            _animationController.PlayDeathAnimation(card);
+            //_animationController.PlayDeathAnimation(card);
+            card.transform.DOShakeRotation(10f, new Vector3(0, 0, 0), 10, 50f);
             _myCardsInTable.Remove(card);
             DeleteCardFromDictionary(_tableCardSlotDictionary, card);
 
             _abilitiesProvider.DeactivateAbilitiesByThisCard(card);
-            
-            //card.DestroySelf();
+
+            DOTween.Sequence()
+                .AppendInterval(1f)
+                .Append(card.transform.DOScale(new Vector3(0, 0, 0), 1))
+                .OnComplete(card.DestroySelf);
         }
 
 

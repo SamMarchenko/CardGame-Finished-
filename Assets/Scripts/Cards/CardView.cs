@@ -33,6 +33,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private int _currentMaxHp;
 
 
+    public GameObject FrontCard { get; set; }
     public List<EAbility> MyAbilities;
     public TextMeshPro NameText => _nameText;
     public int CardId => _cardId;
@@ -110,6 +111,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             Debug.Log($"{_nameText.text} отхилен на {_currentMaxHp}");
             return;
         }
+
         SetHealth(Hp + value, 0);
         Debug.Log($"{_nameText.text} отхилен на {Hp + value}");
     }
@@ -127,10 +129,15 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void SetHealth(int currentHp, int hpBuff)
     {
+        if (hpBuff > 0)
+        {
+            _healthText.transform.DOShakeScale(1, new Vector3(0, 3, 0), 10, 10f);
+        }
         SumHpBuff += hpBuff;
         _healthText.text = currentHp.ToString();
         Hp = Int32.Parse(_healthText.text);
         UpdateCurrentMaxHp();
+        
         _healthText.color = SumHpBuff > 0 ? Color.green : Color.white;
 
         if (currentHp == 0)
@@ -187,7 +194,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         NormalizedScale();
         transform.DOMove(endPosition.position, 1f);
-        
+
         //StartCoroutine(MoveCardRoutine(endPosition));
     }
 
@@ -200,7 +207,6 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private IEnumerator MoveCardRoutine(Transform parent)
     {
-
         var time = 0f;
         var startPos = transform.position;
         var endPos = parent.position;
@@ -263,6 +269,10 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void SetDamage(int currentDmg, int dmgBuff)
     {
         SumDmgBuff += dmgBuff;
+        if (dmgBuff > 0)
+        {
+            _damageText.transform.DOShakeScale(1, new Vector3(0, 3, 0), 10, 10f);
+        }
         _damageText.text = currentDmg.ToString();
         DMG = Int32.Parse(_damageText.text);
         _damageText.color = SumDmgBuff > 0 ? Color.green : Color.white;
@@ -270,8 +280,8 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void ApplyDamage(int damage)
     {
-        Owner.PlayDamageAnimation(this);
-        
+        //Owner.PlayDamageAnimation(this);
+
         var health = GetHealth();
         if (health - damage <= 0)
         {
@@ -282,7 +292,11 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             health -= damage;
         }
 
-        SetHealth(health, 0);
+        if (damage !=0)
+        {
+            transform.DOShakeRotation(2f, new Vector3(0, 5, 0), 10, 10f).OnComplete(() => SetHealth(health, 0));
+        }
+        
     }
 
     public void SetCoolDownAttack(bool value)

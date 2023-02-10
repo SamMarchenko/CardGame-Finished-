@@ -1,5 +1,6 @@
 ﻿using Cards;
 using DefaultNamespace;
+using DG.Tweening;
 using Signals;
 using TMPro;
 using UnityEngine;
@@ -75,7 +76,9 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
     {
         var health = GetHealth();
         health -= damage;
-        SetHealth(health);
+        
+        transform.DOShakeRotation(2f, new Vector3(0, 5, 0), 10, 10f).OnComplete(() => SetHealth(health));
+        
     }
 
     public void RestoreHealth(int value)
