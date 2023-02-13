@@ -10,7 +10,6 @@ namespace DefaultNamespace
     {
         private readonly PlayersProvider _playersProvider;
         private readonly CardSignalBus _cardSignalBus;
-        private readonly AnimationController _animationController;
         private ECurrentStageType _currentStageType;
         private EBattlecrySubStage _battlecrySubStage = EBattlecrySubStage.False;
         private Player _currentDamageDealerPlayer;
@@ -20,18 +19,14 @@ namespace DefaultNamespace
         private CardView _battlecryCard;
         private bool _isAttackBattlecry;
         private bool _isRestoreBattlecry;
-
-
-        public EBattlecryTarget CurrentBattlecryTarget = EBattlecryTarget.None;
+        
         public IDamageable DamageDealer;
         public IDamageable AttackedTarget;
 
-        public DamageController(PlayersProvider playersProvider, CardSignalBus cardSignalBus,
-            AnimationController animationController)
+        public DamageController(PlayersProvider playersProvider, CardSignalBus cardSignalBus)
         {
             _playersProvider = playersProvider;
             _cardSignalBus = cardSignalBus;
-            _animationController = animationController;
         }
 
         private void Attack()
@@ -125,9 +120,7 @@ namespace DefaultNamespace
 
                 var target = signal.PlayerView;
                 target.ApplyDamage(_battlecryDamage);
-
-                Debug.Log($"{signal.PlayerView.PlayerType} получил с баттлкрая {_battlecryDamage}" +
-                          $" и имеет {signal.PlayerView.GetHealth()} HP.");
+                
                 _battlecryDamage = 0;
 
                 _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
@@ -164,11 +157,7 @@ namespace DefaultNamespace
                 AttackedTarget = signal.PlayerView;
                 Attack();
                 ClearDealerAndTarget();
-                return;
             }
-
-            Debug.Log($"{signal.PlayerView.PlayerType} имеет {signal.PlayerView.GetCurrentMana()}"
-                      + $" маны и {signal.PlayerView.GetHealth()} HP.");
         }
 
         public void OnStageChange(StageChangeSignal signal)
@@ -225,7 +214,6 @@ namespace DefaultNamespace
                         ? _playersProvider.GetPlayer(EPlayers.SecondPlayer)
                         : _playersProvider.GetPlayer(EPlayers.FirstPlayer);
                     target.PlayerView.ApplyDamage(_battlecryDamage);
-                    Debug.Log($"{target.PlayerType} получил {card.DMG} от {card.NameText.text}");
                     _battlecryDamage = 0;
 
                     _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));

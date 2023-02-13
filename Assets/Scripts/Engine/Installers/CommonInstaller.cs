@@ -18,11 +18,7 @@ namespace Engine.Installers
             Container.BindInstance(_allPlayersView);
 
             Container.BindInterfacesAndSelfTo<CardPropertiesDataProvider>().AsSingle().NonLazy();
-            
-            
-            
             Container.BindInterfacesAndSelfTo<Abilities>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<AnimationController>().AsSingle().NonLazy();
             BindFactories();
 
             // Порядок важен
@@ -31,16 +27,12 @@ namespace Engine.Installers
             Container.BindInterfacesAndSelfTo<DeckBuilder>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<GameCircle>().AsSingle().NonLazy();
             
-
             Container.BindInterfacesAndSelfTo<CardMoverView>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<DamageController>().AsSingle().NonLazy();
             
             Container.BindInterfacesAndSelfTo<AbilitiesProvider>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<BuffController>().AsSingle().NonLazy();
             
-
-            
-
             Ui();
         }
 

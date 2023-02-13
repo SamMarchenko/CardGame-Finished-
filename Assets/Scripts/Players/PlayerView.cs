@@ -97,11 +97,9 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
         if (health + value > _maxHealth)
         {
             SetHealth(_maxHealth);
-            Debug.Log($"{PlayerType} отхилен до {_maxHealth}");
             return;
         }
         SetHealth(health + value);
-        Debug.Log($"{PlayerType} отхилен до {health + value}");
     }
 
     public void SetCoolDownAttack(bool value)
@@ -136,6 +134,5 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
     public int GetHealth()
     {
         return _currentHealth;
-        //return int.Parse(_healthText.text);
     }
 }

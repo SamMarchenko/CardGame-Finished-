@@ -16,10 +16,5 @@ namespace Cards.ScriptableObjects
         private CardPropertiesData[] _cards;
 
         public CardPropertiesData[] Cards => _cards;
-
-        public IEnumerable<CardPropertiesData> UnionProperties(IEnumerable<CardPropertiesData> array)
-        {
-            return array.Union(_cards);
-        }
     }
 }

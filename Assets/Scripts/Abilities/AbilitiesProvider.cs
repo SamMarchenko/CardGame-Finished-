@@ -7,17 +7,14 @@ namespace DefaultNamespace
     public class AbilitiesProvider
     {
         private ConfigCardsWithAbilities _configCardsWithAbilities;
-        private List<BattlecryParameters> _cardsWithButtlecry;
         private readonly Abilities _abilities;
         private readonly BuffController _buffController;
 
-        public Abilities Abilities { get; set;}
 
         public AbilitiesProvider(ConfigCardsWithAbilities configCardsWithAbilities, Abilities abilities)
         {
             _configCardsWithAbilities = configCardsWithAbilities;
             _abilities = abilities;
-            _cardsWithButtlecry = configCardsWithAbilities.BattlecriesConfig;
         }
 
         public void SetAbilityTypesToCards(CardView card)
@@ -115,7 +112,7 @@ namespace DefaultNamespace
                 _abilities.DeleteBuffs(card);
             }
         }
-        
+
         private void AtivateButtlecry(CardView card)
         {
             var cardsWithBC = _configCardsWithAbilities.BattlecriesConfig;
@@ -128,7 +125,6 @@ namespace DefaultNamespace
                     break;
                 }
             }
-            Debug.Log("Вложил батлкрай в карту");
 
             _abilities.DoBattlecry(card);
         }

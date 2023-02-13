@@ -9,12 +9,12 @@ using UnityEngine;
 public class CardPresetsDataBase : ScriptableObject
 {
     [SerializeField] private CardPacksContainer _cardPacksContainer;
-
-    public EHeroType Hero;
-
-    public List<uint> CardsId = new List<uint>();
     private List<CardPropertiesData> _cards = new List<CardPropertiesData>();
-
+    
+    
+    public EHeroType Hero;
+    public List<uint> CardsId = new List<uint>();
+    
     [ContextMenu("Set Class Cards")]
     public void SetClassCards()
     {

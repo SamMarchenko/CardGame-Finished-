@@ -79,14 +79,12 @@ namespace DefaultNamespace
         private void OneTimeBuffAbility(CardView card)
         {
             Debug.Log("OneTimeBuffAbility не реализован!!!");
-            
+
             _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
         }
 
         private void DrawCardAbility(CardView card)
         {
-            Debug.Log("DrawCardAbility");
-
             card.Owner.SetCardFromDeckInHand();
 
             _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
@@ -115,8 +113,6 @@ namespace DefaultNamespace
 
         private void RestoreHpAbility(CardView card)
         {
-            Debug.Log("RestoreHpAbility");
-
             switch (card.BattlecryParameters.Target)
             {
                 case EBattlecryTarget.PointUnit:
@@ -126,22 +122,18 @@ namespace DefaultNamespace
                     foreach (var cardOnTable in card.Owner.MyCardsInTable)
                     {
                         if (cardOnTable == card) continue;
-                        
+
                         cardOnTable.RestoreHp(card.BattlecryParameters.HP);
                     }
+
                     _cardSignalBus.CardDoBattlecryFire(new CardDoBattlecrySignal(EBattlecrySubStage.False, null));
                     break;
             }
-
-           
         }
 
         private void DealDamageAbility(CardView card)
         {
-            Debug.Log("DealDamageAbility");
-
             _cardSignalBus.CardBattlecryClicker(new CardBattlecryClickerSignal(card));
-            //тут сигнал о завершении батлкрая приходит от дэмеджконтроллера, т.к. он наносит урон
         }
 
 

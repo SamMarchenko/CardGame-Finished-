@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler,
+public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IEndDragHandler,
     IDragHandler, IPointerClickHandler, IDamageable
 {
     [SerializeField] private BuffParameters buffStatsParameters;
@@ -33,12 +33,9 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private int _currentMaxHp;
 
 
-    public GameObject FrontCard { get; set; }
     public List<EAbility> MyAbilities;
     public TextMeshPro NameText => _nameText;
     public int CardId => _cardId;
-    public Vector3 StepPosition => _stepPosition;
-    public float Scale => _scale;
     public bool CanBeDragged;
     public bool CanAttack;
     public bool IsScaled;
@@ -52,6 +49,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public BuffParameters BuffStatsParameters => buffStatsParameters;
     public BattlecryParameters BattlecryParameters = new BattlecryParameters();
     public ECardUnitType MyType;
+
+    [ContextMenu("Switch Visual")]
+    public void SwitchVisual()
+    {
+        IsEnable = !IsEnable;
+    }
 
     public bool IsEnable
     {
@@ -108,12 +111,10 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (Hp + value > _currentMaxHp)
         {
             SetHealth(_currentMaxHp, 0);
-            Debug.Log($"{_nameText.text} отхилен на {_currentMaxHp}");
             return;
         }
 
         SetHealth(Hp + value, 0);
-        Debug.Log($"{_nameText.text} отхилен на {Hp + value}");
     }
 
     public int GetCost()
@@ -133,11 +134,12 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             _healthText.transform.DOShakeScale(1, new Vector3(0, 3, 0), 10, 10f);
         }
+
         SumHpBuff += hpBuff;
         _healthText.text = currentHp.ToString();
         Hp = Int32.Parse(_healthText.text);
         UpdateCurrentMaxHp();
-        
+
         _healthText.color = SumHpBuff > 0 ? Color.green : Color.white;
 
         if (currentHp == 0)
@@ -151,12 +153,6 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _currentMaxHp = _startMaxHp + SumHpBuff;
     }
 
-
-    [ContextMenu("Switch Visual")]
-    public void SwitchVisual()
-    {
-        IsEnable = !IsEnable;
-    }
 
     public void UpScaleCard()
     {
@@ -194,34 +190,11 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         NormalizedScale();
         transform.DOMove(endPosition.position, 1f);
-
-        //StartCoroutine(MoveCardRoutine(endPosition));
     }
 
     public void DestroySelf()
     {
-        Debug.Log($"Карта {_nameText.text} уничтожена!");
-        //todo: включать корутиной анимацию уничтожения. При завершении анимации дестроить.
         Destroy(gameObject);
-    }
-
-    private IEnumerator MoveCardRoutine(Transform parent)
-    {
-        var time = 0f;
-        var startPos = transform.position;
-        var endPos = parent.position;
-        NormalizedScale();
-        transform.eulerAngles = new Vector3(0, 0, 180);
-
-        while (time < 1f)
-        {
-            transform.position = Vector3.Lerp(startPos, endPos, time);
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        //todo: тут передавался parent. Не знаю почему, заменил на position.
-        transform.position = parent.position;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -233,12 +206,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _cardSignalBus.FirePointerOff(new CardPointerSignal(this));
     }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        _cardSignalBus.FireDragStart(new CardDragSignal(this));
-    }
-
+    
     public void OnEndDrag(PointerEventData eventData)
     {
         _cardSignalBus.FireDragEnd(new CardDragSignal(this));
@@ -273,6 +241,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             _damageText.transform.DOShakeScale(1, new Vector3(0, 3, 0), 10, 10f);
         }
+
         _damageText.text = currentDmg.ToString();
         DMG = Int32.Parse(_damageText.text);
         _damageText.color = SumDmgBuff > 0 ? Color.green : Color.white;
@@ -280,8 +249,6 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void ApplyDamage(int damage)
     {
-        //Owner.PlayDamageAnimation(this);
-
         var health = GetHealth();
         if (health - damage <= 0)
         {
@@ -292,11 +259,10 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             health -= damage;
         }
 
-        if (damage !=0)
+        if (damage != 0)
         {
             transform.DOShakeRotation(1f, new Vector3(0, 5, 0), 10, 10f).OnComplete(() => SetHealth(health, 0));
         }
-        
     }
 
     public void SetCoolDownAttack(bool value)

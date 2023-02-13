@@ -9,19 +9,15 @@ namespace DefaultNamespace
     public class CardMoverView : ICardClickListener, ICardPointerListener, ICardDragListener, IChangeStageListener,
         IChangeCurrentPlayerListener
     {
-        private readonly ParentView _parentView;
         private readonly PlayersProvider _playersProvider;
-        private readonly DeckBuilder _deckBuilder;
         private Camera _camera;
         private Player _currentPlayer;
         private ECurrentStageType _currentStageType;
         private float _unwantedDragDistance = 100f;
 
-        public CardMoverView(ParentView parentView, PlayersProvider playersProvider, DeckBuilder deckBuilder)
+        public CardMoverView(PlayersProvider playersProvider)
         {
-            _parentView = parentView;
             _playersProvider = playersProvider;
-            _deckBuilder = deckBuilder;
             _camera = Camera.main;
         }
 
@@ -32,9 +28,6 @@ namespace DefaultNamespace
             {
                 case ECurrentStageType.ChooseStartHandStage:
                     OnChooseHandCardClickBehaviour(signal.CardView);
-                    break;
-                case ECurrentStageType.MoveStage:
-                    OnMoveStageCardClickBehaviour(signal.CardView);
                     break;
                 case ECurrentStageType.GameOver:
                     Debug.Log("Игра окончена!!!");
@@ -53,14 +46,10 @@ namespace DefaultNamespace
             if (card.Owner == _currentPlayer && _currentPlayer.CanSwapCard(card))
             {
                 _currentPlayer.SetCardFromHandInDeck(card);
-                //  _currentPlayer.SetCardFromDeckInHand(_deckBuilder.GetTopCardFromDeck(_currentPlayer));
                 _currentPlayer.SetCardFromDeckInHand();
             }
         }
 
-        private void OnMoveStageCardClickBehaviour(CardView card)
-        {
-        }
 
         public void PointerOnCard(CardPointerSignal signal)
         {
@@ -95,11 +84,6 @@ namespace DefaultNamespace
                     cardView.DownScaleCard();
                     break;
             }
-        }
-
-
-        public void OnDragCardStart(CardDragSignal signal)
-        {
         }
 
         public void OnDraggingCard(CardDragSignal signal)
@@ -155,7 +139,6 @@ namespace DefaultNamespace
                     break;
                 case ECardStateType.OnTable:
                     //todo: пока если карту тянуть со стола, то она возвращается в свой слот.
-                    //Скорее всего надо будет вообще запретить драгать со стола - атаку реализовать через клик по карте своей => карте врага
                     card.MoveAnimation(_currentPlayer.GetCurrentSlotByCard(card));
                     break;
                 case ECardStateType.Discard:
@@ -184,8 +167,6 @@ namespace DefaultNamespace
         public void OnCurrentPlayerChange(CurrentPlayerChangeSignal signal)
         {
             _currentPlayer = _playersProvider.GetPlayer(signal.PlayerType);
-
-            //todo: добавить проверку на текущую стадию. Если стадия хода, то текущему игроку восстанавливать и увеличивать ману; брать карту из колоды
         }
     }
 }

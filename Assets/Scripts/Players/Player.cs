@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Cards;
 using DG.Tweening;
@@ -10,11 +10,8 @@ namespace DefaultNamespace
     public class Player
     {
         private Transform _myDeckSlot;
-        private Transform _enemyDeckSlot;
         private Transform[] _myHandSlots;
-        private Transform[] _enemyHandSlots;
         private Transform[] _myTableSlots;
-        private Transform[] _enemyTableSlots;
         private List<CardView> _myCardsInDeck;
         private List<CardView> _myCardsInHand;
         private List<Transform> _canSwapedCardSlots = new List<Transform>(3);
@@ -35,37 +32,28 @@ namespace DefaultNamespace
 
         public PlayerView PlayerView => _playerView;
         public List<CardView> MyCardsInDeck => _myCardsInDeck;
-        public List<CardView> MyCardsInHand => _myCardsInHand;
         public List<CardView> MyCardsInTable => _myCardsInTable;
         public List<CardView> MyBuffersInTable = new List<CardView>();
         public EPlayers PlayerType;
-        private AnimationController _animationController;
 
         public void Init(ParentView parentView, EPlayers player, PlayerView playerView, PlayerSignalBus playerSignalBus,
-            AbilitiesProvider abilitiesProvider, BuffController buffController, AnimationController animationController)
+            AbilitiesProvider abilitiesProvider, BuffController buffController)
         {
             PlayerType = player;
             _playerSignalBus = playerSignalBus;
             if (player == EPlayers.FirstPlayer)
             {
                 _myDeckSlot = parentView.Deck1Parent;
-                _enemyDeckSlot = parentView.Deck2Parent;
                 _myHandSlots = parentView.Hand1Parent;
-                _enemyHandSlots = parentView.Hand2Parent;
                 _myTableSlots = parentView.Table1Parent;
-                _enemyTableSlots = parentView.Table2Parent;
             }
             else
             {
                 _myDeckSlot = parentView.Deck2Parent;
-                _enemyDeckSlot = parentView.Deck1Parent;
                 _myHandSlots = parentView.Hand2Parent;
-                _enemyHandSlots = parentView.Hand1Parent;
                 _myTableSlots = parentView.Table2Parent;
-                _enemyTableSlots = parentView.Table1Parent;
             }
-
-            _animationController = animationController;
+            
             _abilitiesProvider = abilitiesProvider;
             _buffController = buffController;
             _playerView = playerView;
@@ -127,7 +115,6 @@ namespace DefaultNamespace
 
             if (slot == null)
             {
-                Debug.Log("В руке нет свободного слота. Карта из колоды не может добавиться");
                 _myCardsInDeck.Remove(card);
                 KillCardFromTable(card);
                 return null;
@@ -166,8 +153,6 @@ namespace DefaultNamespace
         {
             if (!_firstMove)
             {
-                //var card = _deckBuilder.GetTopCardFromDeck(this);
-                // SetCardFromDeckInHand(card);
                 SetCardFromDeckInHand();
                 ManaIncrease();
                 ManaRegenerate();
@@ -198,7 +183,6 @@ namespace DefaultNamespace
         {
             foreach (var card in _myCardsInHand)
             {
-                _animationController.PlayRollCardAnimation(card);
                 card.IsEnable = visible;
             }
         }
@@ -258,13 +242,10 @@ namespace DefaultNamespace
             DOTween.Sequence()
                 .Append(card.transform.DOScale(new Vector3(0, 0, 0), 0.3f))
                 .Append(card.transform.DOScale(new Vector3(70, 1, 100), 0.3f));
-            //card.transform.DOScale(new Vector3(0, 0, 0), 0.3f);
-            //_animationController.PlaySummonCardAnimation(card);
         }
 
         public void KillCardFromTable(CardView card)
         {
-            //_animationController.PlayDeathAnimation(card);
             card.transform.DOShakeRotation(10f, new Vector3(0, 0, 0), 10, 50f);
             _myCardsInTable.Remove(card);
             DeleteCardFromDictionary(_tableCardSlotDictionary, card);
@@ -351,11 +332,6 @@ namespace DefaultNamespace
             }
 
             _playerView.SetMaxMana(10);
-        }
-
-        public void PlayDamageAnimation(CardView card)
-        {
-            _animationController.PlayDamageAnimation(card);
         }
     }
 }

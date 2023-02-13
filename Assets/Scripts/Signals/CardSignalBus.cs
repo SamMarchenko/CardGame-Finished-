@@ -48,11 +48,6 @@
             _cardPointerSignalHandler.FirePointerOff(signal);
         }
 
-        public void FireDragStart(CardDragSignal signal)
-        {
-            _cardDragSignalHandler.FireDragStart(signal);
-        }
-
         public void FireDragging(CardDragSignal signal)
         {
             _cardDragSignalHandler.FireDragging(signal);

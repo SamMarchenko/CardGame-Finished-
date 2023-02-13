@@ -9,14 +9,6 @@ public class CardDragSignalHandler
         _listeners = listeners;
     }
 
-    public void FireDragStart(CardDragSignal signal)
-    {
-        foreach (var listener in _listeners)
-        {
-            listener.OnDragCardStart(signal);
-        }
-    }
-    
     public void FireDragging(CardDragSignal signal)
     {
         foreach (var listener in _listeners)

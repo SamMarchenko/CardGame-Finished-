@@ -2,11 +2,6 @@
 
 namespace Signals
 {
-    /// <summary>
-    /// Нужен для того чтобы все обработчики сигналов передать в автобус, не единственное решение и можно было обойтись
-    /// тем чтобы добавлять в автобус прям из обработчика но подумал что не самое крутое решение когда 2 класса друг о
-    /// друге знают
-    /// </summary>
     public class SignalBusInjector : IInitializable
     {
         private readonly CardSignalBus _cardSignalBus;

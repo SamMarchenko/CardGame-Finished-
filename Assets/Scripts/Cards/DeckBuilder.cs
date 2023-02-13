@@ -31,13 +31,6 @@ namespace DefaultNamespace
             }
         }
 
-        // public void Initialize()
-        // {
-        //     // _playerDeck1 = BuildDeck(EPlayers.FirstPlayer);
-        //     // _playerDeck2 = BuildDeck(EPlayers.SecondPlayer);
-        //     _random = new Random();
-        // }
-
         private bool IsDecksBuilded()
         {
             return _playerDeck1 != null && _playerDeck2 != null;
@@ -93,8 +86,6 @@ namespace DefaultNamespace
                 card.transform.eulerAngles = new Vector3(0, 0, 180f);
                 offset += 0.8f;
             }
-
-            Debug.Log("Shuffled");
         }
 
         public List<CardView> GetFullDeck(EPlayers player)
@@ -125,7 +116,6 @@ namespace DefaultNamespace
             var _currentDeck = player.MyCardsInDeck;
             if (_currentDeck.Count == 0)
             {
-                Debug.Log($"Колода игрока {player.PlayerType} пустая!");
                 return null;
             }
             var _topCard = _currentDeck[_currentDeck.Count - 1];
