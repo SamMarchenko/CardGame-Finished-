@@ -85,7 +85,7 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
         var health = GetHealth();
         health -= damage;
         
-        transform.DOShakeRotation(2f, new Vector3(0, 5, 0), 10, 10f).OnComplete(() => SetHealth(health));
+        transform.DOShakeRotation(1f, new Vector3(0, 5, 0), 10, 10f).OnComplete(() => SetHealth(health));
         
         UpdateHealthUI();
         
