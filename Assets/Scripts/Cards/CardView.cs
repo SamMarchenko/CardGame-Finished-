@@ -261,7 +261,7 @@ public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         if (damage != 0)
         {
-            transform.DOShakeRotation(1f, new Vector3(0, 5, 0), 10, 10f).OnComplete(() => SetHealth(health, 0));
+            transform.DOShakeRotation(0.5f, new Vector3(0, 5, 0), 10, 10f).OnComplete(() => SetHealth(health, 0));
         }
     }
 

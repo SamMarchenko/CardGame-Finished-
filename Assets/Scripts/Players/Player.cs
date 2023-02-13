@@ -161,7 +161,6 @@ namespace DefaultNamespace
             CanDragCardsFromHand();
             CanAttacksFromTable();
             _firstMove = false;
-            _playerView.ManaLog();
         }
 
         public Transform GetCurrentSlotByCard(CardView card)

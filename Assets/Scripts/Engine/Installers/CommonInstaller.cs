@@ -56,7 +56,7 @@ namespace Engine.Installers
         {
             Container.BindInterfacesTo<CanvasContainer>().AsSingle();
             Container.BindInterfacesTo<UiAttachSystem>().AsSingle();
-            Container.BindInterfacesAndSelfTo<HudWindowPresenter>().AsSingle();
+            //Container.BindInterfacesAndSelfTo<HudWindowPresenter>().AsSingle();
         }
 
         private void BindFactories()

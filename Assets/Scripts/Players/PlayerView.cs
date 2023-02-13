@@ -62,14 +62,8 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
     {
         _currentMana -= card.GetCost();
         UpdateManaUI();
-        Debug.Log($"У игрока {PlayerType} осталось {_currentMana}/{_maxMana} маны.");
     }
-
-    public void ManaLog()
-    {
-        Debug.Log($"У игрока {PlayerType} {_currentMana}/{_maxMana} маны");
-    }
-
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         _playerSignalBus.PlayerClickFire(new PlayerClickSignal(this));
@@ -85,7 +79,7 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
         var health = GetHealth();
         health -= damage;
         
-        transform.DOShakeRotation(1f, new Vector3(0, 5, 0), 10, 10f).OnComplete(() => SetHealth(health));
+        transform.DOShakeRotation(0.5f, new Vector3(0, 5, 0), 10, 5f).OnComplete(() => SetHealth(health));
         
         UpdateHealthUI();
         
