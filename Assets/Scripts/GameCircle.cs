@@ -5,7 +5,7 @@ using Signals;
 using UnityEngine;
 using Zenject;
 
-public class GameCircle : IInitializable, ITickable, ICardDoBattlecryListener
+public class GameCircle : IInitializable, ITickable, ICardDoBattlecryListener, IPlayerDeathListener
 {
     private ECurrentStageType _currentStage = ECurrentStageType.StartWaiting;
     private EBattlecrySubStage _battlecrySubStage = EBattlecrySubStage.False;
@@ -60,6 +60,11 @@ public class GameCircle : IInitializable, ITickable, ICardDoBattlecryListener
     }
 
     private void BeginMovingStage()
+    {
+        _playerSignalBus.StageChangeFire(new StageChangeSignal(_currentStage));
+    }
+
+    private void BeginGameOverStage()
     {
         _playerSignalBus.StageChangeFire(new StageChangeSignal(_currentStage));
     }
@@ -128,5 +133,11 @@ public class GameCircle : IInitializable, ITickable, ICardDoBattlecryListener
     {
         _battlecrySubStage = signal.IsBattlecrySubStage;
         Debug.Log("Применяется баттлкрай в данный момент");
+    }
+
+    public void OnPlayerDeath(PlayerDeathSignal signal)
+    {
+        SetGameStage(ECurrentStageType.GameOver);
+        BeginGameOverStage();
     }
 }

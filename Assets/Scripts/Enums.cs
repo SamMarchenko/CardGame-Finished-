@@ -50,7 +50,8 @@ namespace Cards
 	{
 		StartWaiting,
 		ChooseStartHandStage,
-		MoveStage
+		MoveStage,
+		GameOver
 	}
 
 	public enum EBattlecrySubStage

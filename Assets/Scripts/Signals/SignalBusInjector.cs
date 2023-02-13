@@ -19,6 +19,7 @@ namespace Signals
         private readonly ChangeStageSignalHandler _changeStageSignalHandler;
         private readonly ChangeCurrentPlayerSignalHandler _changeCurrentPlayerSignalHandler;
         private readonly PlayerClickSignalHandler _playerClickSignalHandler;
+        private readonly PlayerDeathSignalHandler _playerDeathSignalHandler;
 
         public SignalBusInjector(CardSignalBus cardSignalBus,
             CardClickSignalHandler cardClickSignalHandler,
@@ -29,7 +30,7 @@ namespace Signals
             PlayerSignalBus playerSignalBus,
             ChangeStageSignalHandler changeStageSignalHandler,
             ChangeCurrentPlayerSignalHandler changeCurrentPlayerSignalHandler,
-            PlayerClickSignalHandler playerClickSignalHandler)
+            PlayerClickSignalHandler playerClickSignalHandler, PlayerDeathSignalHandler playerDeathSignalHandler)
         {
             _cardSignalBus = cardSignalBus;
             _cardClickSignalHandler = cardClickSignalHandler;
@@ -42,9 +43,9 @@ namespace Signals
             _changeStageSignalHandler = changeStageSignalHandler;
             _changeCurrentPlayerSignalHandler = changeCurrentPlayerSignalHandler;
             _playerClickSignalHandler = playerClickSignalHandler;
+            _playerDeathSignalHandler = playerDeathSignalHandler;
         }
         
-        // внедряем зависимости не через конструктор, чтобы избежать циклической зависимости
         public void Initialize()
         {
             _cardSignalBus.Init(_cardClickSignalHandler,
@@ -53,7 +54,7 @@ namespace Signals
 
             _playerSignalBus.Init(_changeStageSignalHandler,
                 _changeCurrentPlayerSignalHandler,
-                _playerClickSignalHandler);
+                _playerClickSignalHandler, _playerDeathSignalHandler);
         }
     }
 }

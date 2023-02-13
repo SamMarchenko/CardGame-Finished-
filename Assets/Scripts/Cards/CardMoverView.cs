@@ -36,6 +36,9 @@ namespace DefaultNamespace
                 case ECurrentStageType.MoveStage:
                     OnMoveStageCardClickBehaviour(signal.CardView);
                     break;
+                case ECurrentStageType.GameOver:
+                    Debug.Log("Игра окончена!!!");
+                    break;
             }
         }
 
@@ -50,8 +53,8 @@ namespace DefaultNamespace
             if (card.Owner == _currentPlayer && _currentPlayer.CanSwapCard(card))
             {
                 _currentPlayer.SetCardFromHandInDeck(card);
-              //  _currentPlayer.SetCardFromDeckInHand(_deckBuilder.GetTopCardFromDeck(_currentPlayer));
-              _currentPlayer.SetCardFromDeckInHand();
+                //  _currentPlayer.SetCardFromDeckInHand(_deckBuilder.GetTopCardFromDeck(_currentPlayer));
+                _currentPlayer.SetCardFromDeckInHand();
             }
         }
 
@@ -61,6 +64,11 @@ namespace DefaultNamespace
 
         public void PointerOnCard(CardPointerSignal signal)
         {
+            if (_currentStageType == ECurrentStageType.GameOver)
+            {
+                return;
+            }
+
             var cardView = signal.CardView;
             switch (cardView.StateType)
             {
@@ -73,6 +81,11 @@ namespace DefaultNamespace
 
         public void PointerOffCard(CardPointerSignal signal)
         {
+            if (_currentStageType == ECurrentStageType.GameOver)
+            {
+                return;
+            }
+
             var cardView = signal.CardView;
 
             switch (cardView.StateType)
@@ -87,7 +100,6 @@ namespace DefaultNamespace
 
         public void OnDragCardStart(CardDragSignal signal)
         {
-            // ScaleCard(EScaleType.Increase, signal.CardView);
         }
 
         public void OnDraggingCard(CardDragSignal signal)
@@ -98,12 +110,14 @@ namespace DefaultNamespace
             }
 
             var card = signal.CardView;
-            
+
             if (!_currentPlayer.IsEnoughMana(card))
             {
-                Debug.Log($"Недостаточно маны. {_currentPlayer.PlayerType} имеет {_currentPlayer.GetCurrentMana()}. Карта стоит {card.GetCost()}");
+                Debug.Log(
+                    $"Недостаточно маны. {_currentPlayer.PlayerType} имеет {_currentPlayer.GetCurrentMana()}. Карта стоит {card.GetCost()}");
                 return;
             }
+
             DragCard(card);
         }
 
@@ -113,10 +127,9 @@ namespace DefaultNamespace
             {
                 return;
             }
-            
+
             var card = signal.CardView;
 
-            
 
             switch (card.StateType)
             {
@@ -151,7 +164,7 @@ namespace DefaultNamespace
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
+
         private void DragCard(CardView cardView)
         {
             Ray R = _camera.ScreenPointToRay(Input.mousePosition);

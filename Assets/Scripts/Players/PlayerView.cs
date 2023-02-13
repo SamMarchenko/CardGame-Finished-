@@ -1,4 +1,5 @@
-﻿using Cards;
+﻿using System;
+using Cards;
 using DefaultNamespace;
 using DG.Tweening;
 using Signals;
@@ -8,18 +9,20 @@ using UnityEngine.EventSystems;
 
 public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
 {
-    public EPlayers PlayerType;
-    public bool CanAttack = false;
-    private PlayerSignalBus _playerSignalBus;
-
-    private int _maxHealth = 30;
-    private const int _damage = 0;
     [SerializeField] private int _currentHealth;
-
-
     [SerializeField] private int _currentMana;
     [SerializeField] private int _maxMana = 3;
-    //[SerializeField] private TextMeshPro _healthText;
+    [SerializeField] private TextMeshProUGUI _healthValueText;
+    [SerializeField] private TextMeshProUGUI _manaValuesText;
+    
+    private PlayerSignalBus _playerSignalBus;
+    private int _maxHealth = 30;
+    private const int _damage = 0;
+    
+    public EPlayers PlayerType;
+    public bool CanAttack = false;
+
+
 
     public void Init(EPlayers playerType, PlayerSignalBus playerSignalBus)
     {
@@ -28,9 +31,11 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
         _currentHealth = _maxHealth;
         _currentMana = _maxMana;
 
-        //_healthText.text = _maxHealth.ToString();
+        UpdateHealthUI();
+        UpdateManaUI();
     }
 
+    
     public int GetCurrentMana()
     {
         return _currentMana;
@@ -39,6 +44,7 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
     public void SetCurrentMana(int value)
     {
         _currentMana = value;
+        UpdateManaUI();
     }
 
     public int GetMaxMana()
@@ -49,11 +55,13 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
     public void SetMaxMana(int value)
     {
         _maxMana = value;
+        UpdateManaUI();
     }
 
     public void ManaUse(CardView card)
     {
         _currentMana -= card.GetCost();
+        UpdateManaUI();
         Debug.Log($"У игрока {PlayerType} осталось {_currentMana}/{_maxMana} маны.");
     }
 
@@ -78,6 +86,8 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
         health -= damage;
         
         transform.DOShakeRotation(2f, new Vector3(0, 5, 0), 10, 10f).OnComplete(() => SetHealth(health));
+        
+        UpdateHealthUI();
         
     }
 
@@ -105,10 +115,22 @@ public class PlayerView : MonoBehaviour, IPointerClickHandler, IDamageable
         _currentHealth = health;
         if (_currentHealth <= 0)
         {
+            _currentHealth = 0;
             Debug.Log($"GAME OVER. {PlayerType} проиграл!!!");
-            //todo: подавать сигнал окончания игры
+            
+            _playerSignalBus.PlayerDeathFire(new PlayerDeathSignal(this));
         }
-        // _healthText.text = health.ToString();
+        UpdateHealthUI();
+    }
+    
+    private void UpdateHealthUI()
+    {
+        _healthValueText.text = "HP:" + _currentHealth;
+    }
+
+    private void UpdateManaUI()
+    {
+        _manaValuesText.text = "MP:" + _currentMana + "/" + _maxMana; 
     }
 
     public int GetHealth()
